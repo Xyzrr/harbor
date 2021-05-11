@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, Tray, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -24,7 +24,13 @@ export default class AppUpdater {
   }
 }
 
-let mainWindow: BrowserWindow | null = null;
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../assets');
+
+const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -51,6 +57,25 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
+let tray: Tray | null = null;
+let mainWindow: BrowserWindow | null = null;
+
+const createTray = async () => {
+  tray = new Tray(getAssetPath('mic.png'));
+
+  tray.on('click', () => {
+    if (!mainWindow) {
+      return;
+    }
+
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
+};
+
 const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -59,23 +84,25 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../assets');
+  const trayBounds = tray!.getBounds();
 
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
+  console.log('mw bounds', mainWindow, trayBounds);
 
   mainWindow = new BrowserWindow({
+    transparent: true,
     show: false,
-    width: 1024,
-    height: 728,
+    width: 200,
+    height: 200,
+    titleBarStyle: 'hidden',
+    x: trayBounds.x + trayBounds.width / 2 - 100,
+    y: trayBounds.y + trayBounds.height,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
     },
   });
+
+  mainWindow.setWindowButtonVisibility(false);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
@@ -123,7 +150,7 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.whenReady().then(createWindow).catch(console.log);
+app.whenReady().then(createTray).then(createWindow).catch(console.log);
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
