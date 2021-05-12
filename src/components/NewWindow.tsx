@@ -42,12 +42,6 @@ const NewWindow: React.FC<NewWindowProps> = ({
   windowRef,
   onClose,
 }) => {
-  React.useEffect(() => {
-    console.log('MOUNTED NEWWIN');
-    return () => {
-      console.log('UNMOUNTED NEWWIN');
-    };
-  }, []);
   const [containerEl, setContainerEl] = React.useState<Element>();
   const [newWindow, setNewWindow] = React.useState<Window | null>();
 
