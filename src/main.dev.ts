@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, Tray, Menu } from 'electron';
+import { app, BrowserWindow, shell, Tray, Menu, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -95,7 +95,7 @@ const createWindow = async () => {
     height: 212,
     titleBarStyle: 'hidden',
     x: trayBounds.x + trayBounds.width / 2 - 100,
-    y: trayBounds.y + trayBounds.height,
+    y: trayBounds.y + trayBounds.height + 4,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
@@ -129,11 +129,42 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
-  // Open urls in the user's browser
-  mainWindow.webContents.on('new-window', (event, url) => {
-    event.preventDefault();
-    shell.openExternal(url);
-  });
+  mainWindow.webContents.setWindowOpenHandler(
+    ({ frameName, features, url }) => {
+      if (frameName === 'panels') {
+        const screenBounds = screen.getPrimaryDisplay().workArea;
+        console.log('yo wtf bitch asssssssss');
+
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 252,
+            height: 400,
+            alwaysOnTop: true,
+            y: screenBounds.y,
+            x: screenBounds.width - 252,
+            acceptFirstMouse: true,
+          },
+        };
+      }
+
+      shell.openExternal(url);
+
+      return { action: 'deny' };
+    }
+  );
+
+  mainWindow.webContents.on(
+    'did-create-window',
+    (win, { frameName, options }) => {
+      if (frameName === 'panels') {
+        win.setIgnoreMouseEvents(true, { forward: true });
+        win.on('ready-to-show', () => {
+          win.show();
+        });
+      }
+    }
+  );
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
