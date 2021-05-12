@@ -92,7 +92,7 @@ const createWindow = async () => {
     transparent: true,
     show: false,
     width: 200,
-    height: 200,
+    height: 212,
     titleBarStyle: 'hidden',
     x: trayBounds.x + trayBounds.width / 2 - 100,
     y: trayBounds.y + trayBounds.height,

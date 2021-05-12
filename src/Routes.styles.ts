@@ -20,20 +20,59 @@ export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
-  clip-path: path(
-    'M ${W / 2} 0
+  clip-path: path('
+    M ${W / 2} 0
     L ${W / 2 + O} ${O}
     L ${W - R} ${O}
     A ${R} ${R} 0 0 1 ${W} ${O + R}
-    L ${W} ${H - R}
-    A ${R} ${R} 0 0 1 ${W - R} ${H}
-    L ${R} ${H}
-    A ${R} ${R} 0 0 1 0 ${H - R}
+    L ${W} ${O + H - R}
+    A ${R} ${R} 0 0 1 ${W - R} ${O + H}
+    L ${R} ${O + H}
+    A ${R} ${R} 0 0 1 0 ${O + H - R}
     L 0 ${O + R}
     A ${R} ${R} 0 0 1 ${R} ${O}
     L ${W / 2 - O} ${O}
-    z'
-  );
-  // box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
-  //   inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    z
+  ');
+`;
+
+export const Overlay = styled.div`
+  width: ${W}px;
+  height: ${H}px;
+  top: ${O}px;
+  left: 0;
+  border-radius: ${R}px;
+  clip-path: path('
+    M ${W / 2} 10
+    L ${W / 2 + O} 0
+    L ${W} 0
+    L ${W} ${H}
+    L 0 ${H}
+    L 0 0
+    L ${W / 2 - O} 0
+    z
+  ');
+  position: absolute;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  z-index: 100;
+  pointer-events: none;
+`;
+
+export const CaretOverlay = styled.div`
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  width: ${O * Math.sqrt(2)}px;
+  height: ${O * Math.sqrt(2)}px;
+  transform: translate(-50%, ${
+    1 + (O * (Math.sqrt(2) - 1)) / 2
+  }px) rotate(45deg);
+  clip-path: path('
+    M 0 0
+    L ${O * Math.sqrt(2)} 0
+    L 0 ${O * Math.sqrt(2)}
+    z
+  ');
+  position: absolute;
+  top: 0;
+  left: ${W / 2}px;
 `;

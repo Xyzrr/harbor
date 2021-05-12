@@ -15,6 +15,8 @@ const Routes: React.FC = () => {
           </Switch>
         </Router>
       </S.Wrapper>
+      <S.Overlay />
+      <S.CaretOverlay />
     </>
   );
 };
