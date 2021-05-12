@@ -11,7 +11,15 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, Tray, Menu, screen } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  Tray,
+  Menu,
+  screen,
+  ipcMain,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -59,6 +67,7 @@ const installExtensions = async () => {
 
 let tray: Tray | null = null;
 let mainWindow: BrowserWindow | null = null;
+let panelsWindow: BrowserWindow | null = null;
 
 const createTray = async () => {
   tray = new Tray(getAssetPath('mic.png'));
@@ -132,18 +141,22 @@ const createWindow = async () => {
   mainWindow.webContents.setWindowOpenHandler(
     ({ frameName, features, url }) => {
       if (frameName === 'panels') {
-        const screenBounds = screen.getPrimaryDisplay().workArea;
-        console.log('yo wtf bitch asssssssss');
+        const workareaBounds = screen.getPrimaryDisplay().workArea;
 
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
             width: 252,
-            height: 400,
+            height: workareaBounds.height,
             alwaysOnTop: true,
-            y: screenBounds.y,
-            x: screenBounds.width - 252,
+            y: workareaBounds.y,
+            x: workareaBounds.width - 252,
             acceptFirstMouse: true,
+            resizable: false,
+            maximizable: false,
+            minimizable: false,
+            focusable: false,
+            closable: false,
           },
         };
       }
@@ -158,7 +171,8 @@ const createWindow = async () => {
     'did-create-window',
     (win, { frameName, options }) => {
       if (frameName === 'panels') {
-        win.setIgnoreMouseEvents(true, { forward: true });
+        panelsWindow = win;
+        win.setWindowButtonVisibility(false);
         win.on('ready-to-show', () => {
           win.show();
         });
@@ -169,6 +183,24 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+};
+
+const trackMouse = () => {
+  setInterval(() => {
+    if (!panelsWindow || !mainWindow) {
+      return;
+    }
+
+    const t = Date.now();
+    const panelsWindowPosition = panelsWindow.getPosition();
+    const cursorPoint = screen.getCursorScreenPoint();
+    const mousePosition = [
+      cursorPoint.x - panelsWindowPosition[0],
+      cursorPoint.y - panelsWindowPosition[1],
+    ];
+
+    mainWindow.webContents.send('mousePosition', mousePosition);
+  }, 100);
 };
 
 /**
@@ -183,10 +215,23 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.whenReady().then(createTray).then(createWindow).catch(console.log);
+app
+  .whenReady()
+  .then(createTray)
+  .then(createWindow)
+  .then(trackMouse)
+  .catch(console.log);
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+});
+
+ipcMain.on('setIgnoreMouseEvents', (e, ignore?: boolean) => {
+  if (ignore) {
+    panelsWindow?.setIgnoreMouseEvents(true, { forward: true });
+  } else {
+    panelsWindow?.setIgnoreMouseEvents(false);
+  }
 });
