@@ -8,8 +8,6 @@ const Routes: React.FC = () => {
   return (
     <>
       <S.GlobalStyles />
-      <S.Caret />
-      <S.CaretRim />
       <S.Wrapper>
         <Router>
           <Switch>
