@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { LIGHT_BACKGROUND } from '../constants';
 
 const W = 200;
 const H = 200;
@@ -7,7 +6,6 @@ const R = 6;
 const O = 12;
 
 export const TrayPopoutWrapper = styled.div`
-  background: ${LIGHT_BACKGROUND.toString()};
   width: 100vw;
   height: 100vh;
   position: relative;
@@ -65,12 +63,4 @@ export const CaretOverlay = styled.div`
   position: absolute;
   top: 0;
   left: ${W / 2}px;
-`;
-
-export const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 12px;
-  padding-top: 24px;
-  color: white;
 `;

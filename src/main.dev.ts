@@ -11,15 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import {
-  app,
-  BrowserWindow,
-  shell,
-  Tray,
-  Menu,
-  screen,
-  ipcMain,
-} from 'electron';
+import { app, BrowserWindow, shell, Tray, screen, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -169,7 +161,6 @@ const createWindow = async () => {
             minWidth: undefined,
             minHeight: undefined,
             resizable: false,
-            parent: mainWindow!,
             maximizable: false,
             minimizable: false,
             backgroundColor: '#00000000',
@@ -210,6 +201,13 @@ const createWindow = async () => {
         win.setWindowButtonVisibility(false);
         win.on('ready-to-show', () => {
           win.show();
+        });
+        win.on('blur', () => {
+          const focusedWindow = BrowserWindow.getFocusedWindow();
+          console.log('FOCUSED WINDOW', focusedWindow);
+          if (focusedWindow == null) {
+            win.hide();
+          }
         });
         win.on('close', () => {
           tray.destroy();
