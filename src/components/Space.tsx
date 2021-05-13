@@ -15,7 +15,9 @@ const Space: React.FC<SpaceProps> = ({ className }) => {
       <S.TrayPopoutWrapper>
         <S.Wrapper className={className}>Hello</S.Wrapper>
       </S.TrayPopoutWrapper>
-      <Panels />
+      <NewWindow name="panels">
+        <Panels />
+      </NewWindow>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ipcRenderer } from 'electron';
 import * as S from './Panels.styles';
-import NewWindow from '../elements/NewWindow';
+import NewWindow, { NewWindowContext } from '../elements/NewWindow';
 
 export interface PanelsProps {
   className?: string;
@@ -9,14 +9,14 @@ export interface PanelsProps {
 
 const Panels: React.FC<PanelsProps> = ({ className }) => {
   const panelsWrapperRef = React.useRef<HTMLDivElement>(null);
-  const windowRef = React.useRef<Window>(null);
+  const newWindow = React.useContext(NewWindowContext);
 
   React.useEffect(() => {
     const onMousePosition = (
       e: Electron.IpcRendererEvent,
       d: [number, number]
     ) => {
-      const doc = windowRef.current?.document;
+      const doc = newWindow?.document;
 
       if (!doc) {
         return;
@@ -38,18 +38,16 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
   }, []);
 
   return (
-    <NewWindow name="panels" windowRef={windowRef}>
-      <S.Wrapper className={className}>
-        <S.PanelsWrapper
-          ref={panelsWrapperRef}
-          onMouseMove={() => {
-            console.log('mouse move');
-          }}
-        >
-          har
-        </S.PanelsWrapper>
-      </S.Wrapper>
-    </NewWindow>
+    <S.Wrapper className={className}>
+      <S.PanelsWrapper
+        ref={panelsWrapperRef}
+        onMouseMove={() => {
+          console.log('mouse move');
+        }}
+      >
+        har
+      </S.PanelsWrapper>
+    </S.Wrapper>
   );
 };
 

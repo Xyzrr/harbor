@@ -4,6 +4,8 @@ import { StyleSheetManager } from 'styled-components';
 import { jssPreset, StylesProvider } from '@material-ui/styles';
 import { create, Jss } from 'jss';
 
+export const NewWindowContext = React.createContext<Window | null>(null);
+
 function copyStyles(sourceDoc: Document, targetDoc: Document) {
   Array.from(sourceDoc.styleSheets).forEach((styleSheet) => {
     if (styleSheet.cssRules) {
@@ -31,7 +33,6 @@ export interface NewWindowProps {
   className?: string;
   name: string;
   features?: string;
-  windowRef?: React.RefObject<Window>;
   onClose?(): void;
 }
 
@@ -39,7 +40,6 @@ const NewWindow: React.FC<NewWindowProps> = ({
   name,
   features,
   children,
-  windowRef,
   onClose,
 }) => {
   const [containerEl, setContainerEl] = React.useState<Element>();
@@ -51,9 +51,6 @@ const NewWindow: React.FC<NewWindowProps> = ({
   React.useEffect(() => {
     const el = document.createElement('div');
     const win = window.open('', name, features);
-    if (windowRef) {
-      (windowRef as any).current = win;
-    }
 
     if (win == null) {
       throw new Error('Could not open new window.');
@@ -88,11 +85,13 @@ const NewWindow: React.FC<NewWindowProps> = ({
   }
 
   return (
-    <StyleSheetManager target={newWindow.document.body}>
-      <StylesProvider jss={jss} sheetsManager={sheetsManager}>
-        {ReactDOM.createPortal(children, containerEl)}
-      </StylesProvider>
-    </StyleSheetManager>
+    <NewWindowContext.Provider value={newWindow}>
+      <StyleSheetManager target={newWindow.document.body}>
+        <StylesProvider jss={jss} sheetsManager={sheetsManager}>
+          {ReactDOM.createPortal(children, containerEl)}
+        </StylesProvider>
+      </StyleSheetManager>
+    </NewWindowContext.Provider>
   );
 };
 
