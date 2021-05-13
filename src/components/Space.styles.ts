@@ -46,7 +46,6 @@ export const Overlay = styled.div`
   position: absolute;
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-  z-index: 100;
   pointer-events: none;
 `;
 

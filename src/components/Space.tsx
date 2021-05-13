@@ -10,11 +10,11 @@ export interface SpaceProps {
 const Space: React.FC<SpaceProps> = ({ className }) => {
   return (
     <>
-      <S.Overlay />
-      <S.CaretOverlay />
       <S.TrayPopoutWrapper>
         <S.Wrapper className={className}>Hello</S.Wrapper>
       </S.TrayPopoutWrapper>
+      <S.Overlay />
+      <S.CaretOverlay />
       <NewWindow name="panels">
         <Panels />
       </NewWindow>
