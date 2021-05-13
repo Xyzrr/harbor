@@ -65,27 +65,12 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-let tray: Tray | null = null;
 let mainWindow: BrowserWindow | null = null;
 let spaceWindow: BrowserWindow | null = null;
 let panelsWindow: BrowserWindow | null = null;
 let popupWindow: BrowserWindow | undefined;
 
-const createTray = async () => {
-  tray = new Tray(getAssetPath('mic.png'));
-
-  tray.on('click', () => {
-    if (!mainWindow) {
-      return;
-    }
-
-    if (mainWindow.isVisible()) {
-      mainWindow.hide();
-    } else {
-      mainWindow.show();
-    }
-  });
-};
+const createTray = async () => {};
 
 const createWindow = async () => {
   if (
@@ -137,10 +122,6 @@ const createWindow = async () => {
   mainWindow.webContents.setWindowOpenHandler(
     ({ frameName, features, url }) => {
       if (frameName === 'space') {
-        createTray();
-
-        const trayBounds = tray!.getBounds();
-
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -149,8 +130,6 @@ const createWindow = async () => {
             width: 200,
             height: 212,
             titleBarStyle: 'hidden',
-            x: trayBounds.x + trayBounds.width / 2 - 100,
-            y: trayBounds.y + trayBounds.height + 4,
           },
         };
       }
@@ -206,9 +185,33 @@ const createWindow = async () => {
     (win, { frameName, options }) => {
       if (frameName === 'space') {
         spaceWindow = win;
+
+        const tray = new Tray(getAssetPath('mic.png'));
+
+        tray.on('click', () => {
+          if (!mainWindow) {
+            return;
+          }
+
+          if (mainWindow.isVisible()) {
+            mainWindow.hide();
+          } else {
+            mainWindow.show();
+          }
+        });
+
+        const trayBounds = tray.getBounds();
+
+        win.setPosition(
+          trayBounds.x + trayBounds.width / 2 - 100,
+          trayBounds.y + trayBounds.height + 4
+        );
         win.setWindowButtonVisibility(false);
         win.on('ready-to-show', () => {
           win.show();
+        });
+        win.on('close', () => {
+          tray.destroy();
         });
       }
 
