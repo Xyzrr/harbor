@@ -1,6 +1,6 @@
 import React from 'react';
 import * as S from './Space.styles';
-import NewWindow from './NewWindow';
+import NewWindow from '../elements/NewWindow';
 import Panels from './Panels';
 
 export interface SpaceProps {

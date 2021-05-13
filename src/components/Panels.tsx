@@ -1,7 +1,7 @@
 import React from 'react';
 import { ipcRenderer } from 'electron';
 import * as S from './Panels.styles';
-import NewWindow from './NewWindow';
+import NewWindow from '../elements/NewWindow';
 
 export interface PanelsProps {
   className?: string;

@@ -2,9 +2,9 @@ import 'normalize.css';
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as S from './Routes.styles';
-import Space from './components/Space';
 import Auth from './pages/Auth';
 import { FirebaseContextProvider } from './contexts/FirebaseContext';
+import Home from './pages/Home';
 
 const Routes: React.FC = () => {
   return (
@@ -13,6 +13,7 @@ const Routes: React.FC = () => {
       <FirebaseContextProvider>
         <Router>
           <Switch>
+            <Route path="/home" component={Home} />
             <Route path="/" component={Auth} />
           </Switch>
         </Router>
