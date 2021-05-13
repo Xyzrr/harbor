@@ -14,6 +14,7 @@ module.exports = {
     'prettier/prettier': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-nested-ternary': 'off',
+    'no-console': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

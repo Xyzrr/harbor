@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import Loader from '../elements/Loader';
 import Button from '../elements/Button';
 import { FirebaseContext } from '../contexts/FirebaseContext';
-import electronDebug from 'electron-debug';
 
 export interface AuthProps {
   className?: string;
@@ -26,7 +25,7 @@ const Auth: React.FC<AuthProps> = ({ className }) => {
       console.log('Already signed in');
       history.push('/home');
     }
-  }, [user]);
+  }, [user, history]);
 
   React.useEffect(() => {
     ipcRenderer.send('setWindowSize', { width: 360, height: 360 });
@@ -120,7 +119,7 @@ const Auth: React.FC<AuthProps> = ({ className }) => {
       console.log('USER:', newUser);
       history.push('/home');
     })();
-  }, [url]);
+  }, [url, firebaseApp, history]);
 
   if (loadingUser) {
     return (
