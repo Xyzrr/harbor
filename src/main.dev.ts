@@ -67,7 +67,9 @@ const installExtensions = async () => {
 
 let tray: Tray | null = null;
 let mainWindow: BrowserWindow | null = null;
+let spaceWindow: BrowserWindow | null = null;
 let panelsWindow: BrowserWindow | null = null;
+let popupWindow: BrowserWindow | undefined;
 
 const createTray = async () => {
   tray = new Tray(getAssetPath('mic.png'));
@@ -93,18 +95,14 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  const trayBounds = tray!.getBounds();
-
-  console.log('mw bounds', mainWindow, trayBounds);
-
   mainWindow = new BrowserWindow({
-    transparent: true,
+    title: 'Harbor',
     show: false,
-    width: 200,
-    height: 212,
+    width: 420,
+    height: 420,
+    frame: false,
     titleBarStyle: 'hidden',
-    x: trayBounds.x + trayBounds.width / 2 - 100,
-    y: trayBounds.y + trayBounds.height + 4,
+    trafficLightPosition: { x: 12, y: 24 },
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
@@ -112,8 +110,6 @@ const createWindow = async () => {
       nativeWindowOpen: true,
     },
   });
-
-  mainWindow.setWindowButtonVisibility(false);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
@@ -140,6 +136,25 @@ const createWindow = async () => {
 
   mainWindow.webContents.setWindowOpenHandler(
     ({ frameName, features, url }) => {
+      if (frameName === 'space') {
+        createTray();
+
+        const trayBounds = tray!.getBounds();
+
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            transparent: true,
+            show: false,
+            width: 200,
+            height: 212,
+            titleBarStyle: 'hidden',
+            x: trayBounds.x + trayBounds.width / 2 - 100,
+            y: trayBounds.y + trayBounds.height + 4,
+          },
+        };
+      }
+
       if (frameName === 'panels') {
         const workareaBounds = screen.getPrimaryDisplay().workArea;
 
@@ -161,6 +176,25 @@ const createWindow = async () => {
         };
       }
 
+      if (frameName === 'popup') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 640,
+            height: 400,
+            minWidth: undefined,
+            minHeight: undefined,
+            resizable: false,
+            parent: mainWindow!,
+            maximizable: false,
+            minimizable: false,
+            backgroundColor: '#00000000',
+            show: false,
+            titleBarStyle: 'hidden',
+          },
+        };
+      }
+
       shell.openExternal(url);
 
       return { action: 'deny' };
@@ -170,12 +204,25 @@ const createWindow = async () => {
   mainWindow.webContents.on(
     'did-create-window',
     (win, { frameName, options }) => {
+      if (frameName === 'space') {
+        spaceWindow = win;
+        win.setWindowButtonVisibility(false);
+        win.on('ready-to-show', () => {
+          win.show();
+        });
+      }
+
       if (frameName === 'panels') {
         panelsWindow = win;
         win.setWindowButtonVisibility(false);
         win.on('ready-to-show', () => {
           win.show();
         });
+      }
+
+      if (frameName === 'popup') {
+        popupWindow = win;
+        win.setWindowButtonVisibility(false);
       }
     }
   );
@@ -233,5 +280,62 @@ ipcMain.on('setIgnoreMouseEvents', (e, ignore?: boolean) => {
     panelsWindow?.setIgnoreMouseEvents(true, { forward: true });
   } else {
     panelsWindow?.setIgnoreMouseEvents(false);
+  }
+});
+
+/**
+ * Authentication
+ */
+
+let link: string | undefined;
+
+// This will catch clicks on links such as <a href="harbor://abc=1">open in harbor</a>
+app.on('open-url', function (event, data) {
+  event.preventDefault();
+  link = data;
+  console.log('opened via url', event, data);
+  mainWindow?.webContents.send('openUrl', data);
+});
+
+app.setAsDefaultProtocolClient('harbor');
+
+ipcMain.handle('getUrl', () => {
+  return link;
+});
+
+ipcMain.on('clearUrl', () => {
+  link = undefined;
+});
+
+/**
+ * Page switching
+ */
+
+ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
+  if (mainWindow) {
+    mainWindow.setMinimumSize(size.width, size.height);
+    const bounds = mainWindow.getBounds();
+    mainWindow.setBounds({
+      x: bounds.x + (bounds.width - size.width) / 2,
+      y: bounds.y + (bounds.height - size.height) / 2,
+      width: size.width,
+      height: size.height,
+    });
+  }
+});
+
+/**
+ * Popups
+ */
+
+ipcMain.on('showPopup', (e, bounds: Electron.Rectangle) => {
+  if (popupWindow && mainWindow) {
+    const parentBounds = mainWindow.getBounds();
+    popupWindow.show();
+    popupWindow.setBounds({
+      ...bounds,
+      x: bounds.x + parentBounds.x,
+      y: bounds.y + parentBounds.y,
+    });
   }
 });

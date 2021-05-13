@@ -12,6 +12,8 @@ module.exports = {
     'consistent-return': 'off',
     'no-restricted-syntax': 'off',
     'prettier/prettier': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'no-nested-ternary': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

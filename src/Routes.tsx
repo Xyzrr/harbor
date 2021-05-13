@@ -3,20 +3,20 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as S from './Routes.styles';
 import Space from './components/Space';
+import Auth from './pages/Auth';
+import { FirebaseContextProvider } from './contexts/FirebaseContext';
 
 const Routes: React.FC = () => {
   return (
     <>
       <S.GlobalStyles />
-      <S.Wrapper>
+      <FirebaseContextProvider>
         <Router>
           <Switch>
-            <Route path="/" component={Space} />
+            <Route path="/" component={Auth} />
           </Switch>
         </Router>
-      </S.Wrapper>
-      <S.Overlay />
-      <S.CaretOverlay />
+      </FirebaseContextProvider>
     </>
   );
 };
