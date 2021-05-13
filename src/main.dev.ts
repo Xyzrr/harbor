@@ -212,6 +212,7 @@ const createWindow = async () => {
         win.on('close', () => {
           tray.destroy();
         });
+        mainWindow?.hide();
       }
 
       if (frameName === 'panels') {
