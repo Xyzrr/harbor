@@ -112,8 +112,17 @@ const createWindow = async () => {
     }
   });
 
+  mainWindow.on('close', (e) => {
+    e.preventDefault();
+    mainWindow?.hide();
+  });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  app.on('activate', (e, win) => {
+    mainWindow?.show();
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
@@ -189,14 +198,10 @@ const createWindow = async () => {
         const tray = new Tray(getAssetPath('mic.png'));
 
         tray.on('click', () => {
-          if (!mainWindow) {
-            return;
-          }
-
-          if (mainWindow.isVisible()) {
-            mainWindow.hide();
+          if (win.isVisible()) {
+            win.hide();
           } else {
-            mainWindow.show();
+            win.show();
           }
         });
 

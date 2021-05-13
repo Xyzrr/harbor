@@ -7,6 +7,8 @@ import PopupTrigger from '../elements/PopupTrigger';
 import { MenuItem, MenuList, Paper } from '@material-ui/core';
 import { FirebaseContext } from '../contexts/FirebaseContext';
 import useSpaces from '../hooks/useSpaces';
+import Space from '../components/Space';
+import NewWindow from '../elements/NewWindow';
 
 export interface HomeProps {
   className?: string;
@@ -148,6 +150,11 @@ const Home: React.FC<HomeProps> = ({ className }) => {
           </S.CreateSpace>
         </S.Spaces>
       </S.Wrapper>
+      {currentSpaceId != null && (
+        <NewWindow name="space">
+          <Space />
+        </NewWindow>
+      )}
     </>
   );
 };
