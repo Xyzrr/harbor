@@ -82,7 +82,7 @@ export const UserInfoPopup = styled.div`
   color: white;
 `;
 
-export const Space = styled.div`
+export const Space = styled.div<{ active?: boolean }>`
   cursor: default;
   text-select: none;
   width: 180px;
@@ -98,6 +98,16 @@ export const Space = styled.div`
   }
   margin-right: 12px;
   margin-bottom: 12px;
+  ${(props) =>
+    props.active &&
+    css`
+      && {
+        background: ${LIGHT_BACKGROUND.darken(0.2).toString()};
+        box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.1),
+          inset 1px 0 0 0 rgba(255, 255, 255, 0.04),
+          inset -1px 0 0 0 rgba(255, 255, 255, 0.04);
+      }
+    `}
 `;
 
 export const SpaceName = styled.h2`

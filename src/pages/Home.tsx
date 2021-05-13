@@ -21,6 +21,9 @@ const Home: React.FC<HomeProps> = ({ className }) => {
 
   const history = useHistory();
   const { spaces, error } = useSpaces();
+  const [currentSpaceId, setCurrentSpaceId] = React.useState<string | null>(
+    null
+  );
 
   // TODO: This is meant to enable upgrading from an anonymous account to
   // a permanent one, it turns out I need to build a custom auth UI to actually
@@ -123,8 +126,9 @@ const Home: React.FC<HomeProps> = ({ className }) => {
               return (
                 <S.Space
                   key={space.metadata.spaceId}
+                  active={currentSpaceId === space.metadata.spaceId}
                   onClick={() => {
-                    history.push(`/s/${space.metadata.spaceId}`);
+                    setCurrentSpaceId(space.metadata.spaceId);
                   }}
                 >
                   <S.SpaceName>{space.metadata.spaceName}</S.SpaceName>
