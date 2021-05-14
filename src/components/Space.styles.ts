@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import os from 'os';
 
 const W = 200;
 const H = 200;
-const R = 6;
+const R = os.version().startsWith('Darwin Kernel Version 20.') ? 10 : 6;
 const O = 12;
 
 export const TrayPopoutWrapper = styled.div`
