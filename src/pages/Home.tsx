@@ -152,7 +152,7 @@ const Home: React.FC<HomeProps> = ({ className }) => {
       </S.Wrapper>
       {currentSpaceId != null && (
         <NewWindow name="space">
-          <Space />
+          <Space spaceId={currentSpaceId} />
         </NewWindow>
       )}
     </>

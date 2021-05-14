@@ -12,7 +12,7 @@ export const PanelsWrapper = styled.div`
   flex-direction: column;
   align-items: flex-end;
   background: red;
-  height: 80px;
+  min-height: 80px;
   -webkit-app-region: drag;
   &:hover {
     background: blue;

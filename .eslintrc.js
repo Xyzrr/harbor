@@ -16,6 +16,7 @@ module.exports = {
     'no-nested-ternary': 'off',
     'no-console': 'off',
     'no-continue': 'off',
+    'jsx-a11y/media-has-caption': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

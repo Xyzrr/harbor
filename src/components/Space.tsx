@@ -10,15 +10,16 @@ import { DailyVideoCallContextProvider } from '../contexts/VideoCallContext/Dail
 
 export interface SpaceProps {
   className?: string;
+  spaceId: string;
 }
 
-const Space: React.FC<SpaceProps> = ({ className }) => {
+const Space: React.FC<SpaceProps> = ({ className, spaceId }) => {
   return (
     <>
       <LocalInfoContextProvider>
         <LocalMediaContextProvider>
-          <ColyseusContextProvider>
-            <DailyVideoCallContextProvider>
+          <ColyseusContextProvider spaceId={spaceId}>
+            <DailyVideoCallContextProvider spaceId={spaceId}>
               <S.TrayPopoutWrapper>
                 <SpaceMap />
               </S.TrayPopoutWrapper>

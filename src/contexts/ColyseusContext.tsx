@@ -4,7 +4,6 @@ import * as Colyseus from 'colyseus.js';
 import { LocalMediaContext } from './LocalMediaContext';
 import { LocalInfoContext } from './LocalInfoContext';
 import { COLYSEUS_CLIENT, HOST } from '../constants';
-import { useParams } from 'react-router-dom';
 
 interface PlayerAddedEvent {
   identity: string;
@@ -54,10 +53,13 @@ interface ColyseusContextValue {
 
 export const ColyseusContext = React.createContext<ColyseusContextValue>(null!);
 
-interface ColyseusContextProviderProps {}
+interface ColyseusContextProviderProps {
+  spaceId: string;
+}
 
 export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> = ({
   children,
+  spaceId,
 }) => {
   const [room, setRoom] = React.useState<Colyseus.Room | undefined>();
   const [sessionId, setSessionId] = React.useState<string | null>(null);
@@ -77,8 +79,6 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> = (
     localVideoInputOn,
     localScreenShareOn,
   } = React.useContext(LocalMediaContext);
-
-  const params = useParams() as any;
 
   const listeners = React.useRef<
     {
@@ -127,7 +127,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> = (
       color: localColor,
       audioInputOn: localAudioInputOn,
       videoInputOn: localVideoInputOn,
-      spaceId: params.spaceId,
+      spaceId,
     });
     setSessionId(r.sessionId);
 
