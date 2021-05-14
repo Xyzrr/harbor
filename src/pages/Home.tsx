@@ -23,9 +23,8 @@ const Home: React.FC<HomeProps> = ({ className }) => {
 
   const history = useHistory();
   const { spaces, error } = useSpaces();
-  const [currentSpaceId, setCurrentSpaceId] = React.useState<string | null>(
-    null
-  );
+  const [currentSpaceId, setCurrentSpaceId] =
+    React.useState<string | null>(null);
 
   // TODO: This is meant to enable upgrading from an anonymous account to
   // a permanent one, it turns out I need to build a custom auth UI to actually
@@ -41,9 +40,8 @@ const Home: React.FC<HomeProps> = ({ className }) => {
         const credentialJSON = JSON.parse(
           decodeURIComponent(encodedCredential)
         );
-        const credential = firebase.auth.AuthCredential.fromJSON(
-          credentialJSON
-        );
+        const credential =
+          firebase.auth.AuthCredential.fromJSON(credentialJSON);
         console.log('TRYING CREDENTIAL:', credential);
 
         if (credential == null) {
@@ -152,7 +150,13 @@ const Home: React.FC<HomeProps> = ({ className }) => {
       </S.Wrapper>
       {currentSpaceId != null && (
         <NewWindow name="space">
-          <Space spaceId={currentSpaceId} />
+          <Space
+            key={currentSpaceId}
+            spaceId={currentSpaceId}
+            onExit={() => {
+              setCurrentSpaceId(null);
+            }}
+          />
         </NewWindow>
       )}
     </>

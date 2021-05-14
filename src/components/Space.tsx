@@ -16,9 +16,10 @@ import ScreenShareControl from './media-controls/ScreenShareControl';
 export interface SpaceProps {
   className?: string;
   spaceId: string;
+  onExit(): void;
 }
 
-const Space: React.FC<SpaceProps> = ({ className, spaceId }) => {
+const Space: React.FC<SpaceProps> = ({ className, spaceId, onExit }) => {
   return (
     <>
       <LocalInfoContextProvider>
@@ -28,7 +29,7 @@ const Space: React.FC<SpaceProps> = ({ className, spaceId }) => {
               <S.TrayPopoutWrapper>
                 <S.TopButtons>
                   <S.ExitButton>
-                    <Icon name="logout" />
+                    <Icon name="logout" onClick={onExit} />
                   </S.ExitButton>
                 </S.TopButtons>
                 <SpaceMap />

@@ -189,6 +189,7 @@ const createWindow = async () => {
             focusable: false,
             closable: false,
             transparent: true,
+            hasShadow: false,
           },
         };
       }
@@ -329,6 +330,7 @@ const createWindow = async () => {
         });
         win.on('close', () => {
           tray.destroy();
+          mainWindow?.show();
         });
         mainWindow?.hide();
       }
