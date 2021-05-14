@@ -192,19 +192,23 @@ const createWindow = async () => {
           }
         });
 
-        const trayBounds = tray.getBounds();
+        // Timeout is needed on Big Sur because of dumb bug;
+        // the tray bounds are wrong for the first 100ms.
+        setTimeout(() => {
+          const trayBounds = tray.getBounds();
 
-        win.setPosition(
-          trayBounds.x + trayBounds.width / 2 - 100,
-          trayBounds.y + trayBounds.height + 4
-        );
+          win.setPosition(
+            trayBounds.x + trayBounds.width / 2 - 100,
+            trayBounds.y + trayBounds.height + 4
+          );
+        }, 100);
+
         win.setWindowButtonVisibility(false);
         win.on('ready-to-show', () => {
           win.show();
         });
         win.on('blur', () => {
           const focusedWindow = BrowserWindow.getFocusedWindow();
-          console.log('FOCUSED WINDOW', focusedWindow);
           if (focusedWindow == null) {
             win.hide();
           }
