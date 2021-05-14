@@ -14,5 +14,7 @@
     "postinstall": "yarn electron-rebuild"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "xyzrr/active-win": "git+https://github.com/xyzrr/active-win.git#3ea3903f9ec3e4098f4ddfb339d6fd6e7de1963f"
+  }
 }

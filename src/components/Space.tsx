@@ -11,6 +11,7 @@ import Icon from '../elements/Icon';
 import AudioInputControl from './media-controls/AudioInputControl';
 import VideoInputControl from './media-controls/VideoInputControl';
 import AudioOutputControl from './media-controls/AudioOutputControl';
+import ScreenShareControl from './media-controls/ScreenShareControl';
 
 export interface SpaceProps {
   className?: string;
@@ -30,6 +31,7 @@ const Space: React.FC<SpaceProps> = ({ className, spaceId }) => {
                   <AudioInputControl />
                   <VideoInputControl />
                   <AudioOutputControl />
+                  <ScreenShareControl />
                 </S.BottomButtons>
               </S.TrayPopoutWrapper>
               <S.Overlay />

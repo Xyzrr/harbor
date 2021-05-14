@@ -11,10 +11,23 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, Tray, screen, ipcMain } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  Tray,
+  screen,
+  ipcMain,
+  systemPreferences,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import { openSystemPreferences } from 'electron-util';
+import activeWin from 'xyzrr/active-win';
+import { centerOnParent } from './util/electron-helpers';
+import * as _ from 'lodash';
+import { fork } from 'child_process';
 
 export default class AppUpdater {
   constructor() {
@@ -61,6 +74,33 @@ let mainWindow: BrowserWindow | null = null;
 let spaceWindow: BrowserWindow | null = null;
 let panelsWindow: BrowserWindow | null = null;
 let popupWindow: BrowserWindow | undefined;
+
+/**
+ * App tracking
+ */
+
+let onActiveWin:
+  | ((
+      aw:
+        | activeWin.MacOSResult
+        | activeWin.LinuxResult
+        | activeWin.WindowsResult
+        | undefined
+    ) => void)
+  | undefined;
+
+const activeWinLoop = fork(
+  path.join(__dirname, 'active-win-loop.prod.js'),
+  [],
+  {
+    stdio: 'pipe',
+  }
+);
+activeWinLoop.on('message', (aw: any) => {
+  console.log('active win', aw);
+  onActiveWin?.(aw);
+  mainWindow?.webContents.send('activeWin', aw);
+});
 
 const createTray = async () => {};
 
@@ -171,6 +211,79 @@ const createWindow = async () => {
         };
       }
 
+      if (frameName === 'screen-share-picker') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 840,
+            height: 600,
+            minWidth: undefined,
+            minHeight: undefined,
+            resizable: false,
+            transparent: false,
+            backgroundColor: '#222',
+            maximizable: false,
+            minimizable: false,
+            show: false,
+          },
+        };
+      }
+
+      if (frameName === 'screen-share-toolbar') {
+        const workAreaBounds = screen.getPrimaryDisplay().workArea;
+
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 252,
+            height: 52,
+            x: workAreaBounds.x + workAreaBounds.width / 2 - 252 / 2,
+            y: workAreaBounds.y + workAreaBounds.height - 52 - 8,
+            minWidth: undefined,
+            minHeight: undefined,
+            resizable: false,
+            transparent: false,
+            vibrancy: 'menu',
+            focusable: false,
+            alwaysOnTop: true,
+            titleBarStyle: 'hidden',
+            show: false,
+          },
+        };
+      }
+
+      if (frameName === 'screen-share-overlay') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            transparent: true,
+            minWidth: undefined,
+            minHeight: undefined,
+            titleBarStyle: 'hidden',
+            hasShadow: false,
+            show: false,
+          },
+        };
+      }
+
+      if (frameName === 'permission-helper-window') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 640,
+            height: 400,
+            minWidth: undefined,
+            minHeight: undefined,
+            resizable: false,
+            transparent: false,
+            maximizable: false,
+            minimizable: false,
+            backgroundColor: '#00000000',
+            show: false,
+          },
+        };
+      }
+
       shell.openExternal(url);
 
       return { action: 'deny' };
@@ -231,6 +344,87 @@ const createWindow = async () => {
       if (frameName === 'popup') {
         popupWindow = win;
         win.setWindowButtonVisibility(false);
+      }
+
+      if (frameName === 'screen-share-picker') {
+        win.on('ready-to-show', () => {
+          win.show();
+        });
+      }
+
+      if (frameName === 'screen-share-toolbar') {
+        win.setWindowButtonVisibility(false);
+        win.on('ready-to-show', () => {
+          win.show();
+        });
+      }
+
+      if (frameName === 'screen-share-overlay') {
+        win.setIgnoreMouseEvents(true);
+        win.setContentProtection(true);
+        win.setWindowButtonVisibility(false);
+
+        const { shareSourceId } = options as any;
+
+        const [sourceType, sourceId, sourceTab] = shareSourceId.split(':');
+        const sourceIdNumber = parseInt(sourceId, 10);
+
+        if (sourceType === 'screen') {
+          const sharedDisplay = screen
+            .getAllDisplays()
+            .find((d) => d.id === sourceIdNumber);
+
+          if (sharedDisplay) {
+            win.setPosition(sharedDisplay.bounds.x, sharedDisplay.bounds.y);
+          }
+
+          win.show();
+          win.setSimpleFullScreen(true);
+          win.setAlwaysOnTop(true, 'screen-saver');
+          win.setVisibleOnAllWorkspaces(true, {
+            visibleOnFullScreen: true,
+          });
+          win.on('close', () => {
+            win.hide();
+            win.setSimpleFullScreen(false);
+          });
+        } else {
+          win.setAlwaysOnTop(true, 'floating', -1);
+
+          onActiveWin = (aw) => {
+            if (aw && aw.id === sourceIdNumber) {
+              if (!win.isVisible()) {
+                win.show();
+              }
+
+              if (!_.isEqual(win.getBounds(), aw.bounds)) {
+                win.setBounds(aw.bounds);
+              }
+              if (!win.isAlwaysOnTop()) {
+                win.setAlwaysOnTop(true, 'floating', -1);
+              }
+            } else {
+              if (!win.isVisible()) {
+                return;
+              }
+
+              if (win.isAlwaysOnTop()) {
+                win.setAlwaysOnTop(false);
+                win.moveAbove(`window:${sourceIdNumber}:0`);
+              }
+            }
+          };
+
+          win.on('close', () => {
+            onActiveWin = undefined;
+          });
+        }
+      }
+
+      if (frameName === 'permission-helper-window') {
+        win.on('ready-to-show', () => {
+          win.show();
+        });
       }
     }
   );
@@ -351,3 +545,29 @@ ipcMain.on('showPopup', (e, bounds: Electron.Rectangle) => {
     });
   }
 });
+
+/**
+ * Screen sharing
+ */
+
+ipcMain.handle(
+  'getMediaAccessStatus',
+  (e, mediaType: 'microphone' | 'camera' | 'screen') => {
+    return systemPreferences.getMediaAccessStatus(mediaType);
+  }
+);
+
+ipcMain.handle('askForMediaAccess', (e, mediaType: 'microphone' | 'camera') => {
+  return systemPreferences.askForMediaAccess(mediaType);
+});
+
+ipcMain.on(
+  'openSystemPreferences',
+  (
+    e,
+    pane: 'universalaccess' | 'security' | 'speech' | 'sharing' | undefined,
+    section: string
+  ) => {
+    openSystemPreferences(pane, section as any);
+  }
+);

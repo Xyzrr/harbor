@@ -1,6 +1,5 @@
 import * as S from './VideoInputControl.styles';
 import React from 'react';
-import circleButtonWithOptions from '../masks/circleButtonWithOptions.svg';
 import HiddenSelect from '../../elements/HiddenSelect';
 import { LocalMediaContext } from '../../contexts/LocalMediaContext';
 import Icon from '../../elements/Icon';
