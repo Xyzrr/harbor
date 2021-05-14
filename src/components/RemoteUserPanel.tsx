@@ -64,6 +64,9 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
     );
     const volumeMultiplier = scale ** 2;
 
+    const width = Math.floor(240 * scale);
+    const height = Math.floor(135 * scale);
+
     React.useEffect(() => {
       if (videoRef.current && videoTrack) {
         videoRef.current.srcObject = new MediaStream([videoTrack]);
@@ -145,6 +148,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         backgrounded={
           localWhisperingTo != null && localWhisperingTo !== identity
         }
+        style={{ width, height }}
       >
         {player.videoInputOn && videoTrack && (
           <video

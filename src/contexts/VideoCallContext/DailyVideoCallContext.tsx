@@ -130,7 +130,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
         });
       }
     },
-    [callObject]
+    [callObject, spaceId]
   );
 
   const leave = React.useCallback(() => {

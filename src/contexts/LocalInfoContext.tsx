@@ -17,8 +17,6 @@ interface LocalInfoContextValue {
   appSharingOn?: boolean;
   setAppSharingOn(on: boolean): void;
   localApp?: AppInfo;
-  gotReady: boolean;
-  setGotReady(ready: boolean): void;
 }
 
 export const LocalInfoContext = React.createContext<LocalInfoContextValue>(
@@ -38,14 +36,13 @@ export const LocalInfoContextProvider: React.FC = ({ children }) => {
   const [localName, setLocalName] = React.useState(
     firebaseApp.auth().currentUser?.displayName || ''
   );
-  const [localGhost, setLocalGhost] = React.useState(true);
+  const [localGhost, setLocalGhost] = React.useState(false);
   const [localWhisperingTo, setLocalWhisperingTo] = React.useState<string>();
   const [localColor, setLocalColor] = React.useState<number>(
     () => _.sample(COLOR_OPTIONS) as number
   );
   console.log('COLOR', localColor);
   const [appSharingOn, setAppSharingOn] = React.useState(true);
-  const [gotReady, setGotReady] = React.useState(false);
   const localApp = useAppTracker();
 
   return (
@@ -63,8 +60,6 @@ export const LocalInfoContextProvider: React.FC = ({ children }) => {
         appSharingOn,
         setAppSharingOn,
         localApp,
-        gotReady,
-        setGotReady,
       }}
     >
       {children}

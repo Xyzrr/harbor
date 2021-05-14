@@ -137,7 +137,7 @@ const createWindow = async () => {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
-            width: 252,
+            width: 264,
             height: workareaBounds.height,
             alwaysOnTop: true,
             y: workareaBounds.y,
@@ -148,6 +148,7 @@ const createWindow = async () => {
             minimizable: false,
             focusable: false,
             closable: false,
+            transparent: true,
           },
         };
       }
