@@ -116,25 +116,37 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
 
   useKeyboardMovement(setLocalPlayer);
 
+  const centerX = localPlayer.x;
+  const centerY = localPlayer.y;
+
   return (
     <S.Wrapper className={className}>
-      {Object.entries(playerSummaries).map(([identity, player]) => {
-        return <MapPlayer key={identity} playerSummary={player} />;
-      })}
-      <MapPlayer playerSummary={localPlayer} self />
-      {Object.entries(worldObjects).map(([id, worldObject]) => {
-        if (worldObject.type === 'dot') {
-          return (
-            <S.Dot
-              key={id}
-              style={{
-                transform: `translate(${worldObject.x}px, ${worldObject.y}px)`,
-              }}
-            />
-          );
-        }
-        return null;
-      })}
+      <div
+        style={{
+          position: 'absolute',
+          transform: `translate(${-centerX}px, ${-centerY}px)`,
+          left: '50vw',
+          top: '50vh',
+        }}
+      >
+        {Object.entries(playerSummaries).map(([identity, player]) => {
+          return <MapPlayer key={identity} playerSummary={player} />;
+        })}
+        <MapPlayer playerSummary={localPlayer} self />
+        {Object.entries(worldObjects).map(([id, worldObject]) => {
+          if (worldObject.type === 'dot') {
+            return (
+              <S.Dot
+                key={id}
+                style={{
+                  transform: `translate(${worldObject.x}px, ${worldObject.y}px)`,
+                }}
+              />
+            );
+          }
+          return null;
+        })}
+      </div>
     </S.Wrapper>
   );
 };
