@@ -12,7 +12,7 @@ interface LocalInfoContextValue {
   setLocalGhost(ghost: boolean): void;
   localWhisperingTo?: string;
   setLocalWhisperingTo(identity: string | undefined): void;
-  localColor?: number;
+  localColor: number;
   setLocalColor(color: number): void;
   appSharingOn?: boolean;
   setAppSharingOn(on: boolean): void;
