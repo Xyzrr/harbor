@@ -13,6 +13,8 @@
     "start": "node -r @babel/register ./.erb/scripts/CheckPortInUse.js && yarn start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/BabelRegister ./src/main.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
+    "hack": "cross-env NO_AUDIO=1 LOCAL=1 yarn start",
+    "hack2": "cross-env PORT=4042 NO_AUDIO=1 LOCAL=1 yarn start",
     "test": "jest"
   },
   "lint-staged": {

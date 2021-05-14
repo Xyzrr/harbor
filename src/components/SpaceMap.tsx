@@ -15,6 +15,8 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
     [identity: string]: PlayerSummary;
   }>({});
 
+  const [worldObjects, setWorldObjects] = useImmer<{ [id: string]: any }>({});
+
   const { localIdentity, localColor, localName } = React.useContext(
     LocalInfoContext
   );
@@ -91,6 +93,27 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
     };
   }, [colyseusRoom]);
 
+  React.useEffect(() => {
+    if (!colyseusRoom) {
+      return;
+    }
+
+    colyseusRoom.state.worldObjects.onAdd = (worldObject: any, id: string) => {
+      setWorldObjects((draft) => {
+        draft[id] = worldObject;
+      });
+    };
+
+    colyseusRoom.state.worldObjects.onRemove = (
+      worldObject: any,
+      id: string
+    ) => {
+      setWorldObjects((draft) => {
+        delete draft[id];
+      });
+    };
+  }, [colyseusRoom]);
+
   useKeyboardMovement(setLocalPlayer);
 
   return (
@@ -99,6 +122,19 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
         return <MapPlayer key={identity} playerSummary={player} />;
       })}
       <MapPlayer playerSummary={localPlayer} self />
+      {Object.entries(worldObjects).map(([id, worldObject]) => {
+        if (worldObject.type === 'dot') {
+          return (
+            <S.Dot
+              key={id}
+              style={{
+                transform: `translate(${worldObject.x}px, ${worldObject.y}px)`,
+              }}
+            />
+          );
+        }
+        return null;
+      })}
     </S.Wrapper>
   );
 };
