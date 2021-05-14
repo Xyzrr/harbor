@@ -16,28 +16,28 @@ export const useKeyboardMovement = (
   const getDir = React.useCallback(() => {
     const commands = heldCommands.current;
     if (commands.right && commands.up) {
-      return Math.PI / 2;
-    }
-    if (commands.right && commands.down) {
-      return 0;
-    }
-    if (commands.left && commands.down) {
-      return -Math.PI / 2;
-    }
-    if (commands.left && commands.up) {
-      return -Math.PI;
-    }
-    if (commands.right) {
-      return Math.PI / 4;
-    }
-    if (commands.down) {
       return -Math.PI / 4;
     }
-    if (commands.left) {
+    if (commands.right && commands.down) {
+      return Math.PI / 4;
+    }
+    if (commands.left && commands.down) {
+      return (Math.PI * 3) / 4;
+    }
+    if (commands.left && commands.up) {
       return (Math.PI * 5) / 4;
     }
+    if (commands.right) {
+      return 0;
+    }
+    if (commands.down) {
+      return Math.PI / 2;
+    }
+    if (commands.left) {
+      return -Math.PI;
+    }
     if (commands.up) {
-      return (Math.PI * 3) / 4;
+      return -Math.PI / 2;
     }
     return null;
   }, []);
@@ -155,11 +155,15 @@ export const useKeyboardMovement = (
   );
 
   React.useEffect(() => {
-    window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('keyup', onKeyUp);
+    if (!newWindow) {
+      return;
+    }
+
+    newWindow.addEventListener('keydown', onKeyDown);
+    newWindow.addEventListener('keyup', onKeyUp);
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      window.removeEventListener('keyup', onKeyUp);
+      newWindow.removeEventListener('keydown', onKeyDown);
+      newWindow.removeEventListener('keyup', onKeyUp);
     };
   }, [onKeyUp, onKeyDown]);
 

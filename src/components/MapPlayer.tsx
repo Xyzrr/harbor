@@ -22,7 +22,7 @@ export interface MapPlayerProps {
 
 const MapPlayer: React.FC<MapPlayerProps> = ({ className, playerSummary }) => {
   return (
-    <S.Wrapper className={className}>
+    <S.Wrapper className={className} x={playerSummary.x} y={playerSummary.y}>
       <UserAvatar userName={playerSummary.name} />
     </S.Wrapper>
   );
