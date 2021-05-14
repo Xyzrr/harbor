@@ -168,8 +168,6 @@ export const useKeyboardMovement = (
   }, [onKeyUp, onKeyDown]);
 
   React.useEffect(() => {
-    console.log('the fuck');
-
     if (!colyseusRoom || !newWindow) {
       return;
     }
@@ -179,8 +177,6 @@ export const useKeyboardMovement = (
 
     const animate = () => {
       animationFrame = newWindow.requestAnimationFrame(animate);
-
-      console.log('held commands', heldCommands.current);
 
       const time = Date.now();
       const delta = (time - lastFrameTime) / 1000;
@@ -196,8 +192,6 @@ export const useKeyboardMovement = (
         });
       });
     };
-
-    console.log('requesting fuck');
 
     animationFrame = newWindow.requestAnimationFrame(animate);
 
