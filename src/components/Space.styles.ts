@@ -67,3 +67,12 @@ export const CaretOverlay = styled.div`
   top: 0;
   left: ${W / 2}px;
 `;
+
+export const BottomButtons = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 8px;
+`;
