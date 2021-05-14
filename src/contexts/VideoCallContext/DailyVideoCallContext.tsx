@@ -16,7 +16,6 @@ import {
   VideoCallContext,
   VideoCallDebugContext,
 } from './VideoCallContext';
-import { useParams } from 'react-router-dom';
 
 interface DailyVideoCallDebugContextProviderProps {
   callObject: any;
@@ -63,9 +62,14 @@ export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugCon
   );
 };
 
-export const DailyVideoCallContextProvider: React.FC = ({ children }) => {
-  const params = useParams() as any;
+interface DailyVideoCallContextProviderProps {
+  spaceId: string;
+}
 
+export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProviderProps> = ({
+  children,
+  spaceId,
+}) => {
   const callObject = React.useMemo(
     () =>
       DailyIframe.createCallObject({
@@ -126,7 +130,7 @@ export const DailyVideoCallContextProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [callObject]
+    [callObject, spaceId]
   );
 
   const leave = React.useCallback(() => {
@@ -138,9 +142,9 @@ export const DailyVideoCallContextProvider: React.FC = ({ children }) => {
       leave();
     } else {
       // TODO: enable multiple call rooms per space
-      join(params.spaceId);
+      join(spaceId);
     }
-  }, [localGhost, join, leave]);
+  }, [localGhost, join, leave, spaceId]);
 
   React.useEffect(() => {
     const events: DailyEvent[] = [
