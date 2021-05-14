@@ -8,6 +8,7 @@ import { LocalInfoContext } from '../contexts/LocalInfoContext';
 import { MAX_INTERACTION_DISTANCE } from '../constants';
 import RemoteUserPanel, { NearbyPlayer } from './RemoteUserPanel';
 import { VideoCallContext } from '../contexts/VideoCallContext/VideoCallContext';
+import RemoteScreenPanel from './RemoteScreenPanel';
 
 export interface PanelsProps {
   className?: string;
@@ -151,14 +152,23 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
           }
 
           return (
-            <RemoteUserPanel
-              key={identity}
-              identity={identity}
-              player={player}
-              videoTrack={participant.videoTrack}
-              audioTrack={participant.audioTrack}
-              onSetExpanded={() => {}}
-            />
+            <React.Fragment key={identity}>
+              <RemoteUserPanel
+                identity={identity}
+                player={player}
+                videoTrack={participant.videoTrack}
+                audioTrack={participant.audioTrack}
+                onSetExpanded={() => {}}
+              />
+              {player.screenShareOn && (
+                <RemoteScreenPanel
+                  screenOwnerIdentity={identity}
+                  player={player}
+                  videoTrack={participant.screenVideoTrack}
+                  onSetExpanded={() => {}}
+                />
+              )}
+            </React.Fragment>
           );
         })}
       </S.PanelsWrapper>

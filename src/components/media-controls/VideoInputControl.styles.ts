@@ -43,7 +43,6 @@ export const Wrapper = styled.div<{ color?: string }>`
   font-size: 12px;
   display: flex;
   overflow: hidden;
-  margin-right: 8px;
   ${(props) =>
     props.color === 'danger' &&
     css`

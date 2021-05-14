@@ -11,4 +11,5 @@ export const PanelsWrapper = styled.div`
   align-items: flex-end;
   min-height: 80px;
   -webkit-app-region: drag;
+  gap: 12px;
 `;
