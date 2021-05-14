@@ -98,7 +98,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
       {Object.entries(playerSummaries).map(([identity, player]) => {
         return <MapPlayer key={identity} playerSummary={player} />;
       })}
-      <MapPlayer playerSummary={localPlayer} />
+      <MapPlayer playerSummary={localPlayer} self />
     </S.Wrapper>
   );
 };
