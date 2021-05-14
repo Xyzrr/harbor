@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import os from 'os';
+import { DANGER } from '../constants';
 
 const W = 200;
 const H = 200;
@@ -73,6 +74,17 @@ export const CaretOverlay = styled.div`
   left: ${W / 2}px;
 `;
 
+export const TopButtons = styled.div`
+  position: absolute;
+  top: ${O};
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 8px;
+  gap: 8px;
+  justify-content: space-between;
+`;
+
 export const BottomButtons = styled.div`
   position: absolute;
   bottom: 0;
@@ -81,4 +93,30 @@ export const BottomButtons = styled.div`
   display: flex;
   padding: 8px;
   gap: 8px;
+`;
+
+export const ExitButton = styled.div`
+  user-select: none;
+  color: white;
+  background: rgba(100, 100, 100, 0.5);
+  border-radius: 8px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  overflow: hidden;
+
+  .material-icons-outlined {
+    opacity: 0.8;
+    transform: rotate(180deg);
+    font-size: 18px;
+  }
+
+  &:hover {
+    background: ${DANGER.toString()};
+    .material-icons-outlined {
+      opacity: 1;
+    }
+  }
 `;

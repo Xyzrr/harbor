@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import Icon from '../../elements/Icon';
+import { DANGER } from '../../constants';
 
 export const PrimaryButtonWrapper = styled.div`
   padding: 4px;
@@ -45,7 +46,7 @@ export const Wrapper = styled.div<{ color?: string }>`
   ${(props) =>
     props.color === 'danger' &&
     css`
-      background: rgb(255, 60, 60);
+      background: ${DANGER.toString()};
       ${PrimaryButtonWrapper} {
         .material-icons-outlined {
           opacity: 1;
