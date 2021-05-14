@@ -9,6 +9,7 @@ export const TrayPopoutWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
+  overflow: hidden;
   clip-path: path('
     M ${W / 2} 0
     L ${W / 2 + O} ${O}
