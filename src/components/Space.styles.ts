@@ -33,13 +33,14 @@ export const Overlay = styled.div`
   left: 0;
   border-radius: ${R}px;
   clip-path: path('
-    M ${W / 2} 10
-    L ${W / 2 + O} 0
+    M ${W / 2 + O + 1} 2
+    L ${W / 2 + O - 1} 0
     L ${W} 0
     L ${W} ${H}
     L 0 ${H}
     L 0 0
-    L ${W / 2 - O} 0
+    L ${W / 2 - O + 1} 0
+    L ${W / 2 - O - 1} 2
     z
   ');
   position: absolute;
