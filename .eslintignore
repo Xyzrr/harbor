@@ -37,6 +37,7 @@ src/main.prod.js
 src/main.prod.js.map
 src/renderer.prod.js
 src/renderer.prod.js.map
+src/active-win-loop.prod.js
 src/style.css
 src/style.css.map
 dist

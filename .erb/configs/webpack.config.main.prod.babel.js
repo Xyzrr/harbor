@@ -14,9 +14,12 @@ import DeleteSourceMaps from '../scripts/DeleteSourceMaps';
 CheckNodeEnv('production');
 DeleteSourceMaps();
 
-const devtoolsConfig = process.env.DEBUG_PROD === 'true' ? {
-  devtool: 'source-map'
-} : {};
+const devtoolsConfig =
+  process.env.DEBUG_PROD === 'true'
+    ? {
+        devtool: 'source-map',
+      }
+    : {};
 
 export default merge(baseConfig, {
   ...devtoolsConfig,
@@ -25,11 +28,14 @@ export default merge(baseConfig, {
 
   target: 'electron-main',
 
-  entry: './src/main.dev.ts',
+  entry: {
+    main: './src/main.dev.ts',
+    'active-win-loop': './src/active-win-loop.ts',
+  },
 
   output: {
     path: path.join(__dirname, '../../'),
-    filename: './src/main.prod.js',
+    filename: './src/[name].prod.js',
   },
 
   optimization: {
@@ -37,7 +43,7 @@ export default merge(baseConfig, {
       new TerserPlugin({
         parallel: true,
       }),
-    ]
+    ],
   },
 
   plugins: [

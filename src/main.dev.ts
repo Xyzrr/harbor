@@ -97,7 +97,7 @@ const activeWinLoop = fork(
   }
 );
 activeWinLoop.on('message', (aw: any) => {
-  console.log('active win', aw);
+  // console.log('active win', aw);
   onActiveWin?.(aw);
   mainWindow?.webContents.send('activeWin', aw);
 });
