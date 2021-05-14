@@ -2,6 +2,7 @@ import * as S from './MapPlayer.styles';
 import React from 'react';
 import UserAvatar from '../elements/UserAvatar';
 import Color from 'color';
+import { LocalInfoContext } from '../contexts/LocalInfoContext';
 
 export interface PlayerSummary {
   sid?: string;
@@ -20,12 +21,18 @@ export interface PlayerSummary {
 export interface MapPlayerProps {
   className?: string;
   playerSummary: PlayerSummary;
+  self?: boolean;
 }
 
-const MapPlayer: React.FC<MapPlayerProps> = ({ className, playerSummary }) => {
+const MapPlayer: React.FC<MapPlayerProps> = ({
+  className,
+  playerSummary,
+  self,
+}) => {
   return (
     <S.Wrapper
       className={className}
+      self={self}
       color={Color(playerSummary.color).toString()}
       style={{
         transform: `translate(${playerSummary.x}px, ${playerSummary.y}px)`,
