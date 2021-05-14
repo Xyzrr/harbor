@@ -5,6 +5,7 @@ export const LiquidUserAvatar = styled(UserAvatar)`
   width: 100%;
   height: 100%;
   font-size: 14px;
+  transition: transform 0.15s;
 `;
 
 export const Wrapper = styled.div<{ color: string }>`

@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  user-select: none;
   &:hover {
     filter: brightness(1.1);
   }

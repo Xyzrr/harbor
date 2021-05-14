@@ -189,6 +189,11 @@ export const useKeyboardMovement = (
       setPlayer((draft) => {
         draft.x += draft.speed * Math.cos(draft.dir) * delta;
         draft.y += draft.speed * Math.sin(draft.dir) * delta;
+
+        colyseusRoom?.send('updatePlayer', {
+          x: draft.x,
+          y: draft.y,
+        });
       });
     };
 
