@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import { DARK_BACKGROUND, LIGHT_BACKGROUND } from '../constants';
 
 export const Wrapper = styled.div`
-  background: ${LIGHT_BACKGROUND.toString()};
   height: 100vh;
   padding: 32px;
-  padding-bottom: 96px;
+  padding-bottom: 84px;
   color: white;
   -webkit-app-region: drag;
   display: flex;
@@ -17,6 +16,10 @@ export const Wrapper = styled.div`
 
 export const Logo = styled.h1`
   text-align: center;
+  margin-bottom: 32px;
+  font-weight: 100;
+  letter-spacing: 1px;
+  user-select: none;
 `;
 
 export const Buttons = styled.div`
@@ -35,7 +38,9 @@ export const LoginButton = styled(Button).attrs({
 
 export const GuestButton = styled(Button).attrs({
   variant: 'contained',
-})``;
+})`
+  font-size: 14px;
+`;
 
 export const LoaderWrapper = styled.div`
   height: 78px;

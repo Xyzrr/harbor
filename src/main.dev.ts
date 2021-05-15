@@ -118,6 +118,7 @@ const createWindow = async () => {
     width: 420,
     height: 420,
     frame: false,
+    vibrancy: 'dark',
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: 12, y: 24 },
     icon: getAssetPath('icon.png'),
@@ -167,6 +168,7 @@ const createWindow = async () => {
             width: 200,
             height: 212,
             titleBarStyle: 'hidden',
+            vibrancy: undefined,
           },
         };
       }
@@ -190,6 +192,7 @@ const createWindow = async () => {
             closable: false,
             transparent: true,
             hasShadow: false,
+            vibrancy: undefined,
           },
         };
       }
@@ -208,6 +211,7 @@ const createWindow = async () => {
             backgroundColor: '#00000000',
             show: false,
             titleBarStyle: 'hidden',
+            vibrancy: undefined,
           },
         };
       }
@@ -226,6 +230,7 @@ const createWindow = async () => {
             maximizable: false,
             minimizable: false,
             show: false,
+            vibrancy: undefined,
           },
         };
       }
@@ -249,6 +254,7 @@ const createWindow = async () => {
             alwaysOnTop: true,
             titleBarStyle: 'hidden',
             show: false,
+            vibrancy: undefined,
           },
         };
       }
@@ -263,6 +269,7 @@ const createWindow = async () => {
             titleBarStyle: 'hidden',
             hasShadow: false,
             show: false,
+            vibrancy: undefined,
           },
         };
       }
@@ -281,6 +288,7 @@ const createWindow = async () => {
             minimizable: false,
             backgroundColor: '#00000000',
             show: false,
+            vibrancy: undefined,
           },
         };
       }

@@ -87,7 +87,7 @@ export const Space = styled.div<{ active?: boolean }>`
   text-select: none;
   width: 180px;
   height: 180px;
-  background: ${LIGHT_BACKGROUND.lighten(0.2).toString()};
+  background: ${LIGHT_BACKGROUND.lighten(0.2).string()};
   border-radius: 8px;
   padding: 20px;
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1),

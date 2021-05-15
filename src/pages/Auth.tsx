@@ -60,9 +60,8 @@ const Auth: React.FC<AuthProps> = ({ className }) => {
         const credentialJSON = JSON.parse(
           decodeURIComponent(encodedCredential)
         );
-        const credential = firebase.auth.AuthCredential.fromJSON(
-          credentialJSON
-        );
+        const credential =
+          firebase.auth.AuthCredential.fromJSON(credentialJSON);
         console.log('TRYING CREDENTIAL:', credential);
 
         if (credential == null) {
@@ -142,7 +141,7 @@ const Auth: React.FC<AuthProps> = ({ className }) => {
               href="http://www.meet.harbor.chat"
               target="_blank"
             >
-              Sign in via browser
+              <strong>Sign in</strong>
             </S.LoginButton>
             <S.GuestButton
               variant="contained"

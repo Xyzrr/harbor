@@ -19,6 +19,7 @@ export const Wrapper = styled.a<{
   -webkit-app-region: no-drag;
   text-decoration: none;
   cursor: default;
+  user-select: none;
 
   &:hover {
     background: rgba(128, 128, 128, 0.1);
@@ -27,21 +28,39 @@ export const Wrapper = styled.a<{
   ${(props) => {
     const color =
       props.color === 'primary'
-        ? new Color('#1b95e0')
+        ? new Color('#000')
         : props.color === 'danger'
         ? new Color('rgb(234, 71, 81)')
-        : new Color('#aaa');
+        : new Color('#ddd');
 
     if (props.variant === 'contained') {
       let bgColor = color;
+      if (props.color === 'primary') {
+        bgColor = new Color('#fff');
+      }
+
       if (props.color === 'secondary') {
-        bgColor = new Color('#444');
+        bgColor = new Color('#444').alpha(0.3);
       }
 
       return css`
+        color: ${color.string()};
         background: ${bgColor.string()};
+        ${props.color === 'secondary' &&
+        css`
+          box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+            inset 1px 0 0 0 rgba(255, 255, 255, 0.04),
+            inset -1px 0 0 0 rgba(255, 255, 255, 0.04);
+        `}
         &:hover {
-          background: ${bgColor.lighten(0.1).string()};
+          background: ${props.color === 'primary'
+            ? bgColor.darken(0.1).string()
+            : bgColor.lighten(0.1).alpha(0.5).string()};
+        }
+        &:active {
+          background: ${props.color === 'primary'
+            ? bgColor.darken(0.2).string()
+            : bgColor.lighten(0.2).string()};
         }
       `;
     }
