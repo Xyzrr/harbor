@@ -21,6 +21,8 @@ export const Wrapper = styled.a<{
   text-decoration: none;
   cursor: default;
   user-select: none;
+  display: flex;
+  align-items: center;
 
   &:hover {
     background: rgba(128, 128, 128, 0.1);

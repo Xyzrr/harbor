@@ -148,10 +148,14 @@ const Home: React.FC<HomeProps> = ({ className }) => {
           </S.CreateSpace>
         </S.Spaces>
       </S.Wrapper>
-      {currentSpaceId != null && (
+      {spaces && currentSpaceId != null && (
         <NewWindow name="space">
           <Space
             key={currentSpaceId}
+            metadata={
+              spaces.find((s) => s.metadata.spaceId === currentSpaceId)
+                ?.metadata
+            }
             spaceId={currentSpaceId}
             onExit={() => {
               setCurrentSpaceId(null);
