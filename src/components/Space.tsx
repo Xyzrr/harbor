@@ -57,6 +57,7 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
             ) : (
               <GetReady
                 spaceMetadata={metadata}
+                onExit={onExit}
                 onReady={() => {
                   setReady(true);
                 }}

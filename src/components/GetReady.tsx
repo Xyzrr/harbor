@@ -5,16 +5,19 @@ import AudioInputControl from './media-controls/AudioInputControl';
 import VideoInputControl from './media-controls/VideoInputControl';
 import { LocalMediaContext } from '../contexts/LocalMediaContext';
 import Button from '../elements/Button';
+import Icon from '../elements/Icon';
 
 export interface GetReadyProps {
   className?: string;
   spaceMetadata: any;
+  onExit(): void;
   onReady(): void;
 }
 
 const GetReady: React.FC<GetReadyProps> = ({
   className,
   spaceMetadata,
+  onExit,
   onReady,
 }) => {
   const { localName, setLocalName } = React.useContext(LocalInfoContext);
@@ -31,7 +34,12 @@ const GetReady: React.FC<GetReadyProps> = ({
 
   return (
     <S.Wrapper className={className}>
-      <S.TopBar>{spaceMetadata.spaceName}</S.TopBar>
+      <S.TopBar>
+        <S.ExitButton onClick={onExit}>
+          <Icon name="arrow_back" />
+        </S.ExitButton>
+        {spaceMetadata.spaceName}
+      </S.TopBar>
       <S.VideoWrapper>
         {localVideoTrack && <video ref={videoRef} autoPlay />}
         <S.MediaButtons>
@@ -53,7 +61,12 @@ const GetReady: React.FC<GetReadyProps> = ({
             }
           }}
         />
-        <Button color="primary" variant="contained" onClick={onReady}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={onReady}
+          disabled={submitDisabled}
+        >
           Join
         </Button>
       </S.NameInputWrapper>

@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import os from 'os';
 import { DANGER } from '../constants';
 
-const W = 200;
-const H = 200;
+const W = 240;
+const H = 240;
 const R = os.version().startsWith('Darwin Kernel Version 20.') ? 10 : 6;
 const O = 12;
 
@@ -80,7 +80,7 @@ export const TopButtons = styled.div`
   left: 0;
   width: 100%;
   display: flex;
-  padding: 8px;
+  padding: 12px;
   gap: 8px;
   justify-content: space-between;
 `;
@@ -91,7 +91,7 @@ export const BottomButtons = styled.div`
   left: 0;
   width: 100%;
   display: flex;
-  padding: 8px;
+  padding: 12px;
   gap: 8px;
 `;
 

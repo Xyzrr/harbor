@@ -4,21 +4,40 @@ import { LIGHT_BACKGROUND, DARK_BACKGROUND, HIGHLIGHT } from '../constants';
 export const Wrapper = styled.div`
   height: 100%;
   background: ${LIGHT_BACKGROUND.string()};
-  padding: 44px 8px 8px 8px;
+  padding: 52px 12px 12px 12px;
+`;
+
+export const ExitButton = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+  padding: 4px;
+  border-radius: 4px;
+  .material-icons-outlined {
+    font-size: 18px;
+    opacity: 0.8;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    .material-icons-outlined {
+      opacity: 1;
+    }
+  }
 `;
 
 export const TopBar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
-  font-size: 12px;
+  color: #ddd;
+  font-size: 14px;
   left: 0;
   position: absolute;
   top: 12px;
   width: 100%;
   padding: 8px;
-  height: 32px;
+  height: 40px;
   user-select: none;
 `;
 
@@ -42,8 +61,8 @@ export const NameInputWrapper = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-  padding: 8px;
-  height: 48px;
+  padding: 12px;
+  height: 56px;
 `;
 
 export const VideoWrapper = styled.div`

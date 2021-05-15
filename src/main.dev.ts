@@ -165,8 +165,8 @@ const createWindow = async () => {
           overrideBrowserWindowOptions: {
             transparent: true,
             show: false,
-            width: 200,
-            height: 212,
+            width: 240,
+            height: 252,
             titleBarStyle: 'hidden',
             vibrancy: undefined,
           },
@@ -310,7 +310,7 @@ const createWindow = async () => {
           const trayBounds = tray.getBounds();
 
           win.setPosition(
-            trayBounds.x + trayBounds.width / 2 - 100,
+            trayBounds.x + trayBounds.width / 2 - 120,
             trayBounds.y + trayBounds.height + 4
           );
 
