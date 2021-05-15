@@ -11,6 +11,7 @@ import { AppInfo } from '../hooks/useAppTracker';
 import AppIndicator from './AppIndicator';
 import Loader from '../elements/Loader';
 import { LocalInfoContext } from '../contexts/LocalInfoContext';
+import { PlayerStateContext } from '../contexts/PlayerStateContext';
 
 export interface NearbyPlayer {
   sid?: string;
@@ -116,8 +117,10 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         });
     }, [localAudioOutputDeviceId]);
 
-    const { localIdentity, localWhisperingTo, setLocalWhisperingTo } =
-      React.useContext(LocalInfoContext);
+    const { localIdentity } = React.useContext(LocalInfoContext);
+
+    const { localWhisperingTo, setLocalWhisperingTo } =
+      React.useContext(PlayerStateContext);
 
     React.useEffect(() => {
       const audioEl = audioRef.current;
