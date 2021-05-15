@@ -40,6 +40,7 @@
       "index.html",
       "main.prod.js",
       "main.prod.js.map",
+      "active-win-loop.prod.js",
       "package.json"
     ],
     "afterSign": ".erb/scripts/Notarize.js",
@@ -90,6 +91,12 @@
       "provider": "github",
       "owner": "electron-react-boilerplate",
       "repo": "electron-react-boilerplate"
+    },
+    "protocols": {
+      "name": "harbor-protocol",
+      "schemes": [
+        "harbor"
+      ]
     }
   },
   "repository": {
