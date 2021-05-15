@@ -22,9 +22,11 @@ const GetReady: React.FC<GetReadyProps> = ({
 }) => {
   const { localName, setLocalName } = React.useContext(LocalInfoContext);
   const { localVideoTrack } = React.useContext(LocalMediaContext);
+  const [nameValue, setNameValue] = React.useState(localName);
+
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
-  const submitDisabled = localName === '';
+  const submitDisabled = !nameValue;
 
   React.useEffect(() => {
     if (videoRef.current && localVideoTrack) {
@@ -50,12 +52,13 @@ const GetReady: React.FC<GetReadyProps> = ({
       <S.NameInputWrapper>
         <S.Input
           autoFocus
-          value={localName}
+          value={nameValue}
           onChange={(e) => {
-            setLocalName(e.target.value);
+            setNameValue(e.target.value);
           }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !submitDisabled) {
+              setLocalName(nameValue);
               onReady();
               e.currentTarget.blur();
             }
@@ -64,7 +67,10 @@ const GetReady: React.FC<GetReadyProps> = ({
         <Button
           color="primary"
           variant="contained"
-          onClick={onReady}
+          onClick={() => {
+            setLocalName(nameValue);
+            onReady();
+          }}
           disabled={submitDisabled}
         >
           Join

@@ -26,48 +26,47 @@ export interface SpaceProps {
 
 const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
   const { user } = React.useContext(FirebaseContext);
+  const { localName } = React.useContext(LocalInfoContext);
 
-  const [ready, setReady] = React.useState(!user?.isAnonymous);
+  const [ready, setReady] = React.useState(!(user?.isAnonymous && !localName));
 
   return (
     <>
-      <LocalInfoContextProvider>
-        <LocalMediaContextProvider>
-          <S.TrayPopoutWrapper>
-            {ready ? (
-              <ColyseusContextProvider spaceId={spaceId}>
-                <DailyVideoCallContextProvider spaceId={spaceId}>
-                  <SpaceMap />
-                  <S.TopButtons>
-                    <S.ExitButton>
-                      <Icon name="logout" onClick={onExit} />
-                    </S.ExitButton>
-                  </S.TopButtons>
-                  <S.BottomButtons>
-                    <AudioInputControl />
-                    <VideoInputControl />
-                    <AudioOutputControl />
-                    <ScreenShareControl />
-                  </S.BottomButtons>
-                  <NewWindow name="panels">
-                    <Panels />
-                  </NewWindow>
-                </DailyVideoCallContextProvider>
-              </ColyseusContextProvider>
-            ) : (
-              <GetReady
-                spaceMetadata={metadata}
-                onExit={onExit}
-                onReady={() => {
-                  setReady(true);
-                }}
-              />
-            )}
-          </S.TrayPopoutWrapper>
-          <S.Overlay />
-          <S.CaretOverlay />
-        </LocalMediaContextProvider>
-      </LocalInfoContextProvider>
+      <LocalMediaContextProvider>
+        <S.TrayPopoutWrapper>
+          {ready ? (
+            <ColyseusContextProvider spaceId={spaceId}>
+              <DailyVideoCallContextProvider spaceId={spaceId}>
+                <SpaceMap />
+                <S.TopButtons>
+                  <S.ExitButton>
+                    <Icon name="logout" onClick={onExit} />
+                  </S.ExitButton>
+                </S.TopButtons>
+                <S.BottomButtons>
+                  <AudioInputControl />
+                  <VideoInputControl />
+                  <AudioOutputControl />
+                  <ScreenShareControl />
+                </S.BottomButtons>
+                <NewWindow name="panels">
+                  <Panels />
+                </NewWindow>
+              </DailyVideoCallContextProvider>
+            </ColyseusContextProvider>
+          ) : (
+            <GetReady
+              spaceMetadata={metadata}
+              onExit={onExit}
+              onReady={() => {
+                setReady(true);
+              }}
+            />
+          )}
+        </S.TrayPopoutWrapper>
+        <S.Overlay />
+        <S.CaretOverlay />
+      </LocalMediaContextProvider>
     </>
   );
 };

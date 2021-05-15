@@ -9,6 +9,7 @@ import { FirebaseContext } from '../contexts/FirebaseContext';
 import useSpaces from '../hooks/useSpaces';
 import Space from '../components/Space';
 import NewWindow from '../elements/NewWindow';
+import { LocalInfoContextProvider } from '../contexts/LocalInfoContext';
 
 export interface HomeProps {
   className?: string;
@@ -69,7 +70,7 @@ const Home: React.FC<HomeProps> = ({ className }) => {
   }
 
   return (
-    <>
+    <LocalInfoContextProvider user={user}>
       <S.Wrapper className={className}>
         <S.TopBar>
           <S.Heading>Spaces</S.Heading>
@@ -163,7 +164,7 @@ const Home: React.FC<HomeProps> = ({ className }) => {
           />
         </NewWindow>
       )}
-    </>
+    </LocalInfoContextProvider>
   );
 };
 

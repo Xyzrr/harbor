@@ -32,17 +32,17 @@ export const Wrapper = styled.div<{
       background: ${DARK_BACKGROUND.lighten(0.5).toString()};
     `}
     ${(props) =>
-      props.whisperTarget &&
-      css`
-        box-shadow: 0 0 0 2px rgba(255, 255, 0, 1);
-      `}
+    props.whisperTarget &&
+    css`
+      box-shadow: 0 0 0 2px rgba(255, 255, 0, 1);
+    `}
     ${(props) =>
-      props.backgrounded &&
-      css`
-        video {
-          opacity: 0.4;
-        }
-      `}
+    props.backgrounded &&
+    css`
+      video {
+        opacity: 0.4;
+      }
+    `}
 `;
 
 export const StatusIcons = styled.div`
