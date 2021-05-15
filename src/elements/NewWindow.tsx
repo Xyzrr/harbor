@@ -88,7 +88,7 @@ const NewWindow: React.FC<NewWindowProps> = ({
     <NewWindowContext.Provider value={newWindow}>
       <StyleSheetManager target={newWindow.document.body}>
         <StylesProvider jss={jss} sheetsManager={sheetsManager}>
-          {ReactDOM.createPortal(children, containerEl)}
+          <>{ReactDOM.createPortal(children, containerEl)}</>
         </StylesProvider>
       </StyleSheetManager>
     </NewWindowContext.Provider>

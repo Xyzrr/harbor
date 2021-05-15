@@ -1,6 +1,6 @@
 import * as S from './GetReady.styles';
 import React from 'react';
-import { LocalInfoContext } from '../contexts/LocalInfoContext';
+import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import AudioInputControl from './media-controls/AudioInputControl';
 import VideoInputControl from './media-controls/VideoInputControl';
 import { LocalMediaContext } from '../contexts/LocalMediaContext';
@@ -20,7 +20,7 @@ const GetReady: React.FC<GetReadyProps> = ({
   onExit,
   onReady,
 }) => {
-  const { localName, setLocalName } = React.useContext(LocalInfoContext);
+  const { localName, setLocalName } = React.useContext(UserSettingsContext);
   const { localVideoTrack } = React.useContext(LocalMediaContext);
   const [nameValue, setNameValue] = React.useState(localName);
 

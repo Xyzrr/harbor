@@ -6,7 +6,7 @@ import DailyIframe, {
   DailyMeetingState,
 } from '@daily-co/daily-js';
 import { LocalMediaContext } from '../LocalMediaContext';
-import { LocalInfoContext } from '../LocalInfoContext';
+import { UserSettingsContext } from '../UserSettingsContext';
 import { useImmer } from 'use-immer';
 import { ColyseusContext, ColyseusEvent } from '../ColyseusContext';
 import { MAX_INTERACTION_DISTANCE } from '../../constants';
@@ -91,7 +91,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       localScreenShareSourceId,
     } = React.useContext(LocalMediaContext);
 
-    const { localIdentity } = React.useContext(LocalInfoContext);
+    const { localIdentity } = React.useContext(UserSettingsContext);
 
     const [participants, setParticipants] = useImmer<{
       [identity: string]: VideoCallParticipant;

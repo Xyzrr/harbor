@@ -1,8 +1,6 @@
 import * as S from './MapPlayer.styles';
 import React from 'react';
-import UserAvatar from '../elements/UserAvatar';
 import Color from 'color';
-import { LocalInfoContext } from '../contexts/LocalInfoContext';
 
 export interface PlayerSummary {
   sid?: string;

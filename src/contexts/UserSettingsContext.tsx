@@ -2,7 +2,7 @@ import React from 'react';
 import { COLOR_OPTIONS } from '../constants';
 import * as _ from 'lodash';
 
-interface LocalInfoContextValue {
+interface UserSettingsContextValue {
   localIdentity: string;
   localName: string;
   setLocalName(name: string): void;
@@ -12,15 +12,14 @@ interface LocalInfoContextValue {
   setAppSharingOn(on: boolean): void;
 }
 
-export const LocalInfoContext = React.createContext<LocalInfoContextValue>(
-  null!
-);
+export const UserSettingsContext =
+  React.createContext<UserSettingsContextValue>(null!);
 
-interface LocalInfoContextProviderProps {
+interface UserSettingsContextProviderProps {
   user: firebase.default.User;
 }
 
-export const LocalInfoContextProvider: React.FC<LocalInfoContextProviderProps> =
+export const UserSettingsContextProvider: React.FC<UserSettingsContextProviderProps> =
   ({ children, user }) => {
     const localIdentity = user.uid;
 
@@ -31,7 +30,7 @@ export const LocalInfoContextProvider: React.FC<LocalInfoContextProviderProps> =
     const [appSharingOn, setAppSharingOn] = React.useState(true);
 
     return (
-      <LocalInfoContext.Provider
+      <UserSettingsContext.Provider
         value={{
           localIdentity,
           localName,
@@ -43,6 +42,6 @@ export const LocalInfoContextProvider: React.FC<LocalInfoContextProviderProps> =
         }}
       >
         {children}
-      </LocalInfoContext.Provider>
+      </UserSettingsContext.Provider>
     );
   };

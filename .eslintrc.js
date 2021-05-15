@@ -17,6 +17,7 @@ module.exports = {
     'no-console': 'off',
     'no-continue': 'off',
     'jsx-a11y/media-has-caption': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

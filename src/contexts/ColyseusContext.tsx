@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as Colyseus from 'colyseus.js';
 import { LocalMediaContext } from './LocalMediaContext';
-import { LocalInfoContext } from './LocalInfoContext';
+import { UserSettingsContext } from './UserSettingsContext';
 import { COLYSEUS_CLIENT, HOST } from '../constants';
 import { PlayerStateContext } from './PlayerStateContext';
 
@@ -65,7 +65,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     const [error, setError] = React.useState<string | null>(null);
 
     const { localIdentity, localName, localColor, appSharingOn } =
-      React.useContext(LocalInfoContext);
+      React.useContext(UserSettingsContext);
 
     const { localWhisperingTo, localApp } =
       React.useContext(PlayerStateContext);

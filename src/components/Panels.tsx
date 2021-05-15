@@ -4,7 +4,7 @@ import * as S from './Panels.styles';
 import NewWindow, { NewWindowContext } from '../elements/NewWindow';
 import { useImmer } from 'use-immer';
 import { ColyseusContext, ColyseusEvent } from '../contexts/ColyseusContext';
-import { LocalInfoContext } from '../contexts/LocalInfoContext';
+import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { MAX_INTERACTION_DISTANCE } from '../constants';
 import RemoteUserPanel, { NearbyPlayer } from './RemoteUserPanel';
 import { VideoCallContext } from '../contexts/VideoCallContext/VideoCallContext';
@@ -25,7 +25,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
     removeListener: removeColyseusListener,
   } = React.useContext(ColyseusContext);
 
-  const { localIdentity } = React.useContext(LocalInfoContext);
+  const { localIdentity } = React.useContext(UserSettingsContext);
 
   React.useEffect(() => {
     const onMousePosition = (

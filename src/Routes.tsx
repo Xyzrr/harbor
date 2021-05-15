@@ -5,7 +5,6 @@ import * as S from './Routes.styles';
 import Auth from './pages/Auth';
 import { FirebaseContextProvider } from './contexts/FirebaseContext';
 import Home from './pages/Home';
-import { LocalInfoContextProvider } from './contexts/LocalInfoContext';
 
 const Routes: React.FC = () => {
   return (

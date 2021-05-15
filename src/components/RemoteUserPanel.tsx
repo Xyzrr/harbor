@@ -10,7 +10,7 @@ import { MAX_INTERACTION_DISTANCE } from '../constants';
 import { AppInfo } from '../hooks/useAppTracker';
 import AppIndicator from './AppIndicator';
 import Loader from '../elements/Loader';
-import { LocalInfoContext } from '../contexts/LocalInfoContext';
+import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { PlayerStateContext } from '../contexts/PlayerStateContext';
 
 export interface NearbyPlayer {
@@ -117,7 +117,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         });
     }, [localAudioOutputDeviceId]);
 
-    const { localIdentity } = React.useContext(LocalInfoContext);
+    const { localIdentity } = React.useContext(UserSettingsContext);
 
     const { localWhisperingTo, setLocalWhisperingTo } =
       React.useContext(PlayerStateContext);

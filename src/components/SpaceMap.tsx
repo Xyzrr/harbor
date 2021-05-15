@@ -3,7 +3,7 @@ import React from 'react';
 import { ColyseusContext } from '../contexts/ColyseusContext';
 import { useImmer } from 'use-immer';
 import MapPlayer, { PlayerSummary } from './MapPlayer';
-import { LocalInfoContext } from '../contexts/LocalInfoContext';
+import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { useKeyboardMovement } from '../hooks/useKeyboardMovement';
 import MapWorldObjects from './MapWorldObjects';
 
@@ -17,7 +17,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   }>({});
 
   const { localIdentity, localColor, localName } =
-    React.useContext(LocalInfoContext);
+    React.useContext(UserSettingsContext);
 
   const [localPlayer, setLocalPlayer] = useImmer<PlayerSummary>({
     name: localName,

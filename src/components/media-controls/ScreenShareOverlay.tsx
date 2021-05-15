@@ -3,7 +3,7 @@ import React from 'react';
 import NewWindow from '../../elements/NewWindow';
 import CursorsOverlay from './CursorsOverlay';
 import { LocalMediaContext } from '../../contexts/LocalMediaContext';
-import { LocalInfoContext } from '../../contexts/LocalInfoContext';
+import { UserSettingsContext } from '../../contexts/UserSettingsContext';
 
 export interface ScreenShareOverlayProps {
   className?: string;
@@ -12,7 +12,7 @@ export interface ScreenShareOverlayProps {
 const ScreenShareOverlay: React.FC<ScreenShareOverlayProps> = React.memo(
   function ScreenShareOverlay({ className }) {
     const { localScreenShareSourceId } = React.useContext(LocalMediaContext);
-    const { localIdentity } = React.useContext(LocalInfoContext);
+    const { localIdentity } = React.useContext(UserSettingsContext);
 
     return (
       <NewWindow
