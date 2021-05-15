@@ -13,7 +13,9 @@ exports.default = async function notarizeMacos(context) {
   }
 
   if (!('APPLE_ID' in process.env && 'APPLE_ID_PASS' in process.env)) {
-    console.warn('Skipping notarizing step. APPLE_ID and APPLE_ID_PASS env variables must be set');
+    console.warn(
+      'Skipping notarizing step. APPLE_ID and APPLE_ID_PASS env variables must be set'
+    );
     return;
   }
 
@@ -24,5 +26,6 @@ exports.default = async function notarizeMacos(context) {
     appPath: `${appOutDir}/${appName}.app`,
     appleId: process.env.APPLE_ID,
     appleIdPassword: process.env.APPLE_ID_PASS,
+    ascProvider: process.env.APPLE_PROVIDER_SHORTNAME,
   });
 };
