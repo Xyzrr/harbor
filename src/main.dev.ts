@@ -254,7 +254,6 @@ const createWindow = async () => {
             alwaysOnTop: true,
             titleBarStyle: 'hidden',
             show: false,
-            vibrancy: undefined,
           },
         };
       }

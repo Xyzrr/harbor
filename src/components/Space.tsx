@@ -27,12 +27,12 @@ const Space: React.FC<SpaceProps> = ({ className, spaceId, onExit }) => {
           <ColyseusContextProvider spaceId={spaceId}>
             <DailyVideoCallContextProvider spaceId={spaceId}>
               <S.TrayPopoutWrapper>
+                <SpaceMap />
                 <S.TopButtons>
                   <S.ExitButton>
                     <Icon name="logout" onClick={onExit} />
                   </S.ExitButton>
                 </S.TopButtons>
-                <SpaceMap />
                 <S.BottomButtons>
                   <AudioInputControl />
                   <VideoInputControl />

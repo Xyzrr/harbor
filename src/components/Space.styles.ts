@@ -98,7 +98,8 @@ export const BottomButtons = styled.div`
 export const ExitButton = styled.div`
   user-select: none;
   color: white;
-  background: rgba(100, 100, 100, 0.5);
+  background: rgba(100, 100, 100, 0.4);
+  backdrop-filter: blur(4px);
   border-radius: 8px;
   font-size: 12px;
   display: flex;

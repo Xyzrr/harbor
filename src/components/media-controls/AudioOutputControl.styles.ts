@@ -13,7 +13,7 @@ export const PrimaryButtonWrapper = styled.div`
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
   }
 `;
 
@@ -38,7 +38,8 @@ export const CaretButton = styled(Icon).attrs({ name: 'expand_more' })`
 export const Wrapper = styled.div<{ color?: string }>`
   user-select: none;
   color: white;
-  background: rgba(100, 100, 100, 0.5);
+  background: rgba(100, 100, 100, 0.4);
+  backdrop-filter: blur(4px);
   border-radius: 8px;
   font-size: 12px;
   display: flex;

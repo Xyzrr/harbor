@@ -17,9 +17,8 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
 
   const [worldObjects, setWorldObjects] = useImmer<{ [id: string]: any }>({});
 
-  const { localIdentity, localColor, localName } = React.useContext(
-    LocalInfoContext
-  );
+  const { localIdentity, localColor, localName } =
+    React.useContext(LocalInfoContext);
 
   const [localPlayer, setLocalPlayer] = useImmer<PlayerSummary>({
     name: localName,
@@ -129,10 +128,6 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
           top: '50vh',
         }}
       >
-        {Object.entries(playerSummaries).map(([identity, player]) => {
-          return <MapPlayer key={identity} playerSummary={player} />;
-        })}
-        <MapPlayer playerSummary={localPlayer} self />
         {Object.entries(worldObjects).map(([id, worldObject]) => {
           if (worldObject.type === 'dot') {
             return (
@@ -146,6 +141,10 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
           }
           return null;
         })}
+        {Object.entries(playerSummaries).map(([identity, player]) => {
+          return <MapPlayer key={identity} playerSummary={player} />;
+        })}
+        <MapPlayer playerSummary={localPlayer} self />
       </div>
     </S.Wrapper>
   );
