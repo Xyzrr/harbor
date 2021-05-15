@@ -64,8 +64,13 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     const [sessionId, setSessionId] = React.useState<string | null>(null);
     const [error, setError] = React.useState<string | null>(null);
 
-    const { localIdentity, localName, localColor, appSharingOn } =
-      React.useContext(UserSettingsContext);
+    const {
+      localIdentity,
+      localName,
+      localPhotoUrl,
+      localColor,
+      appSharingOn,
+    } = React.useContext(UserSettingsContext);
 
     const { localWhisperingTo, localApp } =
       React.useContext(PlayerStateContext);
@@ -250,6 +255,10 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     React.useEffect(() => {
       room?.send('updatePlayer', { name: localName });
     }, [localName]);
+
+    React.useEffect(() => {
+      room?.send('updatePlayer', { photoUrl: localPhotoUrl });
+    }, [localPhotoUrl]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { whisperingTo: localWhisperingTo });

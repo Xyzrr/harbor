@@ -23,6 +23,7 @@ export const Wrapper = styled.a<{
   user-select: none;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   &:hover {
     background: rgba(128, 128, 128, 0.1);

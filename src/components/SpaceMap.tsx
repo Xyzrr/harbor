@@ -16,11 +16,12 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
     [identity: string]: PlayerSummary;
   }>({});
 
-  const { localIdentity, localColor, localName } =
+  const { localIdentity, localColor, localName, localPhotoUrl } =
     React.useContext(UserSettingsContext);
 
   const [localPlayer, setLocalPlayer] = useImmer<PlayerSummary>({
     name: localName,
+    photoUrl: localPhotoUrl,
     color: localColor,
     x: 0,
     y: 0,
@@ -43,6 +44,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
       setPlayerSummaries((draft) => {
         draft[identity] = {
           name: player.name,
+          photoUrl: player.photoUrl,
           color: player.color,
           x: player.x,
           y: player.y,

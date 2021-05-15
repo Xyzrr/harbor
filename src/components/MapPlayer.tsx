@@ -5,6 +5,7 @@ import Color from 'color';
 export interface PlayerSummary {
   sid?: string;
   name: string;
+  photoUrl: string | null;
   color: number;
   x: number;
   y: number;
@@ -36,7 +37,10 @@ const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
         transform: `translate(${playerSummary.x}px, ${playerSummary.y}px)`,
       }}
     >
-      <S.LiquidUserAvatar userName={playerSummary.name} />
+      <S.LiquidUserAvatar
+        userName={playerSummary.name}
+        photoUrl={playerSummary.photoUrl}
+      />
     </S.Wrapper>
   );
 });
