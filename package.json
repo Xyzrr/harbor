@@ -32,8 +32,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Harbor",
+    "appId": "chat.harbor.Harbor",
     "files": [
       "dist/",
       "node_modules/",
@@ -92,8 +92,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "Xyzrr",
+      "repo": "harbor"
     },
     "protocols": {
       "name": "harbor-protocol",
