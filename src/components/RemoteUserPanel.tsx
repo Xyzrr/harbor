@@ -54,9 +54,8 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
     const recentlyLoudTimerRef = React.useRef<number | null>(null);
     const [videoStreaming, setVideoStreaming] = React.useState(false);
 
-    const { localAudioOutputDeviceId, localAudioOutputOn } = useContext(
-      LocalMediaContext
-    );
+    const { localAudioOutputDeviceId, localAudioOutputOn } =
+      useContext(LocalMediaContext);
 
     const scale = Math.min(
       1,
@@ -117,11 +116,8 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         });
     }, [localAudioOutputDeviceId]);
 
-    const {
-      localIdentity,
-      localWhisperingTo,
-      setLocalWhisperingTo,
-    } = React.useContext(LocalInfoContext);
+    const { localIdentity, localWhisperingTo, setLocalWhisperingTo } =
+      React.useContext(LocalInfoContext);
 
     React.useEffect(() => {
       const audioEl = audioRef.current;
@@ -134,7 +130,13 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         vol = 0;
       }
       audioEl.volume = vol;
-    }, [volumeMultiplier, localAudioOutputOn, player]);
+    }, [
+      volumeMultiplier,
+      localAudioOutputOn,
+      player,
+      audioTrack,
+      localIdentity,
+    ]);
 
     const mouseIsIdle = useMouseIsIdle({ containerRef: wrapperRef });
 

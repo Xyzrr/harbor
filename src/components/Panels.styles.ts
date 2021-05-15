@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   height: 100vh;
-  padding: 12px;
+  padding: 16px;
 `;
 
 export const PanelsWrapper = styled.div`
