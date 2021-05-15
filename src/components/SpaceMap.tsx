@@ -6,6 +6,7 @@ import MapPlayer, { PlayerSummary } from './MapPlayer';
 import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { useKeyboardMovement } from '../hooks/useKeyboardMovement';
 import MapWorldObjects from './MapWorldObjects';
+import Loader from '../elements/Loader';
 
 export interface SpaceMapProps {
   className?: string;
@@ -99,6 +100,14 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   }, [colyseusRoom]);
 
   useKeyboardMovement(setLocalPlayer);
+
+  if (!colyseusRoom) {
+    return (
+      <S.Wrapper className={className}>
+        <Loader />
+      </S.Wrapper>
+    );
+  }
 
   const centerX = localPlayer.x;
   const centerY = localPlayer.y;
