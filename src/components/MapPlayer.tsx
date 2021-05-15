@@ -24,11 +24,11 @@ export interface MapPlayerProps {
   self?: boolean;
 }
 
-const MapPlayer: React.FC<MapPlayerProps> = ({
+const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
   className,
   playerSummary,
   self,
-}) => {
+}) {
   return (
     <S.Wrapper
       className={className}
@@ -41,6 +41,6 @@ const MapPlayer: React.FC<MapPlayerProps> = ({
       <S.LiquidUserAvatar userName={playerSummary.name} />
     </S.Wrapper>
   );
-};
+});
 
 export default MapPlayer;

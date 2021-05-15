@@ -5,6 +5,7 @@ import { useImmer } from 'use-immer';
 import MapPlayer, { PlayerSummary } from './MapPlayer';
 import { LocalInfoContext } from '../contexts/LocalInfoContext';
 import { useKeyboardMovement } from '../hooks/useKeyboardMovement';
+import MapWorldObjects from './MapWorldObjects';
 
 export interface SpaceMapProps {
   className?: string;
@@ -14,8 +15,6 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   const [playerSummaries, setPlayerSummaries] = useImmer<{
     [identity: string]: PlayerSummary;
   }>({});
-
-  const [worldObjects, setWorldObjects] = useImmer<{ [id: string]: any }>({});
 
   const { localIdentity, localColor, localName } =
     React.useContext(LocalInfoContext);
@@ -92,27 +91,6 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
     };
   }, [colyseusRoom]);
 
-  React.useEffect(() => {
-    if (!colyseusRoom) {
-      return;
-    }
-
-    colyseusRoom.state.worldObjects.onAdd = (worldObject: any, id: string) => {
-      setWorldObjects((draft) => {
-        draft[id] = worldObject;
-      });
-    };
-
-    colyseusRoom.state.worldObjects.onRemove = (
-      worldObject: any,
-      id: string
-    ) => {
-      setWorldObjects((draft) => {
-        delete draft[id];
-      });
-    };
-  }, [colyseusRoom]);
-
   useKeyboardMovement(setLocalPlayer);
 
   const centerX = localPlayer.x;
@@ -128,19 +106,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
           top: '50vh',
         }}
       >
-        {Object.entries(worldObjects).map(([id, worldObject]) => {
-          if (worldObject.type === 'dot') {
-            return (
-              <S.Dot
-                key={id}
-                style={{
-                  transform: `translate(${worldObject.x}px, ${worldObject.y}px)`,
-                }}
-              />
-            );
-          }
-          return null;
-        })}
+        <MapWorldObjects />
         {Object.entries(playerSummaries).map(([identity, player]) => {
           return <MapPlayer key={identity} playerSummary={player} />;
         })}
