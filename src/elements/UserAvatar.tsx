@@ -4,7 +4,7 @@ import { initials } from '../util/text';
 
 export interface UserAvatarProps {
   className?: string;
-  photoUrl?: string;
+  photoUrl?: string | null;
   userName?: string;
 }
 

@@ -38,6 +38,11 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   React.useEffect(() => {
     const onPlayerAdded = ({ identity, player }: any) => {
       if (identity === localIdentity) {
+        // Starting location is determined by server
+        setLocalPlayer((draft) => {
+          draft.x = player.x;
+          draft.y = player.y;
+        });
         return;
       }
 
