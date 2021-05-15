@@ -10,6 +10,7 @@ import useSpaces from '../hooks/useSpaces';
 import Space from '../components/Space';
 import NewWindow from '../elements/NewWindow';
 import { UserSettingsContextProvider } from '../contexts/UserSettingsContext';
+import { ColyseusContext } from '../contexts/ColyseusContext';
 
 export interface HomeProps {
   className?: string;

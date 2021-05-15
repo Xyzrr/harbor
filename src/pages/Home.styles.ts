@@ -5,7 +5,7 @@ import UserAvatar from '../elements/UserAvatar';
 export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  background: ${LIGHT_BACKGROUND.toString()};
+  background: ${LIGHT_BACKGROUND.string()};
 `;
 
 export const TopBar = styled.div`
@@ -94,7 +94,7 @@ export const Space = styled.div<{ active?: boolean }>`
     inset 1px 0 0 0 rgba(255, 255, 255, 0.04),
     inset -1px 0 0 0 rgba(255, 255, 255, 0.04);
   &:hover {
-    background: ${LIGHT_BACKGROUND.lighten(0.4).toString()};
+    background: ${LIGHT_BACKGROUND.lighten(0.4).string()};
   }
   margin-right: 12px;
   margin-bottom: 12px;
@@ -102,7 +102,7 @@ export const Space = styled.div<{ active?: boolean }>`
     props.active &&
     css`
       && {
-        background: ${LIGHT_BACKGROUND.darken(0.2).toString()};
+        background: ${LIGHT_BACKGROUND.darken(0.2).string()};
         box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.1),
           inset 1px 0 0 0 rgba(255, 255, 255, 0.04),
           inset -1px 0 0 0 rgba(255, 255, 255, 0.04);
@@ -119,7 +119,7 @@ export const SpaceName = styled.h2`
 `;
 
 export const GreenDot = styled.div`
-  background: ${HIGHLIGHT.toString()};
+  background: ${HIGHLIGHT.string()};
   width: 6px;
   height: 6px;
   border-radius: 50%;

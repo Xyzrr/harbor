@@ -32,7 +32,7 @@ const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
     <S.Wrapper
       className={className}
       self={self}
-      color={Color(playerSummary.color).toString()}
+      color={Color(playerSummary.color).string()}
       style={{
         transform: `translate(${playerSummary.x}px, ${playerSummary.y}px)`,
       }}

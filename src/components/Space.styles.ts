@@ -115,7 +115,7 @@ export const ExitButton = styled.div`
   }
 
   &:hover {
-    background: ${DANGER.toString()};
+    background: ${DANGER.string()};
     .material-icons-outlined {
       opacity: 1;
     }

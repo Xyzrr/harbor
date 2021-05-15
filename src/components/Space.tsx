@@ -5,7 +5,10 @@ import Panels from './Panels';
 import SpaceMap from './SpaceMap';
 import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { LocalMediaContextProvider } from '../contexts/LocalMediaContext';
-import { ColyseusContextProvider } from '../contexts/ColyseusContext';
+import {
+  ColyseusContextProvider,
+  ColyseusContext,
+} from '../contexts/ColyseusContext';
 import { DailyVideoCallContextProvider } from '../contexts/VideoCallContext/DailyVideoCallContext';
 import Icon from '../elements/Icon';
 import AudioInputControl from './media-controls/AudioInputControl';

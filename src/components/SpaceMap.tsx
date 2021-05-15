@@ -34,6 +34,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
     room: colyseusRoom,
     addListener: addColyseusListener,
     removeListener: removeColyseusListener,
+    error: colyseusError,
   } = React.useContext(ColyseusContext);
 
   React.useEffect(() => {
@@ -114,6 +115,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
 
   return (
     <S.Wrapper className={className}>
+      {colyseusError && <S.ColyseusError>{colyseusError}</S.ColyseusError>}
       <div
         style={{
           position: 'absolute',

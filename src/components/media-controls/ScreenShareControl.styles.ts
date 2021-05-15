@@ -29,7 +29,7 @@ export const Wrapper = styled.div<{ color?: string }>`
   ${(props) =>
     props.color === 'highlight' &&
     css`
-      background: ${HIGHLIGHT.toString()};
+      background: ${HIGHLIGHT.string()};
       ${PrimaryButtonWrapper} {
         .material-icons-outlined {
           opacity: 1;

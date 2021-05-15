@@ -15,7 +15,7 @@ export const Wrapper = styled.div<{
   box-shadow: 0 0 0 2px rgba(0, 255, 0, 0);
   width: 100%;
   height: 100%;
-  background: ${DARK_BACKGROUND.toString()};
+  background: ${DARK_BACKGROUND.string()};
   video {
     display: block;
     width: 100%;
@@ -29,7 +29,7 @@ export const Wrapper = styled.div<{
   ${(props) =>
     props.noVideo &&
     css`
-      background: ${DARK_BACKGROUND.lighten(0.5).toString()};
+      background: ${DARK_BACKGROUND.lighten(0.5).string()};
     `}
     ${(props) =>
     props.whisperTarget &&

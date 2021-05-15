@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   box-shadow: 0 0 0 2px rgba(0, 255, 0, 0);
   width: 100%;
   height: 100%;
-  background: ${DARK_BACKGROUND.toString()};
+  background: ${DARK_BACKGROUND.string()};
   video {
     display: block;
     width: 100%;

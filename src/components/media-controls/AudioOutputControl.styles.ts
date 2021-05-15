@@ -47,7 +47,7 @@ export const Wrapper = styled.div<{ color?: string }>`
   ${(props) =>
     props.color === 'danger' &&
     css`
-      background: ${DANGER.toString()};
+      background: ${DANGER.string()};
       ${PrimaryButtonWrapper} {
         .material-icons-outlined {
           opacity: 1;
