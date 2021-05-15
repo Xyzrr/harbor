@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import Color from 'color';
+import { DANGER } from '../constants';
 
 export const Wrapper = styled.a<{
   variant?: string;
@@ -26,11 +27,11 @@ export const Wrapper = styled.a<{
   }
 
   ${(props) => {
-    const color =
+    let color =
       props.color === 'primary'
         ? new Color('#000')
         : props.color === 'danger'
-        ? new Color('rgb(234, 71, 81)')
+        ? DANGER
         : new Color('#ddd');
 
     if (props.variant === 'contained') {
@@ -41,6 +42,11 @@ export const Wrapper = styled.a<{
 
       if (props.color === 'secondary') {
         bgColor = new Color('#444').alpha(0.3);
+      }
+
+      if (props.color === 'danger') {
+        color = new Color('#fff');
+        bgColor = DANGER;
       }
 
       return css`
@@ -55,11 +61,15 @@ export const Wrapper = styled.a<{
         &:hover {
           background: ${props.color === 'primary'
             ? bgColor.darken(0.1).string()
-            : bgColor.lighten(0.1).alpha(0.5).string()};
+            : props.color === 'secondary'
+            ? bgColor.lighten(0.1).alpha(0.5).string()
+            : bgColor.lighten(0.1).string()};
         }
         &:active {
           background: ${props.color === 'primary'
             ? bgColor.darken(0.2).string()
+            : props.color === 'secondary'
+            ? bgColor.lighten(0.2).alpha(0.5).string()
             : bgColor.lighten(0.2).string()};
         }
       `;
