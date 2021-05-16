@@ -11,4 +11,7 @@ export const GlobalStyles = createGlobalStyle`
     strong {
       font-weight: 600;
     }
+    .MuiButtonBase-root {
+      cursor: default !important;
+    }
 `;

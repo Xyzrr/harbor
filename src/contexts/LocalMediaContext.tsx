@@ -1,4 +1,5 @@
 import React from 'react';
+import { ipcRenderer } from 'electron';
 
 interface LocalMediaContextValue {
   localVideoInputOn: boolean;
@@ -93,6 +94,13 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       setLocalAudioTrack(undefined);
     }
   }, [localAudioInputOn, localAudioInputDeviceId]);
+
+  React.useEffect(() => {
+    ipcRenderer.send('media-settings', {
+      localAudioInputOn,
+      localVideoInputOn,
+    });
+  }, [localAudioInputOn, localVideoInputOn]);
 
   return (
     <LocalMediaContext.Provider

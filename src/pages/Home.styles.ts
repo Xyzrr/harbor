@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
-import { DARK_BACKGROUND, HIGHLIGHT, LIGHT_BACKGROUND } from '../constants';
-import UserAvatar from '../elements/UserAvatar';
+import { HIGHLIGHT, LIGHT_BACKGROUND } from '../constants';
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -29,45 +28,6 @@ export const Heading = styled.h1`
   font-size: 14px;
   text-align: center;
   font-weight: 500;
-`;
-
-export const UserName = styled.div`
-  font-size: 13px;
-  color: #777;
-`;
-
-export const UserInfo = styled.div<{ open?: boolean }>`
-  margin-right: 8px;
-  display: flex;
-  align-items: center;
-  padding: 4px;
-  padding-left: 10px;
-  border-radius: 16px;
-  -webkit-app-region: no-drag;
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    ${UserName} {
-      color: #ddd;
-    }
-  }
-  ${(props) =>
-    props.open &&
-    css`
-      background: rgba(255, 255, 255, 0.1);
-      ${UserName} {
-        color: #ddd;
-      }
-    `}
-`;
-
-export const UserPhoto = styled.img`
-  border-radius: 50%;
-  width: 24px;
-  margin-left: 8px;
-`;
-
-export const StyledUserAvatar = styled(UserAvatar)`
-  margin-left: 8px;
 `;
 
 export const Spaces = styled.div`

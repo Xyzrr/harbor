@@ -3,14 +3,12 @@ import React from 'react';
 import { ipcRenderer } from 'electron';
 import { Redirect, useHistory } from 'react-router-dom';
 import firebase from 'firebase';
-import PopupTrigger from '../elements/PopupTrigger';
-import { MenuItem, MenuList, Paper } from '@material-ui/core';
 import { FirebaseContext } from '../contexts/FirebaseContext';
 import useSpaces from '../hooks/useSpaces';
 import Space from '../components/Space';
 import NewWindow from '../elements/NewWindow';
 import { UserSettingsContextProvider } from '../contexts/UserSettingsContext';
-import { ColyseusContext } from '../contexts/ColyseusContext';
+import UserDropdown from '../components/UserDropdown';
 
 export interface HomeProps {
   className?: string;
@@ -86,40 +84,7 @@ const Home: React.FC<HomeProps> = ({ className }) => {
               Sign in
             </S.GuestSignInButton>
           ) : (
-            <PopupTrigger
-              anchorOrigin="bottom right"
-              transformOrigin="top right"
-              popupContent={() => {
-                return (
-                  <Paper>
-                    <MenuList dense variant="menu">
-                      <MenuItem>Profile</MenuItem>
-                      <MenuItem>Account settings</MenuItem>
-                      <MenuItem
-                        onClick={async () => {
-                          await firebaseApp.auth().signOut();
-                          history.push('/');
-                        }}
-                      >
-                        Sign out
-                      </MenuItem>
-                    </MenuList>
-                  </Paper>
-                );
-              }}
-            >
-              {({ anchorAttributes, open }) => {
-                return (
-                  <S.UserInfo {...anchorAttributes} open={open}>
-                    <S.UserName>{user.displayName}</S.UserName>
-                    <S.StyledUserAvatar
-                      photoUrl={user.photoURL || undefined}
-                      userName={user.displayName || undefined}
-                    />
-                  </S.UserInfo>
-                );
-              }}
-            </PopupTrigger>
+            <UserDropdown />
           )}
         </S.TopBar>
         <S.Spaces>

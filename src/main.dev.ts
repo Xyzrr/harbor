@@ -102,8 +102,6 @@ activeWinLoop.on('message', (aw: any) => {
   mainWindow?.webContents.send('activeWin', aw);
 });
 
-const createTray = async () => {};
-
 const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -292,6 +290,19 @@ const createWindow = async () => {
         };
       }
 
+      if (frameName === 'profile') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 640,
+            height: 400,
+            minWidth: undefined,
+            minHeight: undefined,
+            show: false,
+          },
+        };
+      }
+
       shell.openExternal(url);
 
       return { action: 'deny' };
@@ -304,7 +315,7 @@ const createWindow = async () => {
       if (frameName === 'space') {
         spaceWindow = win;
 
-        const tray = new Tray(getAssetPath('mic.png'));
+        const tray = new Tray(getAssetPath('mic_on_camera_off@2x.png'));
 
         const revealSpace = () => {
           const trayBounds = tray.getBounds();
@@ -339,7 +350,35 @@ const createWindow = async () => {
             win.hide();
           }
         });
+
+        const onMediaSettingsChange = (
+          e: Electron.IpcMainEvent,
+          settings: {
+            localAudioInputOn: boolean;
+            localVideoInputOn: boolean;
+          }
+        ) => {
+          if (settings.localAudioInputOn && settings.localVideoInputOn) {
+            tray.setImage(getAssetPath('mic_on_camera_on@2x.png'));
+          } else if (
+            !settings.localAudioInputOn &&
+            settings.localVideoInputOn
+          ) {
+            tray.setImage(getAssetPath('mic_off_camera_on@2x.png'));
+          } else if (
+            settings.localAudioInputOn &&
+            !settings.localVideoInputOn
+          ) {
+            tray.setImage(getAssetPath('mic_on_camera_off@2x.png'));
+          } else {
+            tray.setImage(getAssetPath('mic_off_camera_off@2x.png'));
+          }
+        };
+
+        ipcMain.on('media-settings', onMediaSettingsChange);
+
         win.on('close', () => {
+          ipcMain.off('media-settings', onMediaSettingsChange);
           tray.destroy();
           mainWindow?.show();
         });
@@ -439,6 +478,12 @@ const createWindow = async () => {
           win.show();
         });
       }
+
+      if (frameName === 'profile') {
+        win.on('ready-to-show', () => {
+          win.show();
+        });
+      }
     }
   );
 
@@ -477,12 +522,7 @@ app.on('window-all-closed', () => {
   }
 });
 
-app
-  .whenReady()
-  .then(createTray)
-  .then(createWindow)
-  .then(trackMouse)
-  .catch(console.log);
+app.whenReady().then(createWindow).then(trackMouse).catch(console.log);
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
