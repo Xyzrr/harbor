@@ -159,7 +159,6 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
                 player={player}
                 videoTrack={participant.videoTrack}
                 audioTrack={participant.audioTrack}
-                onSetExpanded={() => {}}
               />
               {player.screenShareOn && (
                 <RemoteScreenPanel

@@ -127,7 +127,7 @@ if (
   process.env.NODE_ENV === 'development' ||
   process.env.DEBUG_PROD === 'true'
 ) {
-  require('electron-debug')({ showDevTools: false });
+  require('electron-debug')({});
 }
 
 const installExtensions = async () => {
@@ -410,6 +410,17 @@ const createWindow = async () => {
         };
       }
 
+      if (frameName === 'remote-user-panel') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 480,
+            height: 270,
+            show: false,
+          },
+        };
+      }
+
       shell.openExternal(url);
 
       return { action: 'deny' };
@@ -595,6 +606,12 @@ const createWindow = async () => {
       if (frameName === 'local-video-preview') {
         win.on('ready-to-show', () => {
           win.setWindowButtonVisibility(false);
+          win.show();
+        });
+      }
+
+      if (frameName === 'remote-user-panel') {
+        win.on('ready-to-show', () => {
           win.show();
         });
       }

@@ -12,6 +12,7 @@ import AppIndicator from './AppIndicator';
 import Loader from '../elements/Loader';
 import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { PlayerStateContext } from '../contexts/PlayerStateContext';
+import NewWindow from '../elements/NewWindow';
 
 export interface NearbyPlayer {
   sid?: string;
@@ -33,28 +34,22 @@ export interface RemoteUserPanelProps {
   whisperTarget?: boolean;
 
   player: NearbyPlayer;
-
-  expanded?: boolean;
-  onSetExpanded(value: boolean): void;
 }
 
 const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
-  ({
-    className,
-    identity,
-    player,
-    videoTrack,
-    audioTrack,
-    whisperTarget,
-    expanded,
-    onSetExpanded,
-  }) => {
+  ({ className, identity, player, videoTrack, audioTrack, whisperTarget }) => {
     const wrapperRef = React.useRef<HTMLDivElement>(null);
-    const videoRef = React.useRef<HTMLVideoElement>(null);
-    const audioRef = React.useRef<HTMLAudioElement>(null);
+    const [videoEl, setVideoEl] = React.useState<HTMLVideoElement | null>();
+    const [audioEl, setaAudioEl] = React.useState<HTMLAudioElement | null>();
     const [recentlyLoud, setRecentlyLoud] = React.useState(false);
     const recentlyLoudTimerRef = React.useRef<number | null>(null);
     const [videoStreaming, setVideoStreaming] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(false);
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const [containerEl, setContainerEl] =
+      React.useState<HTMLDivElement | null>(null);
+    const [fakeContainerEl, setFakeContainerEl] =
+      React.useState<HTMLDivElement | null>(null);
 
     const { localAudioOutputDeviceId, localAudioOutputOn } =
       useContext(LocalMediaContext);
@@ -69,16 +64,16 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
     const height = Math.floor(135 * scale);
 
     React.useEffect(() => {
-      if (videoRef.current && videoTrack) {
-        videoRef.current.srcObject = new MediaStream([videoTrack]);
+      if (videoEl && videoTrack) {
+        videoEl.srcObject = new MediaStream([videoTrack]);
       }
-    }, [videoTrack]);
+    }, [videoEl]);
 
     React.useEffect(() => {
-      if (audioRef.current && audioTrack) {
-        audioRef.current.srcObject = new MediaStream([audioTrack]);
+      if (videoEl && audioTrack) {
+        videoEl.srcObject = new MediaStream([audioTrack]);
       }
-    }, [audioTrack]);
+    }, [audioEl]);
 
     React.useEffect(() => {
       if (!videoTrack) {
@@ -103,8 +98,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
     });
 
     React.useEffect(() => {
-      const audioEl = audioRef.current;
-      if (audioEl == null) {
+      if (!audioEl) {
         return;
       }
 
@@ -116,7 +110,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         .catch((e: any) => {
           console.log('Failed to set sink ID:', e);
         });
-    }, [localAudioOutputDeviceId]);
+    }, [localAudioOutputDeviceId, audioEl]);
 
     const { localIdentity } = React.useContext(UserSettingsContext);
 
@@ -124,8 +118,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
       React.useContext(PlayerStateContext);
 
     React.useEffect(() => {
-      const audioEl = audioRef.current;
-      if (audioEl == null) {
+      if (!audioEl) {
         return;
       }
 
@@ -140,11 +133,12 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
       player,
       audioTrack,
       localIdentity,
+      audioEl,
     ]);
 
     const mouseIsIdle = useMouseIsIdle({ containerRef: wrapperRef });
 
-    return (
+    const content = (
       <S.Wrapper
         className={className}
         ref={wrapperRef}
@@ -158,7 +152,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
       >
         {player.videoInputOn && videoTrack && (
           <video
-            ref={videoRef}
+            ref={(node) => setVideoEl(node)}
             onCanPlay={() => {
               setVideoStreaming(true);
             }}
@@ -169,7 +163,9 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
           />
         )}
         {player.videoInputOn && !videoStreaming && <Loader />}
-        {player.audioInputOn && audioTrack && <audio ref={audioRef} autoPlay />}
+        {player.audioInputOn && audioTrack && (
+          <audio ref={(node) => setaAudioEl(node)} autoPlay />
+        )}
         <S.InfoBar>
           <S.InfoBarLeft>
             <S.StatusIcons>
@@ -186,7 +182,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
           <HoverMenuStyles.MenuItem
             name={expanded ? 'fullscreen_exit' : 'fullscreen'}
             onClick={() => {
-              onSetExpanded(!expanded);
+              setExpanded(!expanded);
             }}
           />
           <HoverMenuStyles.MenuItem
@@ -202,6 +198,12 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         </HoverMenu>
       </S.Wrapper>
     );
+
+    if (expanded) {
+      return <NewWindow name="remote-user-panel">{content}</NewWindow>;
+    }
+
+    return content;
   }
 );
 
