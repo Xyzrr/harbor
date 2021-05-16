@@ -131,6 +131,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
           name: localName,
           color: localColor,
           audioInputOn: localAudioInputOn,
+          audioOutputOn: localAudioOutputOn,
           videoInputOn: localVideoInputOn,
           spaceId,
         }
