@@ -102,6 +102,15 @@ activeWinLoop.on('message', (aw: any) => {
   mainWindow?.webContents.send('activeWin', aw);
 });
 
+/**
+ * Home window hack
+ */
+
+let quitting = false;
+app.on('before-quit', () => {
+  quitting = true;
+});
+
 const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -144,8 +153,10 @@ const createWindow = async () => {
   });
 
   mainWindow.on('close', (e) => {
-    e.preventDefault();
-    mainWindow?.hide();
+    if (!quitting) {
+      e.preventDefault();
+      mainWindow?.hide();
+    }
   });
 
   mainWindow.on('closed', () => {
