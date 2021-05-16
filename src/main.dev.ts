@@ -195,8 +195,8 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     title: 'Harbor',
     show: false,
-    width: 420,
-    height: 420,
+    width: 360,
+    height: 360,
     frame: false,
     vibrancy: 'menu',
     titleBarStyle: 'hidden',
