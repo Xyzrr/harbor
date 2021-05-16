@@ -55,8 +55,12 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
     );
     const volumeMultiplier = scale ** 2;
 
-    const width = Math.floor(240 * scale);
-    const height = player.videoInputOn ? Math.floor(135 * scale) : 40;
+    const width = expanded ? '100%' : Math.floor(240 * scale);
+    const height = expanded
+      ? '100%'
+      : player.videoInputOn
+      ? Math.floor(135 * scale)
+      : 40;
 
     React.useEffect(() => {
       if (videoEl && videoTrack) {
@@ -133,6 +137,17 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
 
     const mouseIsIdle = useMouseIsIdle({ containerRef: wrapperRef });
 
+    console.log('she renders again');
+
+    const videoCallbackRef = React.useCallback(
+      (node: HTMLVideoElement | null) => setVideoEl(node),
+      []
+    );
+    const audioCallbackRef = React.useCallback(
+      (node: HTMLAudioElement | null) => setAudioEl(node),
+      []
+    );
+
     const content = (
       <S.Wrapper
         className={className}
@@ -147,7 +162,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
       >
         {player.videoInputOn && videoTrack && (
           <video
-            ref={(node) => setVideoEl(node)}
+            ref={videoCallbackRef}
             onCanPlay={() => {
               setVideoStreaming(true);
             }}
@@ -159,7 +174,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         )}
         {player.videoInputOn && !videoStreaming && <Loader />}
         {player.audioInputOn && audioTrack && (
-          <audio ref={(node) => setAudioEl(node)} autoPlay />
+          <audio ref={audioCallbackRef} autoPlay />
         )}
         <S.InfoBar>
           <S.InfoBarLeft>
