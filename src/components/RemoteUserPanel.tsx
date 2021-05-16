@@ -210,7 +210,11 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
     );
 
     if (expanded) {
-      return <NewWindow name="remote-user-panel">{content}</NewWindow>;
+      return (
+        <NewWindow name="remote-user-panel" onClose={() => setExpanded(false)}>
+          {content}
+        </NewWindow>
+      );
     }
 
     return content;
