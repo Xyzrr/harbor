@@ -42,6 +42,7 @@ export default class AppUpdater {
     const hideAllUpdaterMenuItems = () => {
       const items = [
         'check-for-update',
+        'checking-for-update',
         'update-available',
         'on-latest-version',
         'error-updating',
