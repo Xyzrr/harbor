@@ -116,7 +116,7 @@ const createWindow = async () => {
     width: 420,
     height: 420,
     frame: false,
-    vibrancy: 'dark',
+    vibrancy: 'menu',
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: 12, y: 24 },
     icon: getAssetPath('icon.png'),

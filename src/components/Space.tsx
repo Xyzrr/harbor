@@ -47,7 +47,7 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
                   </S.TopButtons>
                   <S.BottomButtons>
                     <AudioInputControl />
-                    <VideoInputControl />
+                    <VideoInputControl showPreviewOnHover />
                     <AudioOutputControl />
                     <ScreenShareControl />
                   </S.BottomButtons>

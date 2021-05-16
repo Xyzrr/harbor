@@ -10,11 +10,13 @@ import LocalVideoPreview from '../LocalVideoPreview';
 export interface VideoInputControlProps {
   className?: string;
   minimized?: boolean;
+  showPreviewOnHover?: boolean;
 }
 
 const VideoInputControl: React.FC<VideoInputControlProps> = ({
   className,
   minimized,
+  showPreviewOnHover,
 }) => {
   const [mediaDevices, setMediaDevices] = React.useState<MediaDeviceInfo[]>([]);
 
@@ -51,10 +53,10 @@ const VideoInputControl: React.FC<VideoInputControlProps> = ({
       <S.Wrapper
         className={className}
         color={localVideoInputOn ? undefined : 'danger'}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
       >
         <S.PrimaryButtonWrapper
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
           onClick={() => {
             setLocalVideoInputOn(!localVideoInputOn);
           }}
@@ -85,7 +87,7 @@ const VideoInputControl: React.FC<VideoInputControlProps> = ({
           </S.CaretButtonWrapper>
         )}
       </S.Wrapper>
-      {hovering && localVideoInputOn && (
+      {showPreviewOnHover && hovering && localVideoInputOn && (
         <NewWindow name="local-video-preview">
           <LocalVideoPreview />
         </NewWindow>
