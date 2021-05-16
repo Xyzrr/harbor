@@ -40,16 +40,11 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
   ({ className, identity, player, videoTrack, audioTrack, whisperTarget }) => {
     const wrapperRef = React.useRef<HTMLDivElement>(null);
     const [videoEl, setVideoEl] = React.useState<HTMLVideoElement | null>();
-    const [audioEl, setaAudioEl] = React.useState<HTMLAudioElement | null>();
+    const [audioEl, setAudioEl] = React.useState<HTMLAudioElement | null>();
     const [recentlyLoud, setRecentlyLoud] = React.useState(false);
     const recentlyLoudTimerRef = React.useRef<number | null>(null);
     const [videoStreaming, setVideoStreaming] = React.useState(false);
     const [expanded, setExpanded] = React.useState(false);
-    const containerRef = React.useRef<HTMLDivElement>(null);
-    const [containerEl, setContainerEl] =
-      React.useState<HTMLDivElement | null>(null);
-    const [fakeContainerEl, setFakeContainerEl] =
-      React.useState<HTMLDivElement | null>(null);
 
     const { localAudioOutputDeviceId, localAudioOutputOn } =
       useContext(LocalMediaContext);
@@ -61,7 +56,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
     const volumeMultiplier = scale ** 2;
 
     const width = Math.floor(240 * scale);
-    const height = Math.floor(135 * scale);
+    const height = player.videoInputOn ? Math.floor(135 * scale) : 40;
 
     React.useEffect(() => {
       if (videoEl && videoTrack) {
@@ -164,7 +159,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
         )}
         {player.videoInputOn && !videoStreaming && <Loader />}
         {player.audioInputOn && audioTrack && (
-          <audio ref={(node) => setaAudioEl(node)} autoPlay />
+          <audio ref={(node) => setAudioEl(node)} autoPlay />
         )}
         <S.InfoBar>
           <S.InfoBarLeft>
