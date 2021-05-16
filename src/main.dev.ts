@@ -19,6 +19,9 @@ import {
   screen,
   ipcMain,
   systemPreferences,
+  MenuItem,
+  Menu,
+  Dock,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -29,10 +32,79 @@ import { centerOnParent } from './util/electron-helpers';
 import * as _ from 'lodash';
 import { fork } from 'child_process';
 
+let menu: Menu | null = null;
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
+
+    const hideAllUpdaterMenuItems = () => {
+      const items = [
+        'check-for-update',
+        'update-available',
+        'on-latest-version',
+        'error-updating',
+        'downloading-update',
+        'update-and-restart',
+      ];
+      items.forEach((id) => {
+        const item = menu?.getMenuItemById(id);
+        if (item) {
+          item.visible = false;
+        }
+      });
+    };
+
+    autoUpdater.on('checking-for-update', () => {
+      hideAllUpdaterMenuItems();
+      const item = menu?.getMenuItemById('checking-for-update');
+      if (item) {
+        item.visible = true;
+      }
+      Menu.setApplicationMenu(menu);
+    });
+
+    autoUpdater.on('update-available', () => {
+      hideAllUpdaterMenuItems();
+      const item = menu?.getMenuItemById('checking-for-update');
+      if (item) {
+        item.visible = true;
+      }
+      Menu.setApplicationMenu(menu);
+    });
+
+    autoUpdater.on('update-not-available', () => {
+      hideAllUpdaterMenuItems();
+      const item = menu?.getMenuItemById('on-latest-version');
+      if (item) {
+        item.visible = true;
+      }
+      Menu.setApplicationMenu(menu);
+    });
+
+    autoUpdater.on('error', (err) => {
+      hideAllUpdaterMenuItems();
+      const item = menu?.getMenuItemById('error-updating');
+      if (item) {
+        item.visible = true;
+      }
+      Menu.setApplicationMenu(menu);
+    });
+
+    autoUpdater.on('download-progress', (progressObj) => {
+      log.info(`Download progress: ${progressObj.percent}%`);
+    });
+
+    autoUpdater.on('update-downloaded', () => {
+      hideAllUpdaterMenuItems();
+      const item = menu?.getMenuItemById('update-and-restart');
+      if (item) {
+        item.visible = true;
+      }
+      Menu.setApplicationMenu(menu);
+    });
+
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
@@ -164,7 +236,9 @@ const createWindow = async () => {
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+  menu = menuBuilder.buildMenu();
+
+  Menu.setApplicationMenu(menu);
 
   mainWindow.webContents.setWindowOpenHandler(
     ({ frameName, features, url }) => {

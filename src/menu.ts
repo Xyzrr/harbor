@@ -6,6 +6,8 @@ import {
   MenuItemConstructorOptions,
 } from 'electron';
 
+import { autoUpdater } from 'electron-updater';
+
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;
@@ -59,6 +61,48 @@ export default class MenuBuilder {
         {
           label: 'About ElectronReact',
           selector: 'orderFrontStandardAboutPanel:',
+        },
+        { id: 'check-for-update', label: 'Check for updates' },
+        {
+          id: 'checking-for-update',
+          label: 'Checking for updates...',
+          enabled: false,
+          visible: false,
+          click() {
+            autoUpdater.checkForUpdatesAndNotify();
+          },
+        },
+        {
+          id: 'update-available',
+          label: 'Update available.',
+          enabled: false,
+          visible: false,
+        },
+        {
+          id: 'on-latest-version',
+          label: 'On latest version.',
+          enabled: false,
+          visible: false,
+        },
+        {
+          id: 'error-updating',
+          label: 'Error updating.',
+          enabled: false,
+          visible: false,
+        },
+        {
+          id: 'downloading-update',
+          label: 'Downloading update...',
+          enabled: false,
+          visible: false,
+        },
+        {
+          id: 'update-and-restart',
+          label: 'Update and restart',
+          visible: false,
+          click() {
+            autoUpdater.quitAndInstall();
+          },
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
