@@ -75,8 +75,12 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     const { localWhisperingTo, localApp } =
       React.useContext(PlayerStateContext);
 
-    const { localAudioInputOn, localVideoInputOn, localScreenShareOn } =
-      React.useContext(LocalMediaContext);
+    const {
+      localAudioInputOn,
+      localAudioOutputOn,
+      localVideoInputOn,
+      localScreenShareOn,
+    } = React.useContext(LocalMediaContext);
 
     const listeners =
       React.useRef<
@@ -239,6 +243,10 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     React.useEffect(() => {
       room?.send('updatePlayer', { audioInputOn: localAudioInputOn });
     }, [localAudioInputOn]);
+
+    React.useEffect(() => {
+      room?.send('updatePlayer', { audioOutputOn: localAudioOutputOn });
+    }, [localAudioOutputOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { videoInputOn: localVideoInputOn });

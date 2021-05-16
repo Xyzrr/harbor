@@ -174,7 +174,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
           <S.InfoBarLeft>
             <S.StatusIcons>
               {!player.audioInputOn && <S.StatusIcon name="mic_off" />}
-              {!player.audioOutputOn && <S.StatusIcon name="volume_up" />}
+              {!player.audioOutputOn && <S.StatusIcon name="volume_off" />}
             </S.StatusIcons>
             <S.Name>{player.name}</S.Name>
           </S.InfoBarLeft>
