@@ -54,7 +54,7 @@ if (
   process.env.NODE_ENV === 'development' ||
   process.env.DEBUG_PROD === 'true'
 ) {
-  require('electron-debug')();
+  require('electron-debug')({ showDevTools: false });
 }
 
 const installExtensions = async () => {
@@ -303,6 +303,27 @@ const createWindow = async () => {
         };
       }
 
+      if (frameName === 'local-video-preview') {
+        const spaceWindowBounds = spaceWindow?.getBounds();
+        if (!spaceWindowBounds) {
+          return { action: 'deny' };
+        }
+
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            x: spaceWindowBounds.x,
+            y: spaceWindowBounds.y + spaceWindowBounds.height + 8,
+            width: 160,
+            height: 90,
+            hasShadow: false,
+            show: false,
+            focusable: false,
+            alwaysOnTop: true,
+          },
+        };
+      }
+
       shell.openExternal(url);
 
       return { action: 'deny' };
@@ -481,6 +502,13 @@ const createWindow = async () => {
 
       if (frameName === 'profile') {
         win.on('ready-to-show', () => {
+          win.show();
+        });
+      }
+
+      if (frameName === 'local-video-preview') {
+        win.on('ready-to-show', () => {
+          win.setWindowButtonVisibility(false);
           win.show();
         });
       }
