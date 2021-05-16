@@ -18,6 +18,7 @@ export interface NearbyPlayer {
   name: string;
   distance: number;
   audioInputOn?: boolean;
+  audioOutputOn?: boolean;
   videoInputOn?: boolean;
   screenShareOn?: boolean;
   sharedApp?: AppInfo;
@@ -173,6 +174,7 @@ const RemoteUserPanel: React.FC<RemoteUserPanelProps> = React.memo(
           <S.InfoBarLeft>
             <S.StatusIcons>
               {!player.audioInputOn && <S.StatusIcon name="mic_off" />}
+              {!player.audioOutputOn && <S.StatusIcon name="volume_up" />}
             </S.StatusIcons>
             <S.Name>{player.name}</S.Name>
           </S.InfoBarLeft>

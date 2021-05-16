@@ -96,6 +96,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
             draft[identity].name = player.name;
             draft[identity].distance = dist;
             draft[identity].audioInputOn = player.audioInputOn;
+            draft[identity].audioOutputOn = player.audioOutputOn;
             draft[identity].videoInputOn = player.videoInputOn;
             draft[identity].screenShareOn = player.screenShareOn;
             draft[identity].sharedApp = player.sharedApp;
