@@ -12,9 +12,7 @@ const HiddenSelect: React.FC<HiddenSelectProps> = React.forwardRef<
       {...standardProps}
       ref={ref}
       onFocus={(e) => {
-        if (document.activeElement instanceof HTMLElement) {
-          document.activeElement.blur();
-        }
+        e.currentTarget.blur();
         onFocus?.(e);
       }}
     />
