@@ -67,7 +67,7 @@ export default class AppUpdater {
 
     autoUpdater.on('update-available', () => {
       hideAllUpdaterMenuItems();
-      const item = menu?.getMenuItemById('checking-for-update');
+      const item = menu?.getMenuItemById('downloading-update');
       if (item) {
         item.visible = true;
       }
