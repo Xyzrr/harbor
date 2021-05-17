@@ -11,7 +11,7 @@ const useSpaces = () => {
 
   const allowed = React.useCallback(
     (room: Colyseus.RoomAvailable) => {
-      if (room.metadata.spaceId === 'wandb-growth') {
+      if (room.metadata?.spaceId === 'wandb-growth') {
         if (
           user?.email?.endsWith('wandb.com') ||
           user?.email === 'johnlongqian@gmail.com'
@@ -32,13 +32,12 @@ const useSpaces = () => {
       .then((lobby) => {
         l = lobby;
         lobby.onMessage('rooms', (rooms) => {
-          console.log('rooms', rooms);
+          console.log('ROOMS:', rooms);
           setSpaces(rooms.filter(allowed));
         });
 
         lobby.onMessage('+', ([roomId, room]) => {
-          console.log('roomid', roomId);
-          if (!allowed(roomId)) {
+          if (!allowed(room)) {
             return;
           }
 
