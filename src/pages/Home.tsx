@@ -116,7 +116,7 @@ const Home: React.FC<HomeProps> = ({ className }) => {
         </S.Spaces>
       </S.Wrapper>
       {spaces && currentSpaceId != null && (
-        <NewWindow name="space">
+        <NewWindow name="space" onClose={() => setCurrentSpaceId(null)}>
           <Space
             key={currentSpaceId}
             metadata={
