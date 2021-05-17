@@ -3,6 +3,10 @@ import { PlayerSummary } from '../components/MapPlayer';
 import { PLAYER_RADIUS } from '../constants';
 import { NewWindowContext } from '../elements/NewWindow';
 
+/**
+ * Unused because having multiple requestAnimationFrame loops seems buggy.
+ * So I copied this logic into useKeyboardMovement for now.
+ */
 export const usePushing = (
   setPlayer: (f: PlayerSummary | ((draft: PlayerSummary) => void)) => void,
   playerSummaries: {
@@ -24,10 +28,8 @@ export const usePushing = (
           const dist = Math.sqrt(
             (player.x - draft.x) ** 2 + (player.y - draft.y) ** 2
           );
-          console.log('DIST IS', dist);
 
           if (dist < PLAYER_RADIUS * 2) {
-            console.log('DIST IS', dist);
             console.log('Pushed by:', identity);
 
             const atan = Math.atan((draft.y - player.y) / (player.x - draft.x));

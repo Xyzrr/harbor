@@ -198,10 +198,8 @@ export const useKeyboardMovement = (
           const dist = Math.sqrt(
             (player.x - draft.x) ** 2 + (player.y - draft.y) ** 2
           );
-          console.log('DIST IS', dist);
 
           if (dist < PLAYER_RADIUS * 2) {
-            console.log('DIST IS', dist);
             console.log('Pushed by:', identity);
 
             const atan = Math.atan((draft.y - player.y) / (player.x - draft.x));
