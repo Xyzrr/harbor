@@ -8,7 +8,9 @@ import { useMouseIsIdle } from '../hooks/useMouseIsIdle';
 import Loader from '../elements/Loader';
 import { NearbyPlayer } from './RemoteUserPanel';
 import { ColyseusContext } from '../contexts/ColyseusContext';
-import NewWindow from '../elements/NewWindow';
+import NewWindow, { NewWindowContext } from '../elements/NewWindow';
+import { useWindowsDrag } from '../hooks/useWindowsDrag';
+import useResizeObserver from 'use-resize-observer';
 
 export interface RemoteScreenPanelInnerProps {
   className?: string;
@@ -88,6 +90,27 @@ const RemoteScreenPanelInner: React.FC<RemoteScreenPanelInnerProps> =
 
       const mouseIsIdle = useMouseIsIdle({ containerRef: wrapperRef });
 
+      const win = React.useContext(NewWindowContext);
+      const [observedSize, setObservedSize] = React.useState({
+        width: 10,
+        height: 10,
+      });
+      React.useEffect(() => {
+        if (!win) {
+          return;
+        }
+
+        const onResize = () => {
+          setObservedSize({ width: win.innerWidth, height: win.innerHeight });
+        };
+
+        win.addEventListener('resize', onResize);
+
+        return () => {
+          win.removeEventListener('resize', onResize);
+        };
+      }, [win]);
+
       const {
         videoProjectedWidth,
         videoProjectedHeight,
@@ -100,18 +123,18 @@ const RemoteScreenPanelInner: React.FC<RemoteScreenPanelInnerProps> =
         let yoff: number;
 
         const videoAspectRatio = videoSize.width / videoSize.height;
-        const panelAspectRatio = width / height;
+        const panelAspectRatio = observedSize.width / observedSize.height;
 
         if (videoAspectRatio < panelAspectRatio) {
-          vpw = height * videoAspectRatio;
-          vph = height;
-          xoff = (width - vpw) / 2;
+          vpw = observedSize.height * videoAspectRatio;
+          vph = observedSize.height;
+          xoff = (observedSize.width - vpw) / 2;
           yoff = 0;
         } else {
-          vpw = width;
-          vph = width / videoAspectRatio;
+          vpw = observedSize.width;
+          vph = observedSize.width / videoAspectRatio;
           xoff = 0;
-          yoff = (height - vph) / 2;
+          yoff = (observedSize.height - vph) / 2;
         }
 
         return {
@@ -120,13 +143,16 @@ const RemoteScreenPanelInner: React.FC<RemoteScreenPanelInnerProps> =
           videoXOffset: xoff,
           videoYOffset: yoff,
         };
-      }, [videoSize, width, height]);
+      }, [videoSize, observedSize]);
+
+      const windowsDragProps = useWindowsDrag();
 
       return (
         <S.Wrapper
           className={className}
           ref={wrapperRef}
           style={{ width, height }}
+          {...windowsDragProps}
         >
           {videoTrack && (
             <video

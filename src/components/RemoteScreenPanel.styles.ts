@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   background: ${DARK_BACKGROUND.string()};
+  ${process.platform !== 'win32' && '-webkit-app-region: drag;'}
   video {
     display: block;
     width: 100%;

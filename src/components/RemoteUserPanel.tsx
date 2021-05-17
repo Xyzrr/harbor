@@ -165,6 +165,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
           localWhisperingTo != null && localWhisperingTo !== identity
         }
         style={{ width, height }}
+        {...windowsDragProps}
       >
         {player.videoInputOn && videoTrack && (
           <video
