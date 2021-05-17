@@ -123,29 +123,41 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       };
     }, []);
 
-    const join = React.useCallback(async (roomName: string) => {
-      const r: Colyseus.Room<any> = await COLYSEUS_CLIENT.joinOrCreate(
-        roomName,
-        {
-          identity: localIdentity,
-          name: localName,
-          color: localColor,
-          audioInputOn: localAudioInputOn,
-          audioOutputOn: localAudioOutputOn,
-          videoInputOn: localVideoInputOn,
-          spaceId,
-        }
-      );
-      setSessionId(r.sessionId);
+    const join = React.useCallback(
+      async (roomName: string) => {
+        const r: Colyseus.Room<any> = await COLYSEUS_CLIENT.joinOrCreate(
+          roomName,
+          {
+            identity: localIdentity,
+            name: localName,
+            color: localColor,
+            audioInputOn: localAudioInputOn,
+            audioOutputOn: localAudioOutputOn,
+            videoInputOn: localVideoInputOn,
+            spaceId,
+          }
+        );
+        setSessionId(r.sessionId);
 
-      console.log('Joined or created Colyseus room:', r);
+        console.log('Joined or created Colyseus room:', r);
 
-      setRoom(r);
+        setRoom(r);
 
-      console.log('INTIIAL ROOM STATE:', JSON.parse(JSON.stringify(r.state)));
+        console.log('INTIIAL ROOM STATE:', JSON.parse(JSON.stringify(r.state)));
 
-      bindListenersToRoom(r);
-    }, []);
+        bindListenersToRoom(r);
+      },
+      [
+        bindListenersToRoom,
+        localAudioInputOn,
+        localAudioOutputOn,
+        localVideoInputOn,
+        localColor,
+        localIdentity,
+        localName,
+        spaceId,
+      ]
+    );
 
     const roomRef = React.useRef<Colyseus.Room>();
     roomRef.current = room;
@@ -166,8 +178,10 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     }, [leave]);
 
     React.useEffect(() => {
-      join('main');
-    }, [join]);
+      if (!room) {
+        join('main');
+      }
+    }, [join, room]);
 
     React.useEffect(() => {
       window.addEventListener('beforeunload', leave);
