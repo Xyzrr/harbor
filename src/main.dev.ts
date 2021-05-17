@@ -28,7 +28,6 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { openSystemPreferences } from 'electron-util';
 import activeWin from 'xyzrr/active-win';
-import { centerOnParent } from './util/electron-helpers';
 import * as _ from 'lodash';
 import { fork } from 'child_process';
 

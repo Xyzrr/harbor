@@ -10,7 +10,6 @@ import { NearbyPlayer } from './RemoteUserPanel';
 import { ColyseusContext } from '../contexts/ColyseusContext';
 import NewWindow, { NewWindowContext } from '../elements/NewWindow';
 import { useWindowsDrag } from '../hooks/useWindowsDrag';
-import useResizeObserver from 'use-resize-observer';
 
 export interface RemoteScreenPanelInnerProps {
   className?: string;

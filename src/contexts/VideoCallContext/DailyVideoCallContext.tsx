@@ -300,7 +300,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
 
           const dist = distToPlayer(player);
 
-          if (dist > MAX_INTERACTION_DISTANCE * 1.1) {
+          if (dist > MAX_INTERACTION_DISTANCE) {
             callObject?.updateParticipant(participant.serverId, {
               setSubscribedTracks: false,
             });

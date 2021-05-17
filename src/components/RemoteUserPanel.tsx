@@ -58,8 +58,6 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
     const recentlyLoudTimerRef = React.useRef<number | null>(null);
     const [videoStreaming, setVideoStreaming] = React.useState(false);
 
-    const windowRef = React.useRef<Window | null>(null);
-
     const { localAudioOutputDeviceId, localAudioOutputOn } =
       useContext(LocalMediaContext);
 
