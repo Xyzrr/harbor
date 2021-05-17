@@ -6,6 +6,7 @@ import VideoInputControl from './media-controls/VideoInputControl';
 import { LocalMediaContext } from '../contexts/LocalMediaContext';
 import Button from '../elements/Button';
 import Icon from '../elements/Icon';
+import LocalVideoPreview from './LocalVideoPreview';
 
 export interface GetReadyProps {
   className?: string;
@@ -21,18 +22,10 @@ const GetReady: React.FC<GetReadyProps> = ({
   onReady,
 }) => {
   const { localName, setLocalName } = React.useContext(UserSettingsContext);
-  const { localVideoTrack } = React.useContext(LocalMediaContext);
+  const { localVideoInputOn } = React.useContext(LocalMediaContext);
   const [nameValue, setNameValue] = React.useState(localName);
 
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-
   const submitDisabled = !nameValue;
-
-  React.useEffect(() => {
-    if (videoRef.current && localVideoTrack) {
-      videoRef.current.srcObject = new MediaStream([localVideoTrack]);
-    }
-  }, [localVideoTrack]);
 
   return (
     <S.Wrapper className={className}>
@@ -43,7 +36,11 @@ const GetReady: React.FC<GetReadyProps> = ({
         {spaceMetadata.spaceName}
       </S.TopBar>
       <S.VideoWrapper>
-        {localVideoTrack && <video ref={videoRef} autoPlay />}
+        {localVideoInputOn ? (
+          <LocalVideoPreview />
+        ) : (
+          <S.CameraOffMessage>Camera is off</S.CameraOffMessage>
+        )}
         <S.MediaButtons>
           <AudioInputControl />
           <VideoInputControl />

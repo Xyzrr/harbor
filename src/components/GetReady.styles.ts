@@ -72,7 +72,7 @@ export const VideoWrapper = styled.div`
     transform: scale(-1, 1);
   }
   margin-bottom: 12px;
-  min-height: 64px;
+  min-height: 121px;
   overflow: hidden;
   border-radius: 4px;
   position: relative;
@@ -89,4 +89,13 @@ export const MediaButtons = styled.div`
   display: flex;
   padding: 8px;
   gap: 8px;
+`;
+
+export const CameraOffMessage = styled.div`
+  width: 100%;
+  height: 121px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
