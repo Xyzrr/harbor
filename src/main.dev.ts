@@ -421,6 +421,17 @@ const createWindow = async () => {
         };
       }
 
+      if (frameName === 'remote-screen-panel') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 640,
+            height: 400,
+            show: false,
+          },
+        };
+      }
+
       shell.openExternal(url);
 
       return { action: 'deny' };
@@ -615,6 +626,12 @@ const createWindow = async () => {
           win.show();
         });
       }
+
+      if (frameName === 'remote-screen-panel') {
+        win.on('ready-to-show', () => {
+          win.show();
+        });
+      }
     }
   );
 
@@ -779,3 +796,9 @@ ipcMain.on('dragWindow', (e, { mouseX, mouseY }) => {
   const { x, y } = screen.getCursorScreenPoint();
   focusedWindow.setPosition(x - mouseX, y - mouseY);
 });
+
+/**
+ * Hide windows with setContentProtection(true) from screen share
+ */
+
+app.commandLine.appendSwitch('disable-features', 'IOSurfaceCapturer');

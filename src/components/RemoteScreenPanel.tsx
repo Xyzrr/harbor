@@ -239,7 +239,10 @@ const RemoteScreenPanel: React.FC<RemoteScreenPanelProps> = React.memo(
 
     if (expanded) {
       return (
-        <NewWindow name="remote-user-panel" onClose={() => setExpanded(false)}>
+        <NewWindow
+          name="remote-screen-panel"
+          onClose={() => setExpanded(false)}
+        >
           <RemoteScreenPanelInner
             {...props}
             expanded={expanded}
