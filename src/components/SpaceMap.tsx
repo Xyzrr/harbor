@@ -7,6 +7,7 @@ import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { useKeyboardMovement } from '../hooks/useKeyboardMovement';
 import MapWorldObjects from './MapWorldObjects';
 import Loader from '../elements/Loader';
+import { usePushing } from '../hooks/usePushing';
 
 export interface SpaceMapProps {
   className?: string;
@@ -101,6 +102,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   }, [colyseusRoom]);
 
   useKeyboardMovement(setLocalPlayer);
+  usePushing(setLocalPlayer, playerSummaries);
 
   if (!colyseusRoom) {
     return (
