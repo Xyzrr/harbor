@@ -2,6 +2,9 @@ import styled, { css } from 'styled-components';
 import Icon from '../elements/Icon';
 import { DARK_BACKGROUND } from '../constants';
 
+const baseBoxShadow =
+  '0px 0px 1px rgba(255, 255, 255, 0.4), 0px 2px 6px rgba(0, 0, 0, 0.4)';
+
 export const Wrapper = styled.div<{
   recentlyLoud: boolean;
   noVideo?: boolean;
@@ -12,7 +15,7 @@ export const Wrapper = styled.div<{
   border-radius: 4px;
   overflow: hidden;
   transition: box-shadow 0.15s, width 0.15s, height 0.15s;
-  box-shadow: 0 0 0 2px rgba(0, 255, 0, 0);
+  box-shadow: ${baseBoxShadow}, 0 0 0 2px rgba(0, 255, 0, 0);
   width: 100%;
   height: 100%;
   background: ${DARK_BACKGROUND.string()};
@@ -26,7 +29,7 @@ export const Wrapper = styled.div<{
   ${(props) =>
     props.recentlyLoud &&
     css`
-      box-shadow: 0 0 0 2px rgba(0, 255, 0, 1);
+      box-shadow: ${baseBoxShadow}, 0 0 0 2px rgba(0, 255, 0, 1);
     `}
   ${(props) =>
     props.noVideo &&
@@ -36,7 +39,7 @@ export const Wrapper = styled.div<{
     ${(props) =>
     props.whisperTarget &&
     css`
-      box-shadow: 0 0 0 2px rgba(255, 255, 0, 1);
+      box-shadow: ${baseBoxShadow}, 0 0 0 2px rgba(255, 255, 0, 1);
     `}
     ${(props) =>
     props.backgrounded &&
