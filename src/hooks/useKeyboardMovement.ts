@@ -186,13 +186,13 @@ export const useKeyboardMovement = (
       lastFrameTime = time;
 
       setPlayer((draft) => {
-        draft.x += draft.speed * Math.cos(draft.dir) * delta;
-        draft.y += draft.speed * Math.sin(draft.dir) * delta;
+        let positionChanged = false;
 
-        colyseusRoom?.send('updatePlayer', {
-          x: draft.x,
-          y: draft.y,
-        });
+        if (draft.speed > 0) {
+          draft.x += draft.speed * Math.cos(draft.dir) * delta;
+          draft.y += draft.speed * Math.sin(draft.dir) * delta;
+          positionChanged = true;
+        }
 
         for (const [identity, player] of Object.entries(playerSummaries)) {
           const dist = Math.sqrt(
@@ -209,7 +209,15 @@ export const useKeyboardMovement = (
 
             draft.x += Math.cos(pushDir) * pushDist;
             draft.y -= Math.sin(pushDir) * pushDist;
+            positionChanged = true;
           }
+        }
+
+        if (positionChanged) {
+          colyseusRoom?.send('updatePlayer', {
+            x: draft.x,
+            y: draft.y,
+          });
         }
       });
     };
