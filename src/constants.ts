@@ -2,7 +2,7 @@ import Color from 'color';
 import * as Colyseus from 'colyseus.js';
 
 export const MAX_INTERACTION_DISTANCE = 96;
-export const PLAYER_RADIUS = 16;
+export const PLAYER_RADIUS = 14;
 
 export const DARK_BACKGROUND = Color('#191919');
 export const LIGHT_BACKGROUND = Color('#262626');
