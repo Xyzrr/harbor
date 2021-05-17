@@ -91,7 +91,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       localScreenShareSourceId,
     } = React.useContext(LocalMediaContext);
 
-    const { localIdentity } = React.useContext(UserSettingsContext);
+    const { localIdentity, localName } = React.useContext(UserSettingsContext);
 
     const [participants, setParticipants] = useImmer<{
       [identity: string]: VideoCallParticipant;
@@ -104,7 +104,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
         };
 
         // missing userName property in type definition
-        (options as any).userName = localIdentity;
+        (options as any).userName = `${localName}:${localIdentity}`;
 
         const participantObject = await callObject.join(options);
 
@@ -123,7 +123,13 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
           });
         }
       },
-      [callObject, spaceId]
+      [
+        callObject,
+        localName,
+        localIdentity,
+        localAudioInputOn,
+        localVideoInputOn,
+      ]
     );
 
     const leave = React.useCallback(() => {
@@ -132,8 +138,10 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
 
     React.useEffect(() => {
       // TODO: enable multiple call rooms per space
-      join(spaceId);
-    }, [join, spaceId]);
+      if (['new', 'leftMeeting', 'error'].includes(meetingState)) {
+        join(spaceId);
+      }
+    }, [join, spaceId, meetingState]);
 
     React.useEffect(() => {
       const events: DailyEvent[] = [
@@ -146,6 +154,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       ];
 
       function handleNewMeetingState(event?: DailyEvent) {
+        console.debug('Meeting state:', callObject.meetingState());
         setMeetingState(callObject.meetingState());
       }
 
@@ -229,7 +238,8 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
           const newParts = callObject.participants();
 
           for (const [serverId, participant] of Object.entries(newParts)) {
-            draft[participant.user_name] = {
+            const [name, identity] = participant.user_name.split(':');
+            draft[identity] = {
               serverId,
               audioTrack: participant.audioTrack,
               videoTrack: participant.videoTrack,
