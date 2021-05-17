@@ -1,19 +1,20 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import os from 'os';
 import { DANGER } from '../constants';
 
-const W = 240;
-const H = 240;
-const R = os.version().startsWith('Darwin Kernel Version 20.') ? 10 : 6;
-const O = 12;
-
-export const TrayPopoutWrapper = styled.div`
+export const TrayPopoutWrapper = styled.div<{
+  W: number;
+  H: number;
+  O: number;
+  R: number;
+}>`
   width: 100vw;
   height: 100vh;
   position: relative;
   overflow: hidden;
-  clip-path: path(
-    '
+  ${({ W, H, O, R }) => css`
+    clip-path: path(
+      '
     M ${W / 2} 0
     L ${W / 2 + O} ${O}
     L ${W - R} ${O}
@@ -27,17 +28,24 @@ export const TrayPopoutWrapper = styled.div`
     L ${W / 2 - O} ${O}
     z
   '
-  );
+    );
+  `}
 `;
 
-export const Overlay = styled.div`
-  width: ${W}px;
-  height: ${H}px;
-  top: ${O}px;
-  left: 0;
-  border-radius: ${R}px;
-  clip-path: path(
-    '
+export const Overlay = styled.div<{
+  W: number;
+  H: number;
+  O: number;
+  R: number;
+}>`
+  ${({ W, H, O, R }) => css`
+    width: ${W}px;
+    height: ${H}px;
+    top: ${O}px;
+    left: 0;
+    border-radius: ${R}px;
+    clip-path: path(
+      '
     M ${W / 2 + O + 1} 2
     L ${W / 2 + O - 1} 0
     L ${W} 0
@@ -48,35 +56,41 @@ export const Overlay = styled.div`
     L ${W / 2 - O - 1} 2
     z
   '
-  );
+    );
+  `}
   position: absolute;
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   pointer-events: none;
 `;
 
-export const CaretOverlay = styled.div`
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
-  width: ${O * Math.sqrt(2)}px;
-  height: ${O * Math.sqrt(2)}px;
-  transform: translate(-50%, ${1 + (O * (Math.sqrt(2) - 1)) / 2}px)
-    rotate(45deg);
-  clip-path: path(
-    '
-    M 0 0
-    L ${O * Math.sqrt(2)} 0
-    L 0 ${O * Math.sqrt(2)}
-    z
-  '
-  );
-  position: absolute;
-  top: 0;
-  left: ${W / 2}px;
+export const CaretOverlay = styled.div<{
+  W: number;
+  O: number;
+}>`
+  ${({ W, O }) => css`
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    width: ${O * Math.sqrt(2)}px;
+    height: ${O * Math.sqrt(2)}px;
+    transform: translate(-50%, ${1 + (O * (Math.sqrt(2) - 1)) / 2}px)
+      rotate(45deg);
+    clip-path: path(
+      '
+  M 0 0
+  L ${O * Math.sqrt(2)} 0
+  L 0 ${O * Math.sqrt(2)}
+  z
+'
+    );
+    position: absolute;
+    top: 0;
+    left: ${W / 2}px;
+  `}
 `;
 
-export const TopButtons = styled.div`
+export const TopButtons = styled.div<{ O: number }>`
   position: absolute;
-  top: ${O};
+  top: ${(props) => props.O};
   left: 0;
   width: 100%;
   display: flex;

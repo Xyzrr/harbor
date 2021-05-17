@@ -56,6 +56,7 @@ export const Input = styled.input`
 `;
 
 export const NameInputWrapper = styled.div`
+  width: 100%;
   display: flex;
   gap: 8px;
   position: absolute;

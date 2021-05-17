@@ -1,6 +1,6 @@
 import React from 'react';
 import * as S from './Space.styles';
-import NewWindow from '../elements/NewWindow';
+import NewWindow, { NewWindowContext } from '../elements/NewWindow';
 import Panels from './Panels';
 import SpaceMap from './SpaceMap';
 import { UserSettingsContext } from '../contexts/UserSettingsContext';
@@ -18,6 +18,7 @@ import ScreenShareControl from './media-controls/ScreenShareControl';
 import { FirebaseContext } from '../contexts/FirebaseContext';
 import GetReady from './GetReady';
 import { PlayerStateContextProvider } from '../contexts/PlayerStateContext';
+import os from 'os';
 
 export interface SpaceProps {
   spaceId: string;
@@ -31,16 +32,42 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
 
   const [ready, setReady] = React.useState(!(user?.isAnonymous && !localName));
 
+  const win = React.useContext(NewWindowContext);
+  const [observedSize, setObservedSize] = React.useState({
+    width: 10,
+    height: 10,
+  });
+  React.useEffect(() => {
+    if (!win) {
+      return;
+    }
+
+    const onResize = () => {
+      setObservedSize({ width: win.innerWidth, height: win.innerHeight });
+    };
+
+    win.addEventListener('resize', onResize);
+
+    return () => {
+      win.removeEventListener('resize', onResize);
+    };
+  }, [win]);
+
+  const W = observedSize.width;
+  const O = 12;
+  const H = observedSize.height - O;
+  const R = os.version().startsWith('Darwin Kernel Version 20.') ? 10 : 6;
+
   return (
     <>
       <LocalMediaContextProvider>
-        <S.TrayPopoutWrapper>
+        <S.TrayPopoutWrapper W={W} H={H} O={O} R={R}>
           {ready ? (
             <PlayerStateContextProvider>
               <ColyseusContextProvider spaceId={spaceId}>
                 <DailyVideoCallContextProvider spaceId={spaceId}>
                   <SpaceMap />
-                  <S.TopButtons>
+                  <S.TopButtons O={O}>
                     <S.ExitButton>
                       <Icon name="logout" onClick={onExit} />
                     </S.ExitButton>
@@ -67,8 +94,8 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
             />
           )}
         </S.TrayPopoutWrapper>
-        <S.Overlay />
-        <S.CaretOverlay />
+        <S.Overlay W={W} H={H} O={O} R={R} />
+        <S.CaretOverlay W={W} O={O} />
       </LocalMediaContextProvider>
     </>
   );

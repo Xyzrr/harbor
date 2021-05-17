@@ -250,6 +250,8 @@ const createWindow = async () => {
             show: false,
             width: 240,
             height: 252,
+            minWidth: 240,
+            minHeight: 252,
             titleBarStyle: 'hidden',
             vibrancy: undefined,
           },
@@ -447,9 +449,12 @@ const createWindow = async () => {
 
         const revealSpace = () => {
           const trayBounds = tray.getBounds();
+          const windowSize = win.getSize();
 
           win.setPosition(
-            trayBounds.x + trayBounds.width / 2 - 120,
+            trayBounds.x +
+              Math.round(trayBounds.width / 2) -
+              Math.round(windowSize[0] / 2),
             trayBounds.y + trayBounds.height + 4
           );
 
@@ -477,6 +482,9 @@ const createWindow = async () => {
           if (focusedWindow == null) {
             win.hide();
           }
+        });
+        win.on('resize', () => {
+          revealSpace();
         });
 
         const onMediaSettingsChange = (
