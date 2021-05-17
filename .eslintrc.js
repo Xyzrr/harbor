@@ -19,6 +19,7 @@ module.exports = {
     'jsx-a11y/media-has-caption': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'no-param-reassign': 'off',
+    'import/no-mutable-exports': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

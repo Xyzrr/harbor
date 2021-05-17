@@ -25,7 +25,7 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
+import MenuBuilder, { quittingFromMenu } from './menu';
 import { openSystemPreferences } from 'electron-util';
 import activeWin from 'xyzrr/active-win';
 import * as _ from 'lodash';
@@ -225,7 +225,7 @@ const createWindow = async () => {
   });
 
   mainWindow.on('close', (e) => {
-    if (!quitting) {
+    if (!quitting && !quittingFromMenu) {
       e.preventDefault();
       mainWindow?.hide();
     }

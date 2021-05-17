@@ -13,6 +13,10 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;
 }
 
+// Hack to make quitting work,
+// since quitAndInstall() doesn't trigger before-quit early enough
+export let quittingFromMenu = false;
+
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
 
@@ -101,6 +105,7 @@ export default class MenuBuilder {
           label: 'Update and restart',
           visible: false,
           click() {
+            quittingFromMenu = true;
             autoUpdater.quitAndInstall();
           },
         },
