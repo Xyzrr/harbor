@@ -33,6 +33,8 @@ export const Heading = styled.h1`
 export const Spaces = styled.div`
   display: flex;
   padding: 8px 20px 20px;
+  gap: 12px;
+  flex-wrap: wrap;
 `;
 
 export const UserInfoPopup = styled.div`
@@ -44,6 +46,7 @@ export const UserInfoPopup = styled.div`
 
 export const Space = styled.div<{ active?: boolean }>`
   cursor: default;
+  flex-shrink: 0;
   text-select: none;
   width: 180px;
   height: 180px;
@@ -56,8 +59,6 @@ export const Space = styled.div<{ active?: boolean }>`
   &:hover {
     background: ${LIGHT_BACKGROUND.lighten(0.4).string()};
   }
-  margin-right: 12px;
-  margin-bottom: 12px;
   ${(props) =>
     props.active &&
     css`
@@ -98,12 +99,11 @@ export const CreateSpace = styled.div`
   text-select: none;
   width: 180px;
   height: 180px;
-  margin-right: 20px;
-  margin-bottom: 20px;
   border-radius: 8px;
   padding: 18px;
   border: 2px dotted #555;
   cursor: default;
+  flex-shrink: 0;
 `;
 
 export const CreateSpaceTitle = styled.h2`
