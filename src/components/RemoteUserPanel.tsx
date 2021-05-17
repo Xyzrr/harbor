@@ -200,6 +200,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
           />
           <HoverMenuStyles.MenuItem
             name={whisperTarget ? 'hearing_disabled' : 'hearing'}
+            style={whisperTarget ? { color: 'yellow' } : undefined}
             onClick={() => {
               if (whisperTarget) {
                 setLocalWhisperingTo(undefined);

@@ -9,6 +9,7 @@ import { MAX_INTERACTION_DISTANCE } from '../constants';
 import RemoteUserPanel, { NearbyPlayer } from './RemoteUserPanel';
 import { VideoCallContext } from '../contexts/VideoCallContext/VideoCallContext';
 import RemoteScreenPanel from './RemoteScreenPanel';
+import { PlayerStateContext } from '../contexts/PlayerStateContext';
 
 export interface PanelsProps {
   className?: string;
@@ -26,6 +27,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
   } = React.useContext(ColyseusContext);
 
   const { localIdentity } = React.useContext(UserSettingsContext);
+  const { localWhisperingTo } = React.useContext(PlayerStateContext);
 
   React.useEffect(() => {
     const onMousePosition = (
@@ -159,13 +161,13 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
                 player={player}
                 videoTrack={participant.videoTrack}
                 audioTrack={participant.audioTrack}
+                whisperTarget={localWhisperingTo === identity}
               />
               {player.screenShareOn && (
                 <RemoteScreenPanel
                   screenOwnerIdentity={identity}
                   player={player}
                   videoTrack={participant.screenVideoTrack}
-                  onSetExpanded={() => {}}
                 />
               )}
             </React.Fragment>
