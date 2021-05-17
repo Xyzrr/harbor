@@ -115,7 +115,6 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
 
   return (
     <S.Wrapper className={className}>
-      {colyseusError && <S.ColyseusError>{colyseusError}</S.ColyseusError>}
       <div
         style={{
           position: 'absolute',
@@ -130,6 +129,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
         })}
         <MapPlayer playerSummary={localPlayer} self />
       </div>
+      {colyseusError && <S.ColyseusError>{colyseusError}</S.ColyseusError>}
     </S.Wrapper>
   );
 };

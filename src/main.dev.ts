@@ -755,3 +755,27 @@ ipcMain.on(
     openSystemPreferences(pane, section as any);
   }
 );
+
+/**
+ * Dragging for Windows
+ */
+
+ipcMain.on('dragWindow', (e, { mouseX, mouseY }) => {
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+
+  if (!focusedWindow) {
+    return;
+  }
+
+  if (focusedWindow.isMaximized()) {
+    focusedWindow.unmaximize();
+  }
+
+  const { width } = focusedWindow.getBounds();
+  if (mouseX > width) {
+    mouseX = width;
+  }
+
+  const { x, y } = screen.getCursorScreenPoint();
+  focusedWindow.setPosition(x - mouseX, y - mouseY);
+});

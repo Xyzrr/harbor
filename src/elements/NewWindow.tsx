@@ -33,6 +33,7 @@ export interface NewWindowProps {
   className?: string;
   name: string;
   features?: string;
+  windowRef?: React.MutableRefObject<Window | null>;
   onClose?(): void;
 }
 
@@ -40,6 +41,7 @@ const NewWindow: React.FC<NewWindowProps> = ({
   name,
   features,
   children,
+  windowRef,
   onClose,
 }) => {
   const [containerEl, setContainerEl] = React.useState<Element>();
@@ -54,6 +56,10 @@ const NewWindow: React.FC<NewWindowProps> = ({
 
     if (win == null) {
       throw new Error('Could not open new window.');
+    }
+
+    if (windowRef) {
+      windowRef.current = win;
     }
 
     setContainerEl(el);
