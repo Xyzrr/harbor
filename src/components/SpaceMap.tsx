@@ -101,8 +101,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
     };
   }, [colyseusRoom]);
 
-  useKeyboardMovement(setLocalPlayer);
-  usePushing(setLocalPlayer, playerSummaries);
+  useKeyboardMovement(setLocalPlayer, playerSummaries);
 
   if (!colyseusRoom) {
     return (

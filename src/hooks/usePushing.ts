@@ -47,5 +47,5 @@ export const usePushing = (
     return () => {
       cancelAnimationFrame(animationFrame);
     };
-  }, [setPlayer, playerSummaries]);
+  }, [setPlayer, playerSummaries, newWindow]);
 };
