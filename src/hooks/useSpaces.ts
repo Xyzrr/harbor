@@ -2,10 +2,29 @@ import React from 'react';
 import * as Colyseus from 'colyseus.js';
 import { useImmer } from 'use-immer';
 import { COLYSEUS_CLIENT } from '../constants';
+import { FirebaseContext } from '../contexts/FirebaseContext';
 
 const useSpaces = () => {
   const [spaces, setSpaces] = useImmer<Colyseus.RoomAvailable[] | null>(null);
   const [error, setError] = React.useState<Error>();
+  const { user } = React.useContext(FirebaseContext);
+
+  const allowed = React.useCallback(
+    (room: Colyseus.RoomAvailable) => {
+      if (room.metadata.spaceId === 'wandb-growth') {
+        if (
+          user?.email?.endsWith('wandb.com') ||
+          user?.email === 'johnlongqian@gmail.com'
+        ) {
+          return true;
+        }
+        return false;
+      }
+
+      return true;
+    },
+    [user]
+  );
 
   React.useEffect(() => {
     let l: Colyseus.Room;
@@ -13,11 +32,16 @@ const useSpaces = () => {
       .then((lobby) => {
         l = lobby;
         lobby.onMessage('rooms', (rooms) => {
-          console.log('rooms');
-          setSpaces(rooms);
+          console.log('rooms', rooms);
+          setSpaces(rooms.filter(allowed));
         });
 
         lobby.onMessage('+', ([roomId, room]) => {
+          console.log('roomid', roomId);
+          if (!allowed(roomId)) {
+            return;
+          }
+
           setSpaces((draft) => {
             if (draft == null) {
               return;
@@ -53,7 +77,7 @@ const useSpaces = () => {
     return () => {
       l?.leave();
     };
-  }, []);
+  }, [setSpaces, allowed]);
 
   return { spaces, error };
 };
