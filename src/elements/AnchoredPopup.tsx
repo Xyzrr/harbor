@@ -17,17 +17,12 @@ const AnchoredPopup: React.FC<AnchoredPopupProps> = ({
   onClose,
   children,
 }) => {
-  const [anchorRect, setAnchorRect] = React.useState<DOMRect | undefined>();
-
-  React.useEffect(() => {
-    setAnchorRect(anchorEl.getBoundingClientRect());
-  }, [anchorEl]);
+  const anchorRect = React.useMemo(
+    () => anchorEl.getBoundingClientRect(),
+    [anchorEl]
+  );
 
   const [anchorOriginVert, anchorOriginHor] = anchorOrigin.split(' ');
-
-  if (!anchorRect) {
-    return null;
-  }
 
   let y = 0;
   switch (anchorOriginVert) {
