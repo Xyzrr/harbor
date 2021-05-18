@@ -145,7 +145,7 @@ const installExtensions = async () => {
 let mainWindow: BrowserWindow | null = null;
 let spaceWindow: BrowserWindow | null = null;
 let panelsWindow: BrowserWindow | null = null;
-let popupWindow: BrowserWindow | undefined;
+let popupWindow: BrowserWindow | null = null;
 
 /**
  * App tracking
@@ -513,6 +513,7 @@ const createWindow = async () => {
         ipcMain.on('media-settings', onMediaSettingsChange);
 
         win.on('close', () => {
+          spaceWindow = null;
           ipcMain.off('media-settings', onMediaSettingsChange);
           tray.destroy();
           mainWindow?.show();
@@ -534,6 +535,9 @@ const createWindow = async () => {
       if (frameName === 'popup') {
         popupWindow = win;
         win.setWindowButtonVisibility(false);
+        popupWindow.on('close', () => {
+          popupWindow = null;
+        });
       }
 
       if (frameName === 'screen-share-picker') {
@@ -685,6 +689,8 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow == null) {
     createWindow();
+  } else if (spaceWindow && !spaceWindow.isVisible()) {
+    spaceWindow.show();
   } else {
     mainWindow.show();
   }
