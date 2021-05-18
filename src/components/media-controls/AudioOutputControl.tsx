@@ -24,19 +24,17 @@ const VideoInputControl: React.FC<VideoInputControlProps> = ({
 
   React.useEffect(() => {
     const updateDevices = () => {
+      console.log('updating devices');
       navigator.mediaDevices.enumerateDevices().then((devices) => {
-        setMediaDevices(devices.filter((d) => d.kind === 'videoinput'));
+        setMediaDevices(devices.filter((d) => d.kind === 'audiooutput'));
       });
     };
 
-    navigator.mediaDevices.addEventListener('ondevicechange', updateDevices);
+    navigator.mediaDevices.addEventListener('devicechange', updateDevices);
     updateDevices();
 
     return () => {
-      navigator.mediaDevices.removeEventListener(
-        'ondevicechange',
-        updateDevices
-      );
+      navigator.mediaDevices.removeEventListener('devicechange', updateDevices);
     };
   }, []);
 
