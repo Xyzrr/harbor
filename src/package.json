@@ -1,7 +1,7 @@
 {
   "name": "harbor",
   "productName": "Harbor",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "description": "A minimal virtual office with spatial video chat.",
   "main": "./main.prod.js",
   "author": {
