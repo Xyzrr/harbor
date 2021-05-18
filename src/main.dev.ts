@@ -274,7 +274,6 @@ const createWindow = async () => {
             maximizable: false,
             minimizable: false,
             focusable: false,
-            closable: false,
             transparent: true,
             hasShadow: false,
             vibrancy: undefined,
@@ -527,6 +526,9 @@ const createWindow = async () => {
         win.on('ready-to-show', () => {
           win.show();
         });
+        win.on('close', () => {
+          panelsWindow = null;
+        });
       }
 
       if (frameName === 'popup') {
@@ -653,7 +655,6 @@ const trackMouse = () => {
       return;
     }
 
-    const t = Date.now();
     const panelsWindowPosition = panelsWindow.getPosition();
     const cursorPoint = screen.getCursorScreenPoint();
     const mousePosition = [
