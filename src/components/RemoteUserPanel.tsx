@@ -81,10 +81,21 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
     }, [videoTrack]);
 
     React.useEffect(() => {
-      if (audioRef.current && audioTrack) {
-        audioRef.current.srcObject = new MediaStream([audioTrack]);
+      const audioEl = audioRef.current;
+      if (audioEl == null || audioTrack == null) {
+        return;
       }
-    }, [audioTrack]);
+
+      audioEl.srcObject = new MediaStream([audioTrack]);
+      (audioEl as any)
+        .setSinkId(localAudioOutputDeviceId)
+        .then(() => {
+          console.log('Set sink ID to', localAudioOutputDeviceId);
+        })
+        .catch((e: any) => {
+          console.log('Failed to set sink ID:', e);
+        });
+    }, [audioTrack, localAudioOutputDeviceId]);
 
     React.useEffect(() => {
       if (!videoTrack) {
@@ -107,22 +118,6 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
         }, 500);
       }
     });
-
-    React.useEffect(() => {
-      const audioEl = audioRef.current;
-      if (audioEl == null) {
-        return;
-      }
-
-      (audioEl as any)
-        .setSinkId(localAudioOutputDeviceId)
-        .then(() => {
-          console.log('Set sink ID to', localAudioOutputDeviceId);
-        })
-        .catch((e: any) => {
-          console.log('Failed to set sink ID:', e);
-        });
-    }, [localAudioOutputDeviceId]);
 
     const { localIdentity } = React.useContext(UserSettingsContext);
 
@@ -178,7 +173,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
           />
         )}
         {player.videoInputOn && !videoStreaming && <Loader />}
-        {player.audioInputOn && audioTrack && <audio ref={audioRef} autoPlay />}
+        <audio ref={audioRef} autoPlay />
         <S.InfoBar>
           <S.InfoBarLeft>
             <S.StatusIcons>
