@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   background: ${LIGHT_BACKGROUND.string()};
+  overflow: auto;
 `;
 
 export const TopBar = styled.div`
