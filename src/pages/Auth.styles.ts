@@ -1,6 +1,7 @@
 import Button from '../elements/Button';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { DARK_BACKGROUND, LIGHT_BACKGROUND } from '../constants';
+import os from 'os';
 
 export const Wrapper = styled.div`
   height: 100vh;
@@ -12,6 +13,10 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  ${process.platform === 'win32' &&
+  css`
+    background-color: ${LIGHT_BACKGROUND.string()};
+  `}
 `;
 
 export const Logo = styled.h1`

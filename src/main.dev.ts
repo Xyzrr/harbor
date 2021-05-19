@@ -468,7 +468,7 @@ const createWindow = async () => {
           }
         });
 
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           // Timeout is needed on Big Sur because of dumb bug;
           // the tray bounds are wrong for the first 100ms.
@@ -523,7 +523,7 @@ const createWindow = async () => {
 
       if (frameName === 'panels') {
         panelsWindow = win;
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           win.show();
         });
@@ -534,7 +534,7 @@ const createWindow = async () => {
 
       if (frameName === 'popup') {
         popupWindow = win;
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         popupWindow.on('close', () => {
           popupWindow = null;
         });
@@ -547,7 +547,7 @@ const createWindow = async () => {
       }
 
       if (frameName === 'screen-share-toolbar') {
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           win.show();
         });
@@ -556,7 +556,7 @@ const createWindow = async () => {
       if (frameName === 'screen-share-overlay') {
         win.setIgnoreMouseEvents(true);
         win.setContentProtection(true);
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
 
         const { shareSourceId } = options as any;
 
@@ -629,7 +629,7 @@ const createWindow = async () => {
 
       if (frameName === 'local-video-preview') {
         win.on('ready-to-show', () => {
-          win.setWindowButtonVisibility(false);
+          win.setWindowButtonVisibility?.(false);
           win.show();
         });
       }
