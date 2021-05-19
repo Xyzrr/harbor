@@ -42,7 +42,7 @@ DEBUG_PROD=1 yarn package
 
 ### Processes
 
-All electron apps have a main process and one or more renderer processes. Harbor has just one renderer process, but it spawns many `BrowserWindow`s and controls them synchronously within a single React app. The entry point for the main process is `main.dev.ts`, and from there the main window is spawned in `createWindow()`.
+All electron apps have a main process and one or more renderer processes. Harbor has just one renderer process, but it spawns many `BrowserWindow`s and controls them synchronously within a single React app. Most of the magic that makes this possible is in `NewWindow.tsx`. The entry point for the main process is `main.dev.ts`, and from there the main window is spawned in `createWindow()`.
 
 The entry point for the renderer process is `index.tsx`.
 
