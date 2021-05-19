@@ -165,7 +165,7 @@ const activeWinLoop = fork(
   path.join(__dirname, 'active-win-loop.prod.js'),
   [],
   {
-    stdio: 'pipe',
+    stdio: 'inherit',
   }
 );
 activeWinLoop.on('message', (aw: any) => {
