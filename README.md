@@ -5,6 +5,11 @@ This is the Electron client for Harbor. It's built off [Electron React Boilerpla
 ## Setting up
 
 Make sure you have [XCode](https://www.freecodecamp.org/news/how-to-download-and-install-xcode/) installed.
+Otherwise, you will run into the following error:
+
+```
+xcrun: error: unable to find utility "xctest", not a developer tool or in PATH
+```
 
 Just clone and install dependencies with:
 
