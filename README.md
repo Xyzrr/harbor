@@ -4,6 +4,8 @@ This is the Electron client for Harbor. It's built off [Electron React Boilerpla
 
 ## Setting up
 
+Make sure you have [XCode](https://www.freecodecamp.org/news/how-to-download-and-install-xcode/) installed.
+
 Just clone and install dependencies with:
 
 ```bash
