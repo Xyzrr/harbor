@@ -18,7 +18,7 @@ const Home: React.FC<HomeProps> = ({ className }) => {
   const { app: firebaseApp, user } = React.useContext(FirebaseContext);
 
   React.useEffect(() => {
-    ipcRenderer.send('setWindowSize', { width: 604, height: 440 });
+    ipcRenderer.send('setWindowSize', { width: 604, height: 400 });
   }, []);
 
   const history = useHistory();
