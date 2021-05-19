@@ -27,7 +27,7 @@ export const LocalMediaContext = React.createContext<LocalMediaContextValue>(
 );
 
 export const LocalMediaContextProvider: React.FC = ({ children }) => {
-  const [localVideoInputOn, setLocalVideoInputOn] = React.useState(true);
+  const [localVideoInputOn, setLocalVideoInputOn] = React.useState(false);
   const [localVideoInputDeviceId, setLocalVideoInputDeviceId] =
     React.useState<string | undefined>();
   const [localVideoTrack, setLocalVideoTrack] =

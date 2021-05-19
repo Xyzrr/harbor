@@ -99,7 +99,14 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
       removeColyseusListener('player-updated', onPlayerUpdated);
       removeColyseusListener('player-removed', onPlayerRemoved);
     };
-  }, [colyseusRoom]);
+  }, [
+    colyseusRoom,
+    addColyseusListener,
+    removeColyseusListener,
+    localIdentity,
+    setLocalPlayer,
+    setPlayerSummaries,
+  ]);
 
   useKeyboardMovement(setLocalPlayer, playerSummaries);
 
