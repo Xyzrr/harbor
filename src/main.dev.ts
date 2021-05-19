@@ -196,9 +196,9 @@ const createWindow = async () => {
     show: false,
     width: 360,
     height: 360,
-    frame: false,
     vibrancy: 'menu',
-    titleBarStyle: 'hidden',
+    titleBarStyle: process.platform === 'win32' ? 'default' : 'hidden',
+    autoHideMenuBar: true,
     trafficLightPosition: { x: 12, y: 24 },
     icon: getAssetPath('icon.png'),
     webPreferences: {
