@@ -15,6 +15,11 @@ export type Origin =
   | 'bottom center'
   | 'bottom right';
 
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
 export interface PopupProps {
   className?: string;
   x: number;
@@ -31,13 +36,27 @@ const Popup: React.FC<PopupProps> = ({
   children,
   onClose,
 }) => {
-  const { ref, width, height } = useResizeObserver<HTMLDivElement>();
+  // TODO: figure out why the ResizeObserver approach doesn't work
+  // const { ref, width, height } = useResizeObserver<HTMLDivElement>();
 
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = React.useState<Dimensions | null>(null);
+  const width = dimensions?.width;
+  const height = dimensions?.height;
   React.useEffect(() => {
-    console.log('MOUNTED POPUP');
-    return () => {
-      console.log('UNMOUNTED POPUP');
+    let timeoutID: number;
+    const getDimensionsIfAvailable = () => {
+      if (ref.current == null) {
+        timeoutID = setTimeout(getDimensionsIfAvailable);
+        return;
+      }
+      setDimensions({
+        width: ref.current.clientWidth,
+        height: ref.current.clientHeight,
+      });
     };
+    timeoutID = setTimeout(getDimensionsIfAvailable);
+    return () => clearTimeout(timeoutID);
   }, []);
 
   React.useEffect(() => {
