@@ -165,7 +165,7 @@ const activeWinLoop = fork(
   path.join(__dirname, 'active-win-loop.prod.js'),
   [],
   {
-    stdio: 'pipe',
+    stdio: 'inherit',
   }
 );
 activeWinLoop.on('message', (aw: any) => {
@@ -196,9 +196,9 @@ const createWindow = async () => {
     show: false,
     width: 360,
     height: 360,
-    frame: false,
     vibrancy: 'menu',
-    titleBarStyle: 'hidden',
+    titleBarStyle: process.platform === 'win32' ? 'default' : 'hidden',
+    autoHideMenuBar: true,
     trafficLightPosition: { x: 12, y: 24 },
     icon: getAssetPath('icon.png'),
     webPreferences: {
@@ -468,7 +468,7 @@ const createWindow = async () => {
           }
         });
 
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           // Timeout is needed on Big Sur because of dumb bug;
           // the tray bounds are wrong for the first 100ms.
@@ -523,7 +523,7 @@ const createWindow = async () => {
 
       if (frameName === 'panels') {
         panelsWindow = win;
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           win.show();
         });
@@ -534,7 +534,7 @@ const createWindow = async () => {
 
       if (frameName === 'popup') {
         popupWindow = win;
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         popupWindow.on('close', () => {
           popupWindow = null;
         });
@@ -547,7 +547,7 @@ const createWindow = async () => {
       }
 
       if (frameName === 'screen-share-toolbar') {
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           win.show();
         });
@@ -556,7 +556,7 @@ const createWindow = async () => {
       if (frameName === 'screen-share-overlay') {
         win.setIgnoreMouseEvents(true);
         win.setContentProtection(true);
-        win.setWindowButtonVisibility(false);
+        win.setWindowButtonVisibility?.(false);
 
         const { shareSourceId } = options as any;
 
@@ -629,7 +629,7 @@ const createWindow = async () => {
 
       if (frameName === 'local-video-preview') {
         win.on('ready-to-show', () => {
-          win.setWindowButtonVisibility(false);
+          win.setWindowButtonVisibility?.(false);
           win.show();
         });
       }
@@ -734,12 +734,14 @@ ipcMain.on('clearUrl', () => {
 
 ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
   if (mainWindow) {
-    mainWindow.setMinimumSize(size.width, size.height);
+    // Weird windows bug where winow becomes 16px narrower.
+    const adjustedWidth = size.width + (process.platform === 'win32' ? 16 : 0);
+    mainWindow.setMinimumSize(adjustedWidth, size.height);
     const bounds = mainWindow.getBounds();
     mainWindow.setBounds({
       x: bounds.x + (bounds.width - size.width) / 2,
       y: bounds.y + (bounds.height - size.height) / 2,
-      width: size.width,
+      width: adjustedWidth,
       height: size.height,
     });
   }
