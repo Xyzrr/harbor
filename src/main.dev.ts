@@ -751,15 +751,14 @@ ipcMain.on('clearUrl', () => {
  */
 
 ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
-  console.log('Setting window size', size.width, size.height);
   if (mainWindow) {
     // Weird windows bug where winow becomes 16px narrower.
     const adjustedWidth = size.width + (process.platform === 'win32' ? 16 : 0);
     mainWindow.setMinimumSize(adjustedWidth, size.height);
     const bounds = mainWindow.getBounds();
     mainWindow.setBounds({
-      x: bounds.x + (bounds.width - size.width) / 2,
-      y: bounds.y + (bounds.height - size.height) / 2,
+      x: Math.round(bounds.x + (bounds.width - size.width) / 2),
+      y: Math.round(bounds.y + (bounds.height - size.height) / 2),
       width: adjustedWidth,
       height: size.height,
     });
