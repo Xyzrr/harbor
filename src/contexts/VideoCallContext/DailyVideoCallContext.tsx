@@ -241,10 +241,11 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
             const [name, identity] = participant.user_name.split(':');
             draft[identity] = {
               serverId,
-              audioTrack: participant.audioTrack,
-              videoTrack: participant.videoTrack,
-              screenAudioTrack: participant.screenAudioTrack,
-              screenVideoTrack: participant.screenVideoTrack,
+              // for some reason daily sometimes returns `false` as tracks, hence the `|| undefined`
+              audioTrack: participant.audioTrack || undefined,
+              videoTrack: participant.videoTrack || undefined,
+              screenAudioTrack: participant.screenAudioTrack || undefined,
+              screenVideoTrack: participant.screenVideoTrack || undefined,
             };
           }
 
