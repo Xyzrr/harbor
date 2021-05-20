@@ -757,7 +757,7 @@ ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
     mainWindow.setMinimumSize(adjustedWidth, size.height);
     const bounds = mainWindow.getBounds();
     mainWindow.setBounds({
-      x: Math.round(bounds.x + (bounds.width - size.width) / 2),
+      x: Math.round(bounds.x + (bounds.width - adjustedWidth) / 2),
       y: Math.round(bounds.y + (bounds.height - size.height) / 2),
       width: adjustedWidth,
       height: size.height,
