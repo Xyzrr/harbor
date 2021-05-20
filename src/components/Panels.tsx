@@ -136,15 +136,15 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
 
   const { participants } = React.useContext(VideoCallContext);
 
-  console.log('Nearby players', nearbyPlayers);
-  console.log('Participants', participants);
+  console.debug('Nearby players', nearbyPlayers);
+  console.debug('Participants', participants);
 
   return (
     <S.Wrapper className={className}>
       <S.PanelsWrapper
         ref={panelsWrapperRef}
         onMouseMove={() => {
-          console.log('mouse move');
+          console.debug('mouse move');
         }}
       >
         {Object.entries(nearbyPlayers).map(([identity, player]) => {

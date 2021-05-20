@@ -24,7 +24,7 @@ const VideoInputControl: React.FC<VideoInputControlProps> = ({
 
   React.useEffect(() => {
     const updateDevices = () => {
-      console.log('updating devices');
+      console.debug('updating devices');
       navigator.mediaDevices.enumerateDevices().then((devices) => {
         setMediaDevices(devices.filter((d) => d.kind === 'audiooutput'));
       });

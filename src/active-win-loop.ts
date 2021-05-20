@@ -1,5 +1,13 @@
 const activeWin = require('xyzrr/active-win');
 
 setInterval(() => {
-  process.send?.(activeWin.sync({ screenRecordingPermission: false }));
+  try {
+    const aw = activeWin.sync({ screenRecordingPermission: false });
+    if (aw == null) {
+      throw new Error(`activeWin.sync returned ${aw}`);
+    }
+    process.send?.(aw);
+  } catch (err) {
+    console.error(`ACTIVE-WIN ERROR: ${err}`);
+  }
 }, 2000);

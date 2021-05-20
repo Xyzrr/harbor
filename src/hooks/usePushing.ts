@@ -30,7 +30,7 @@ export const usePushing = (
           );
 
           if (dist < PLAYER_RADIUS * 2) {
-            console.log('Pushed by:', identity);
+            console.debug('Pushed by:', identity);
 
             const atan = Math.atan((draft.y - player.y) / (player.x - draft.x));
             const dir = player.x > draft.x ? atan : atan + Math.PI;

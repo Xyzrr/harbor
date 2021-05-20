@@ -51,7 +51,7 @@ const CursorsOverlay: React.FC<CursorsOverlayProps> = ({
     }
 
     const onPlayerUpdated = () => {
-      console.log('Updating cursors');
+      console.debug('Updating cursors');
       const players = room.state.players.entries();
       const playersInAudience = players.filter(
         ([i, p]: [string, any]) =>

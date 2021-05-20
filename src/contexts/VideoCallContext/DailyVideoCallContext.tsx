@@ -36,10 +36,12 @@ export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugCon
         setDebugStats({
           Threshold: s.threshold,
           Quality: s.quality,
-          'Receive bitrate': s.stats.latest.videoRecvBitsPerSecond,
-          'Send bitrate': s.stats.latest.videoSendBitsPerSecond,
-          'Worst recv pkt loss': s.stats.worstVideoRecvPacketLoss,
-          'Worst send pkt loss': s.stats.worstVideoSendPacketLoss,
+          'Receive bitrate': Math.round(s.stats.latest.videoRecvBitsPerSecond),
+          'Send bitrate': Math.round(s.stats.latest.videoSendBitsPerSecond),
+          'Worst recv pkt loss':
+            Math.round(s.stats.worstVideoRecvPacketLoss * 1000) / 1000,
+          'Worst send pkt loss':
+            Math.round(s.stats.worstVideoSendPacketLoss * 1000) / 1000,
         });
       };
 
@@ -108,7 +110,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
 
         const participantObject = await callObject.join(options);
 
-        console.log('Joined Daily room', participantObject);
+        console.debug('Joined Daily room', participantObject);
 
         callObject.setLocalAudio(localAudioInputOn);
         callObject.setLocalVideo(localVideoInputOn);
@@ -241,10 +243,11 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
             const [name, identity] = participant.user_name.split(':');
             draft[identity] = {
               serverId,
-              audioTrack: participant.audioTrack,
-              videoTrack: participant.videoTrack,
-              screenAudioTrack: participant.screenAudioTrack,
-              screenVideoTrack: participant.screenVideoTrack,
+              // for some reason daily sometimes returns `false` as tracks, hence the `|| undefined`
+              audioTrack: participant.audioTrack || undefined,
+              videoTrack: participant.videoTrack || undefined,
+              screenAudioTrack: participant.screenAudioTrack || undefined,
+              screenVideoTrack: participant.screenVideoTrack || undefined,
             };
           }
 

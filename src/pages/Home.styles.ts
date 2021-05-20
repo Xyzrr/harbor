@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   background: ${LIGHT_BACKGROUND.string()};
+  overflow: auto;
 `;
 
 export const TopBar = styled.div`
@@ -12,10 +13,12 @@ export const TopBar = styled.div`
   width: 100%;
   -webkit-app-region: drag;
   position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   user-select: none;
+  background: ${LIGHT_BACKGROUND.string()};
 `;
 
 export const Heading = styled.h1`

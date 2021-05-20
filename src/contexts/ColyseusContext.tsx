@@ -93,7 +93,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
 
     const bindListenersToRoom = React.useCallback((r: Colyseus.Room) => {
       r.state.players.onAdd = (player: any, identity: string) => {
-        console.log('Colyseus player added:', identity);
+        console.debug('Colyseus player added:', identity);
 
         const addListeners = listeners.current?.['player-added'];
 
@@ -102,7 +102,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
         }
 
         player.onChange = (changes: any[]) => {
-          console.log('Colyseus player updated:', identity, changes);
+          console.debug('Colyseus player updated:', identity, changes);
 
           const updateListeners = listeners.current?.['player-updated'];
 
@@ -113,7 +113,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       };
 
       r.state.players.onRemove = (player: any, identity: string) => {
-        console.log('Colyseus player removed:', identity);
+        console.debug('Colyseus player removed:', identity);
 
         const removeListeners = listeners.current?.['player-removed'];
 
@@ -140,11 +140,11 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
         );
         setSessionId(r.sessionId);
 
-        console.log('Joined or created Colyseus room:', r);
+        console.debug('Joined or created Colyseus room:', r);
 
         setRoom(r);
 
-        console.log('INTIIAL ROOM STATE:', JSON.parse(JSON.stringify(r.state)));
+        console.debug('INTIIAL ROOM STATE:', JSON.parse(JSON.stringify(r.state)));
 
         bindListenersToRoom(r);
       },
@@ -168,7 +168,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
         return;
       }
 
-      console.log('Leaving Colyseus room');
+      console.debug('Leaving Colyseus room');
 
       roomRef.current.leave();
     }, []);
@@ -200,18 +200,18 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       }
 
       const onLeave = async (code: number) => {
-        console.log('LEFT WITH CODE:', code, room.id, room.sessionId, room);
+        console.debug('LEFT WITH CODE:', code, room.id, room.sessionId, room);
         setError(`Disconnected with code ${code}. Reconnecting...`);
         let newRoom: Colyseus.Room | undefined;
         try {
           newRoom = await COLYSEUS_CLIENT.reconnect(room.id, sessionId);
           if (newRoom) {
-            console.log(
+            console.debug(
               'STATE RIGHT AFTER RECONNECTING:',
               JSON.parse(JSON.stringify(newRoom.state))
             );
           }
-          console.log('SUCCESSFULLY RECONNECTED:', newRoom);
+          console.debug('SUCCESSFULLY RECONNECTED:', newRoom);
         } catch (e) {
           console.log('FAILED TO RECONNECT:', e);
           setError('Failed to reconnect. Please try again later.');
