@@ -20,6 +20,7 @@ import GetReady from './GetReady';
 import { PlayerStateContextProvider } from '../contexts/PlayerStateContext';
 import os from 'os';
 import DebugPanel, { useDebugPanel } from './DebugPanel';
+import SpaceOverflowDropdown from './SpaceOverflowDropdown';
 
 export interface SpaceProps {
   spaceId: string;
@@ -76,10 +77,15 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
                     </S.ExitButton>
                   </S.TopButtons>
                   <S.BottomButtons>
-                    <AudioInputControl />
-                    <VideoInputControl showPreviewOnHover />
-                    <AudioOutputControl />
-                    <ScreenShareControl />
+                    <S.BottomButtonsLeft>
+                      <AudioInputControl />
+                      <VideoInputControl showPreviewOnHover />
+                      <AudioOutputControl />
+                      <ScreenShareControl />
+                    </S.BottomButtonsLeft>
+                    <S.BottomButtonsRight>
+                      <SpaceOverflowDropdown />
+                    </S.BottomButtonsRight>
                   </S.BottomButtons>
                   <NewWindow name="panels">
                     <Panels />

@@ -107,6 +107,17 @@ export const BottomButtons = styled.div`
   display: flex;
   padding: 12px;
   gap: 8px;
+  justify-content: space-between;
+`;
+
+export const BottomButtonsLeft = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+export const BottomButtonsRight = styled.div`
+  display: flex;
+  gap: 8px;
 `;
 
 export const ExitButton = styled.div`
