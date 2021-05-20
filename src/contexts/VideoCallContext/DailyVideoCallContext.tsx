@@ -36,10 +36,12 @@ export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugCon
         setDebugStats({
           Threshold: s.threshold,
           Quality: s.quality,
-          'Receive bitrate': s.stats.latest.videoRecvBitsPerSecond,
-          'Send bitrate': s.stats.latest.videoSendBitsPerSecond,
-          'Worst recv pkt loss': s.stats.worstVideoRecvPacketLoss,
-          'Worst send pkt loss': s.stats.worstVideoSendPacketLoss,
+          'Receive bitrate': Math.round(s.stats.latest.videoRecvBitsPerSecond),
+          'Send bitrate': Math.round(s.stats.latest.videoSendBitsPerSecond),
+          'Worst recv pkt loss':
+            Math.round(s.stats.worstVideoRecvPacketLoss * 1000) / 1000,
+          'Worst send pkt loss':
+            Math.round(s.stats.worstVideoSendPacketLoss * 1000) / 1000,
         });
       };
 

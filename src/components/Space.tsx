@@ -19,6 +19,7 @@ import { FirebaseContext } from '../contexts/FirebaseContext';
 import GetReady from './GetReady';
 import { PlayerStateContextProvider } from '../contexts/PlayerStateContext';
 import os from 'os';
+import DebugPanel, { useDebugPanel } from './DebugPanel';
 
 export interface SpaceProps {
   spaceId: string;
@@ -58,6 +59,8 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
   const H = observedSize.height - O;
   const R = os.version().startsWith('Darwin Kernel Version 20.') ? 10 : 6;
 
+  const { showDebugPanel, setShowDebugPanel } = useDebugPanel();
+
   return (
     <>
       <LocalMediaContextProvider>
@@ -81,6 +84,14 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
                   <NewWindow name="panels">
                     <Panels />
                   </NewWindow>
+                  {showDebugPanel && (
+                    <NewWindow
+                      name="debug-panel"
+                      onClose={() => setShowDebugPanel(false)}
+                    >
+                      <DebugPanel />
+                    </NewWindow>
+                  )}
                 </DailyVideoCallContextProvider>
               </ColyseusContextProvider>
             </PlayerStateContextProvider>

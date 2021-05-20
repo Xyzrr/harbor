@@ -432,6 +432,24 @@ const createWindow = async () => {
         };
       }
 
+      if (frameName === 'debug-panel') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 300,
+            height: 500,
+            minWidth: undefined,
+            minHeight: undefined,
+            resizable: false,
+            maximizable: false,
+            backgroundColor: '#00000000',
+            show: true,
+            titleBarStyle: 'hidden',
+            vibrancy: undefined,
+          },
+        };
+      }
+
       shell.openExternal(url);
 
       return { action: 'deny' };
