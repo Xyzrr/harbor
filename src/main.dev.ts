@@ -247,6 +247,7 @@ const createWindow = async () => {
           action: 'allow',
           overrideBrowserWindowOptions: {
             transparent: true,
+            frame: false,
             show: false,
             width: 240,
             height: 252,
@@ -275,6 +276,7 @@ const createWindow = async () => {
             minimizable: false,
             focusable: false,
             transparent: true,
+            frame: false,
             hasShadow: false,
             vibrancy: undefined,
           },
@@ -333,6 +335,7 @@ const createWindow = async () => {
             minHeight: undefined,
             resizable: false,
             transparent: false,
+            frame: false,
             vibrancy: 'menu',
             focusable: false,
             alwaysOnTop: true,
@@ -347,6 +350,7 @@ const createWindow = async () => {
           action: 'allow',
           overrideBrowserWindowOptions: {
             transparent: true,
+            frame: false,
             minWidth: undefined,
             minHeight: undefined,
             titleBarStyle: 'hidden',
@@ -466,6 +470,7 @@ const createWindow = async () => {
 
         const revealSpace = () => {
           const trayBounds = tray.getBounds();
+          console.log("TRAY BOUNDS", trayBounds);
           const windowSize = win.getSize();
 
           win.setPosition(
