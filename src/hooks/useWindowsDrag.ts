@@ -7,7 +7,6 @@ export const useWindowsDrag = () => {
   const win = React.useContext(NewWindowContext);
 
   const onMouseMove = () => {
-    console.log('fuck me');
     ipcRenderer.send('dragWindow', {
       mouseX: mousePos.current.x,
       mouseY: mousePos.current.y,
@@ -20,7 +19,6 @@ export const useWindowsDrag = () => {
   };
 
   const onMouseDown = (e: React.MouseEvent) => {
-    console.log('fuck you');
     mousePos.current = { x: e.clientX, y: e.clientY };
 
     win?.addEventListener('mouseup', onMouseUp);

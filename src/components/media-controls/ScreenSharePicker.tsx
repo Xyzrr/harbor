@@ -44,7 +44,7 @@ const ScreenSharePicker: React.FC<ScreenSharePickerProps> = React.memo(
         });
     }, []);
 
-    console.log('sources', windowSources);
+    console.debug('sources', windowSources);
 
     return (
       <NewWindow name="screen-share-picker" onClose={onClose}>

@@ -84,7 +84,7 @@ const NewWindow: React.FC<NewWindowProps> = ({
     };
   }, []);
 
-  console.log('CONTAINER MOUNT', containerEl);
+  console.debug('CONTAINER MOUNT', containerEl);
 
   if (newWindow == null || containerEl == null) {
     return null;

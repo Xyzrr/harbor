@@ -108,7 +108,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
 
         const participantObject = await callObject.join(options);
 
-        console.log('Joined Daily room', participantObject);
+        console.debug('Joined Daily room', participantObject);
 
         callObject.setLocalAudio(localAudioInputOn);
         callObject.setLocalVideo(localVideoInputOn);
