@@ -27,7 +27,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder, { quittingFromMenu } from './menu';
 import { openSystemPreferences } from 'electron-util';
-import activeWin from 'xyzrr/active-win';
+import activeWin from '@xyzrr/active-win';
 import * as _ from 'lodash';
 import { fork } from 'child_process';
 
@@ -751,6 +751,7 @@ ipcMain.on('clearUrl', () => {
  */
 
 ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
+  console.log('Setting window size', size.width, size.height);
   if (mainWindow) {
     // Weird windows bug where winow becomes 16px narrower.
     const adjustedWidth = size.width + (process.platform === 'win32' ? 16 : 0);
