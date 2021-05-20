@@ -71,8 +71,8 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
                 <DailyVideoCallContextProvider spaceId={spaceId}>
                   <SpaceMap />
                   <S.TopButtons O={O}>
-                    <S.ExitButton>
-                      <Icon name="logout" onClick={onExit} />
+                    <S.ExitButton onClick={onExit}>
+                      <Icon name="logout" />
                     </S.ExitButton>
                   </S.TopButtons>
                   <S.BottomButtons>
