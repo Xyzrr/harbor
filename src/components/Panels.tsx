@@ -34,7 +34,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
       e: Electron.IpcRendererEvent,
       d: [number, number]
     ) => {
-      const doc = newWindow?.document;
+      const doc = newWindow.document;
 
       if (!doc) {
         return;

@@ -2,7 +2,7 @@ import * as S from './Popup.styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import useResizeObserver from 'use-resize-observer';
-import NewWindow from './NewWindow';
+import NewWindow, { NewWindowContext } from './NewWindow';
 import { ipcRenderer } from 'electron';
 
 export type Origin =
@@ -41,6 +41,7 @@ const Popup: React.FC<PopupProps> = ({
 
   const ref = React.useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = React.useState<Dimensions | null>(null);
+  const newWindow = React.useContext(NewWindowContext);
   const width = dimensions?.width;
   const height = dimensions?.height;
   React.useEffect(() => {
@@ -97,23 +98,23 @@ const Popup: React.FC<PopupProps> = ({
     }
 
     ipcRenderer.send('showPopup', {
-      x: Math.round(adjustedX),
-      y: Math.round(adjustedY),
+      x: Math.round(adjustedX + newWindow.screenX),
+      y: Math.round(adjustedY + newWindow.screenY),
       width: Math.round(width),
       height: Math.round(height),
     });
-  }, [width, height, origin]);
+  }, [width, height, origin, newWindow, x, y]);
 
   React.useEffect(() => {
     const onFocus = () => {
       onClose?.();
     };
 
-    window.addEventListener('focus', onFocus);
+    newWindow.addEventListener('focus', onFocus);
     return () => {
-      window.removeEventListener('focus', onFocus);
+      newWindow.removeEventListener('focus', onFocus);
     };
-  });
+  }, [newWindow, onClose]);
 
   return (
     <>

@@ -242,7 +242,9 @@ const createWindow = async () => {
 
   mainWindow.webContents.setWindowOpenHandler(
     ({ frameName, features, url }) => {
-      if (frameName === 'space') {
+      const [windowType, uniqueID] = frameName.split(':');
+
+      if (windowType === 'space') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -258,7 +260,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'panels') {
+      if (windowType === 'panels') {
         const workareaBounds = screen.getPrimaryDisplay().workArea;
 
         return {
@@ -281,7 +283,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'popup') {
+      if (windowType === 'popup') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -300,7 +302,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'screen-share-picker') {
+      if (windowType === 'screen-share-picker') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -319,7 +321,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'screen-share-toolbar') {
+      if (windowType === 'screen-share-toolbar') {
         const workAreaBounds = screen.getPrimaryDisplay().workArea;
 
         return {
@@ -342,7 +344,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'screen-share-overlay') {
+      if (windowType === 'screen-share-overlay') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -357,7 +359,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'permission-helper-window') {
+      if (windowType === 'permission-helper-window') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -376,7 +378,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'profile') {
+      if (windowType === 'profile') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -389,7 +391,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'local-video-preview') {
+      if (windowType === 'local-video-preview') {
         const spaceWindowBounds = spaceWindow?.getBounds();
         if (!spaceWindowBounds) {
           return { action: 'deny' };
@@ -410,7 +412,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'remote-user-panel') {
+      if (windowType === 'remote-user-panel') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -421,7 +423,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'remote-screen-panel') {
+      if (windowType === 'remote-screen-panel') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -432,7 +434,7 @@ const createWindow = async () => {
         };
       }
 
-      if (frameName === 'debug-panel') {
+      if (windowType === 'debug-panel') {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
@@ -459,7 +461,9 @@ const createWindow = async () => {
   mainWindow.webContents.on(
     'did-create-window',
     (win, { frameName, options }) => {
-      if (frameName === 'space') {
+      const [windowType, uniqueID] = frameName.split(':');
+
+      if (windowType === 'space') {
         spaceWindow = win;
 
         const tray = new Tray(getAssetPath('mic_on_camera_off@2x.png'));
@@ -539,7 +543,7 @@ const createWindow = async () => {
         mainWindow?.hide();
       }
 
-      if (frameName === 'panels') {
+      if (windowType === 'panels') {
         panelsWindow = win;
         win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
@@ -550,7 +554,7 @@ const createWindow = async () => {
         });
       }
 
-      if (frameName === 'popup') {
+      if (windowType === 'popup') {
         popupWindow = win;
         win.setWindowButtonVisibility?.(false);
         popupWindow.on('close', () => {
@@ -558,20 +562,20 @@ const createWindow = async () => {
         });
       }
 
-      if (frameName === 'screen-share-picker') {
+      if (windowType === 'screen-share-picker') {
         win.on('ready-to-show', () => {
           win.show();
         });
       }
 
-      if (frameName === 'screen-share-toolbar') {
+      if (windowType === 'screen-share-toolbar') {
         win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           win.show();
         });
       }
 
-      if (frameName === 'screen-share-overlay') {
+      if (windowType === 'screen-share-overlay') {
         win.setIgnoreMouseEvents(true);
         win.setContentProtection(true);
         win.setWindowButtonVisibility?.(false);
@@ -633,32 +637,32 @@ const createWindow = async () => {
         }
       }
 
-      if (frameName === 'permission-helper-window') {
+      if (windowType === 'permission-helper-window') {
         win.on('ready-to-show', () => {
           win.show();
         });
       }
 
-      if (frameName === 'profile') {
+      if (windowType === 'profile') {
         win.on('ready-to-show', () => {
           win.show();
         });
       }
 
-      if (frameName === 'local-video-preview') {
+      if (windowType === 'local-video-preview') {
         win.on('ready-to-show', () => {
           win.setWindowButtonVisibility?.(false);
           win.show();
         });
       }
 
-      if (frameName === 'remote-user-panel') {
+      if (windowType === 'remote-user-panel') {
         win.on('ready-to-show', () => {
           win.show();
         });
       }
 
-      if (frameName === 'remote-screen-panel') {
+      if (windowType === 'remote-screen-panel') {
         win.on('ready-to-show', () => {
           win.show();
         });
@@ -770,13 +774,12 @@ ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
  */
 
 ipcMain.on('showPopup', (e, bounds: Electron.Rectangle) => {
-  if (popupWindow && mainWindow) {
-    const parentBounds = mainWindow.getBounds();
+  if (popupWindow) {
     popupWindow.show();
     popupWindow.setBounds({
       ...bounds,
-      x: bounds.x + parentBounds.x,
-      y: bounds.y + parentBounds.y,
+      x: bounds.x,
+      y: bounds.y,
     });
   }
 });
