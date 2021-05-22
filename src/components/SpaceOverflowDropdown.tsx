@@ -28,14 +28,24 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                     return (
                       <Paper>
                         <MenuList dense variant="menu">
-                          <MenuItem>Hello world</MenuItem>
+                          <MenuItem disabled>
+                            Disable communication for...
+                          </MenuItem>
+                          <MenuItem>10 minutes</MenuItem>
+                          <MenuItem>30 minutes</MenuItem>
+                          <MenuItem>1 hour</MenuItem>
+                          <MenuItem>Until I&apos;m back</MenuItem>
                         </MenuList>
                       </Paper>
                     );
                   }}
                 >
                   {({ anchorAttributes, open }) => {
-                    return <MenuItem {...anchorAttributes}>Busy mode</MenuItem>;
+                    return (
+                      <MenuItem {...anchorAttributes}>
+                        Busy mode <Icon name="arrow_right" />
+                      </MenuItem>
+                    );
                   }}
                 </PopupTrigger>
               </MenuList>
