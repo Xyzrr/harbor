@@ -18,6 +18,33 @@ const SpaceToolbar: React.FC<SpaceToolbarProps> = React.memo(
     const { busySince, busyUntil, busyType } =
       React.useContext(PlayerStateContext);
 
+    const getTimeLeftString = React.useCallback(() => {
+      if (!busyUntil) {
+        return '';
+      }
+
+      const diff = busyUntil - Date.now();
+
+      const hours = Math.floor(diff / (60 * 60 * 1000));
+      const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+
+      if (hours === 0) {
+        return `${minutes}m`;
+      }
+
+      return `${hours}h ${minutes}m`;
+    }, []);
+
+    const [timeLeftString, setTimeLeftString] = React.useState(
+      getTimeLeftString()
+    );
+
+    React.useEffect(() => {
+      window.setTimeout(() => {
+        setTimeLeftString(getTimeLeftString());
+      }, 1000);
+    }, []);
+
     if (busySince) {
       return (
         <S.BusyWrapper>
@@ -26,6 +53,7 @@ const SpaceToolbar: React.FC<SpaceToolbarProps> = React.memo(
             Busy
           </S.BusyWrapperLeft>
           <S.BusyWrapperRight>
+            <S.TimeLeft>{timeLeftString}</S.TimeLeft>
             <Switch color="primary" defaultChecked />
           </S.BusyWrapperRight>
         </S.BusyWrapper>

@@ -43,6 +43,11 @@ export const BusyWrapperLeft = styled.div`
 
 export const BusyWrapperRight = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
+`;
+
+export const TimeLeft = styled.div`
+  color: #999;
+  font-size: 12px;
 `;
