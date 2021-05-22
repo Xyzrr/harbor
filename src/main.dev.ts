@@ -472,8 +472,7 @@ const createWindow = async () => {
             transparent: true,
             frame: false,
             hasShadow: false,
-            backgroundColor: '#00000000',
-            show: true,
+            show: false,
             titleBarStyle: 'hidden',
             vibrancy: undefined,
           },
@@ -698,6 +697,9 @@ const createWindow = async () => {
 
       if (windowType === 'popup-shield') {
         win.setWindowButtonVisibility(false);
+        win.on('ready-to-show', () => {
+          win.show();
+        });
       }
     }
   );
