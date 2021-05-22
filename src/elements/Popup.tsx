@@ -26,6 +26,8 @@ export interface PopupProps {
   y: number;
   origin?: Origin;
   onClose?(): void;
+  onMouseEnter?(e: React.MouseEvent): void;
+  onMouseLeave?(e: React.MouseEvent): void;
 }
 
 const Popup: React.FC<PopupProps> = ({
@@ -35,6 +37,8 @@ const Popup: React.FC<PopupProps> = ({
   origin = 'top center',
   children,
   onClose,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   // TODO: figure out why the ResizeObserver approach doesn't work
   // const { ref, width, height } = useResizeObserver<HTMLDivElement>();
@@ -109,7 +113,13 @@ const Popup: React.FC<PopupProps> = ({
   return (
     <>
       <NewWindow name="popup">
-        <S.Wrapper ref={ref}>{children}</S.Wrapper>
+        <S.Wrapper
+          ref={ref}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {children}
+        </S.Wrapper>
       </NewWindow>
     </>
   );

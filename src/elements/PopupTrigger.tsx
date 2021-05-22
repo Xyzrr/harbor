@@ -30,6 +30,7 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
   popupContent,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
+  const popupHoveredRef = React.useRef(false);
 
   const onMouseDown = React.useCallback((e: React.MouseEvent) => {
     setAnchorEl(e.currentTarget);
@@ -49,7 +50,9 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
 
   const onMouseLeave = React.useCallback((e: React.MouseEvent) => {
     window.setTimeout(() => {
-      setAnchorEl(e.currentTarget);
+      if (!popupHoveredRef.current) {
+        setAnchorEl(e.currentTarget);
+      }
     });
   }, []);
 
@@ -75,6 +78,12 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
           anchorOrigin={anchorOrigin}
           anchorEl={anchorEl}
           onClose={onClose}
+          onMouseEnter={() => {
+            popupHoveredRef.current = true;
+          }}
+          onMouseLeave={() => {
+            popupHoveredRef.current = false;
+          }}
         >
           {popupContent({ onClose })}
         </AnchoredPopup>
