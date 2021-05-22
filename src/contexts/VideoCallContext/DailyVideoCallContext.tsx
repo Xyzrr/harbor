@@ -23,7 +23,7 @@ interface DailyVideoCallDebugContextProviderProps {
 
 export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugContextProviderProps> =
   ({ children, callObject }) => {
-    const [debugStats, setDebugStats] =
+    const [networkStats, setNetworkStats] =
       React.useState<VideoCallDebugContextValue>();
 
     React.useEffect(() => {
@@ -33,7 +33,7 @@ export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugCon
 
       const updateNetworkStats = async () => {
         const s = await callObject.getNetworkStats();
-        setDebugStats({
+        setNetworkStats({
           Threshold: s.threshold,
           Quality: s.quality,
           'Receive bitrate': Math.round(s.stats.latest.videoRecvBitsPerSecond),
@@ -53,6 +53,53 @@ export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugCon
         window.clearInterval(interval);
       };
     }, [callObject]);
+
+    const {
+      localVideoInputOn,
+      localVideoInputDeviceId,
+      localVideoTrack,
+      localAudioInputOn,
+      localAudioTrack,
+      localAudioOutputDeviceId,
+      localAudioOutputOn,
+      localAudioInputDeviceId,
+      localScreenShareOn,
+      localScreenShareSourceId,
+    } = React.useContext(LocalMediaContext);
+    const localMediaContextValues = React.useMemo(
+      () => ({
+        localVideoInputOn,
+        localVideoInputDeviceId,
+        localVideoTrack,
+        localAudioInputOn,
+        localAudioTrack,
+        localAudioOutputDeviceId,
+        localAudioOutputOn,
+        localAudioInputDeviceId,
+        localScreenShareOn,
+        localScreenShareSourceId,
+      }),
+      [
+        localVideoInputOn,
+        localVideoInputDeviceId,
+        localVideoTrack,
+        localAudioInputOn,
+        localAudioTrack,
+        localAudioOutputDeviceId,
+        localAudioOutputOn,
+        localAudioInputDeviceId,
+        localScreenShareOn,
+        localScreenShareSourceId,
+      ]
+    );
+
+    const debugStats = React.useMemo(
+      () => ({
+        ...networkStats,
+        ...localMediaContextValues,
+      }),
+      [networkStats, localMediaContextValues]
+    );
 
     return (
       <VideoCallDebugContext.Provider value={debugStats}>

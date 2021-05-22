@@ -93,6 +93,7 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
         localAudioTrack.stop();
         setLocalAudioTrack(undefined);
       }
+      return;
     }
 
     if (localAudioTrack) {

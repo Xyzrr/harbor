@@ -19,7 +19,7 @@ export const Stat = styled.div`
 
 export const StatLabel = styled.div`
   color: #999;
-  width: 160px;
+  width: 220px;
 `;
 
 export const StatValue = styled.div``;
