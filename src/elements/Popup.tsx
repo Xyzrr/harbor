@@ -106,13 +106,19 @@ const Popup: React.FC<PopupProps> = ({
   }, [width, height, origin, newWindow, x, y]);
 
   React.useEffect(() => {
-    const onFocus = () => {
+    const onParentFocus = () => {
       onClose?.();
     };
 
-    newWindow.addEventListener('focus', onFocus);
+    const onParentHide = () => {
+      onClose?.();
+    };
+
+    newWindow.addEventListener('focus', onParentFocus);
+    newWindow.document.addEventListener('visibilitychange', onParentHide);
     return () => {
-      newWindow.removeEventListener('focus', onFocus);
+      newWindow.removeEventListener('focus', onParentFocus);
+      newWindow.document.removeEventListener('visibilitychange', onParentHide);
     };
   }, [newWindow, onClose]);
 

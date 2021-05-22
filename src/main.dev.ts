@@ -291,9 +291,11 @@ const createWindow = async () => {
             height: 400,
             minWidth: undefined,
             minHeight: undefined,
+            alwaysOnTop: true,
             resizable: false,
             maximizable: false,
             minimizable: false,
+            focusable: true,
             backgroundColor: '#00000000',
             show: false,
             titleBarStyle: 'hidden',
@@ -444,6 +446,33 @@ const createWindow = async () => {
             minHeight: undefined,
             resizable: false,
             maximizable: false,
+            backgroundColor: '#00000000',
+            show: true,
+            titleBarStyle: 'hidden',
+            vibrancy: undefined,
+          },
+        };
+      }
+
+      if (windowType === 'popup-shield') {
+        const screenBounds = screen.getPrimaryDisplay().bounds;
+
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            x: 0,
+            y: 0,
+            width: screenBounds.width,
+            height: screenBounds.height,
+            minWidth: undefined,
+            minHeight: undefined,
+            resizable: false,
+            maximizable: false,
+            focusable: false,
+            alwaysOnTop: true,
+            transparent: true,
+            frame: false,
+            hasShadow: false,
             backgroundColor: '#00000000',
             show: true,
             titleBarStyle: 'hidden',
@@ -667,6 +696,10 @@ const createWindow = async () => {
           win.show();
         });
       }
+
+      if (windowType === 'popup-shield') {
+        win.setWindowButtonVisibility(false);
+      }
     }
   );
 
@@ -775,12 +808,12 @@ ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
 
 ipcMain.on('showPopup', (e, bounds: Electron.Rectangle) => {
   if (popupWindow) {
-    popupWindow.show();
     popupWindow.setBounds({
       ...bounds,
       x: bounds.x,
       y: bounds.y,
     });
+    popupWindow.show();
   }
 });
 

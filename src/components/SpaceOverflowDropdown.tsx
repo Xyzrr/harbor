@@ -21,6 +21,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
             <Paper>
               <MenuList dense variant="menu">
                 <PopupTrigger
+                  on="hover"
                   anchorOrigin="top right"
                   transformOrigin="top left"
                   popupContent={() => {
