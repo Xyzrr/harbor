@@ -23,11 +23,16 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ className }) => {
       <PopupTrigger
         anchorOrigin="bottom right"
         transformOrigin="top right"
-        popupContent={() => {
+        popupContent={({ onClose }) => {
           return (
             <Paper>
               <MenuList dense variant="menu">
-                <MenuItem onClick={() => setShowProfile(true)}>
+                <MenuItem
+                  onClick={() => {
+                    setShowProfile(true);
+                    onClose();
+                  }}
+                >
                   Profile
                 </MenuItem>
                 <MenuItem>Account settings</MenuItem>
