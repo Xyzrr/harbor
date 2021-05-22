@@ -3,7 +3,7 @@ import * as S from './PopupTrigger.styles';
 import React from 'react';
 import { Origin } from './Popup';
 import AnchoredPopup from './AnchoredPopup';
-import NewWindow from './NewWindow';
+import NewWindow, { NewWindowContext } from './NewWindow';
 
 export type TriggerGenerator = (props: {
   anchorAttributes: {
@@ -31,6 +31,7 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const popupHoveredRef = React.useRef(false);
+  const newWindow = React.useContext(NewWindowContext);
 
   const onMouseDown = React.useCallback((e: React.MouseEvent) => {
     setAnchorEl(e.currentTarget);
@@ -38,7 +39,7 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
 
   const onClose = React.useCallback(() => {
     // The timeout fixes an insane race condition caused when you click the trigger twice.
-    window.setTimeout(() => {
+    newWindow.setTimeout(() => {
       setAnchorEl(null);
     });
   }, []);
@@ -49,11 +50,11 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
   }, []);
 
   const onMouseLeave = React.useCallback((e: React.MouseEvent) => {
-    window.setTimeout(() => {
+    newWindow.setTimeout(() => {
       if (!popupHoveredRef.current) {
         setAnchorEl(e.currentTarget);
       }
-    }, 50);
+    }, 100);
   }, []);
 
   return (

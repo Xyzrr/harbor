@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from '../elements/Icon';
 import { Switch } from '@material-ui/core';
 import { PlayerStateContext } from '../contexts/PlayerStateContext';
+import { NewWindowContext } from '../elements/NewWindow';
 
 export interface BusyToolbarProps {
   className?: string;
@@ -10,6 +11,8 @@ export interface BusyToolbarProps {
 
 const BusyToolbar: React.FC<BusyToolbarProps> = React.memo(
   function BusyToolbar({ className }) {
+    const newWindow = React.useContext(NewWindowContext);
+
     const { busyUntil, busyType, setBusySince, setBusyUntil, setBusyType } =
       React.useContext(PlayerStateContext);
 
@@ -61,11 +64,11 @@ const BusyToolbar: React.FC<BusyToolbarProps> = React.memo(
           <S.StyledSwitch
             defaultChecked
             onChange={() => {
-              window.setTimeout(() => {
+              newWindow.setTimeout(() => {
                 setBusySince(undefined);
                 setBusyUntil(undefined);
                 setBusyType(undefined);
-              }, 10);
+              }, 200);
             }}
           />
         </S.WrapperRight>
