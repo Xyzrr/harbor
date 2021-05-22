@@ -53,12 +53,21 @@ const BusyToolbar: React.FC<BusyToolbarProps> = React.memo(
     return (
       <S.Wrapper>
         <S.WrapperLeft>
-          <Icon name="event_busy" />
+          <S.TypeIcon name="event_busy" />
           Busy
         </S.WrapperLeft>
         <S.WrapperRight>
           <S.TimeLeft>{timeLeftString}</S.TimeLeft>
-          <Switch color="primary" defaultChecked />
+          <S.StyledSwitch
+            defaultChecked
+            onChange={() => {
+              window.setTimeout(() => {
+                setBusySince(undefined);
+                setBusyUntil(undefined);
+                setBusyType(undefined);
+              }, 10);
+            }}
+          />
         </S.WrapperRight>
       </S.Wrapper>
     );

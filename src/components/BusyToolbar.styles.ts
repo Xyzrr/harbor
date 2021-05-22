@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Switch } from '@material-ui/core';
+import Icon from '../elements/Icon';
 
 export const Wrapper = styled.div`
   position: absolute;
@@ -17,7 +19,11 @@ export const WrapperLeft = styled.div`
   align-items: center;
   gap: 8px;
   padding: 4px;
-  padding-left: 8px;
+  padding-left: 10px;
+`;
+
+export const TypeIcon = styled(Icon)`
+  font-size: 20px;
 `;
 
 export const WrapperRight = styled.div`
@@ -27,6 +33,21 @@ export const WrapperRight = styled.div`
 `;
 
 export const TimeLeft = styled.div`
-  color: #999;
+  color: #888;
   font-size: 12px;
+`;
+
+export const StyledSwitch = styled(Switch)`
+  padding: 8px;
+  .MuiButtonBase-root {
+    color: white;
+  }
+  .MuiSwitch-track {
+    border-radius: 11px;
+    background-color: #333 !important;
+    opacity: 1 !important;
+  }
+  .MuiSwitch-thumb {
+    transform: scale(0.8);
+  }
 `;
