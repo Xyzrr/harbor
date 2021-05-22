@@ -102,7 +102,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     const join = React.useCallback(
       async (roomName: string) => {
         const options: DailyCallOptions = {
-          url: `http://harbor.daily.co/${roomName}`,
+          url: `http://harb.daily.co/${roomName}`,
         };
 
         // missing userName property in type definition
