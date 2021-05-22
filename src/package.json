@@ -1,7 +1,7 @@
 {
   "name": "harbor",
   "productName": "Harbor",
-  "version": "0.2.19",
+  "version": "0.2.20",
   "description": "A minimal virtual office with spatial video chat.",
   "main": "./main.prod.js",
   "author": {
@@ -16,6 +16,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "xyzrr/active-win": "git+https://github.com/xyzrr/active-win.git#3ea3903f9ec3e4098f4ddfb339d6fd6e7de1963f"
+    "@xyzrr/active-win": "^7.1.1"
   }
 }
