@@ -15,8 +15,14 @@ export interface SpaceToolbarProps {
 
 const SpaceToolbar: React.FC<SpaceToolbarProps> = React.memo(
   function SpaceToolbar({ className }) {
-    const { busySince, busyUntil, busyType } =
-      React.useContext(PlayerStateContext);
+    const {
+      busySince,
+      busyUntil,
+      busyType,
+      setBusySince,
+      setBusyUntil,
+      setBusyType,
+    } = React.useContext(PlayerStateContext);
 
     const getTimeLeftString = React.useCallback(() => {
       if (!busyUntil) {
@@ -41,13 +47,19 @@ const SpaceToolbar: React.FC<SpaceToolbarProps> = React.memo(
 
     React.useEffect(() => {
       const interval = window.setInterval(() => {
+        if (busyUntil && busyUntil < Date.now()) {
+          setBusySince(undefined);
+          setBusyUntil(undefined);
+          setBusyType(undefined);
+        }
+
         setTimeLeftString(getTimeLeftString());
       }, 1000);
 
       return () => {
         window.clearInterval(interval);
       };
-    }, [getTimeLeftString]);
+    }, [getTimeLeftString, busyUntil, setBusySince, setBusyUntil, setBusyType]);
 
     if (busySince) {
       return (
