@@ -18,12 +18,9 @@ export const VideoCallContext = React.createContext<VideoCallContextValue>(
   null!
 );
 
-export type VideoCallDebugContextValue =
-  | {
-      [key: string]: string | number;
-    }
-  | undefined;
+export type VideoCallDebugContextValue = {
+  [key: string]: string | number | boolean | MediaStreamTrack | undefined;
+} | null;
 
-export const VideoCallDebugContext = React.createContext<
-  VideoCallDebugContextValue
->(null!);
+export const VideoCallDebugContext =
+  React.createContext<VideoCallDebugContextValue>(null);
