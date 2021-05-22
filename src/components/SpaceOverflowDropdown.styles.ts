@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Icon from '../elements/Icon';
 
 export const Wrapper = styled.div`
   user-select: none;
@@ -25,4 +26,11 @@ export const Wrapper = styled.div`
       opacity: 1;
     }
   }
+`;
+
+export const Arrow = styled(Icon).attrs({ name: 'arrow_right' })`
+  margin-left: 8px;
+  font-size: 16px;
+  width: 16px;
+  overflow: hidden;
 `;
