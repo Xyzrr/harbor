@@ -53,7 +53,7 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
       if (!popupHoveredRef.current) {
         setAnchorEl(e.currentTarget);
       }
-    });
+    }, 50);
   }, []);
 
   return (
