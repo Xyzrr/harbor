@@ -38,10 +38,15 @@ const DebugPanel: React.FC<DebugPanelProps> = ({ className }) => {
       {debugStats ? (
         <>
           {Object.entries(debugStats).map(([key, value]) => {
+            const valueOrID = (value as any)?.id ?? value;
+            const formattedValueOrID =
+              typeof valueOrID === 'string'
+                ? valueOrID
+                : JSON.stringify(valueOrID);
             return (
               <S.Stat key={key}>
                 <S.StatLabel>{key}:</S.StatLabel>
-                <S.StatValue>{value}</S.StatValue>
+                <S.StatValue>{formattedValueOrID}</S.StatValue>
               </S.Stat>
             );
           })}

@@ -443,11 +443,11 @@ const createWindow = async () => {
         return {
           action: 'allow',
           overrideBrowserWindowOptions: {
-            width: 300,
+            width: 600,
             height: 500,
             minWidth: undefined,
             minHeight: undefined,
-            resizable: false,
+            resizable: true,
             maximizable: false,
             backgroundColor: '#00000000',
             show: true,

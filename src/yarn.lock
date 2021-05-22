@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@xyzrr/active-win@^7.1.1":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@xyzrr/active-win/-/active-win-7.1.1.tgz#c82cb3fbb559dc29b3712aebc864e0f09d39e9a2"
-  integrity sha512-I6ILwLtirW8Hu0boQXryKixJYk9H4rM7SjQY8bBvovauNq25IpCBVlF/ld3A9qVAZ7AuSxtR35Zmv3zYZVg4gg==
+"@xyzrr/active-win@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@xyzrr/active-win/-/active-win-7.2.0.tgz#004a220e89225372fe369372d0395b7fdd64fae9"
+  integrity sha512-Ge35jVcRqIupaYjr3lp4xCMi445FwV0PmBoIbXFdQpOpL2MTWgaHrQHpKqkEExVBxHn+SXs6tcvpmvByJ/Fj6A==
   optionalDependencies:
     ffi-napi "^4.0.3"
     ref-napi "^3.0.2"
