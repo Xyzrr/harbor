@@ -27,7 +27,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder, { quittingFromMenu } from './menu';
 import { openSystemPreferences } from 'electron-util';
-import activeWin from 'xyzrr/active-win';
+import activeWin from '@xyzrr/active-win';
 import * as _ from 'lodash';
 import { fork } from 'child_process';
 
@@ -249,6 +249,7 @@ const createWindow = async () => {
           action: 'allow',
           overrideBrowserWindowOptions: {
             transparent: true,
+            frame: false,
             show: false,
             width: 240,
             height: 252,
@@ -277,6 +278,7 @@ const createWindow = async () => {
             minimizable: false,
             focusable: false,
             transparent: true,
+            frame: false,
             hasShadow: false,
             vibrancy: undefined,
           },
@@ -336,6 +338,7 @@ const createWindow = async () => {
             minHeight: undefined,
             resizable: false,
             transparent: false,
+            frame: false,
             vibrancy: 'menu',
             focusable: false,
             alwaysOnTop: true,
@@ -350,6 +353,7 @@ const createWindow = async () => {
           action: 'allow',
           overrideBrowserWindowOptions: {
             transparent: true,
+            frame: false,
             minWidth: undefined,
             minHeight: undefined,
             titleBarStyle: 'hidden',
@@ -497,6 +501,7 @@ const createWindow = async () => {
 
         const revealSpace = () => {
           const trayBounds = tray.getBounds();
+          console.log("TRAY BOUNDS", trayBounds);
           const windowSize = win.getSize();
 
           win.setPosition(
@@ -795,8 +800,8 @@ ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
     mainWindow.setMinimumSize(adjustedWidth, size.height);
     const bounds = mainWindow.getBounds();
     mainWindow.setBounds({
-      x: bounds.x + (bounds.width - size.width) / 2,
-      y: bounds.y + (bounds.height - size.height) / 2,
+      x: Math.round(bounds.x + (bounds.width - adjustedWidth) / 2),
+      y: Math.round(bounds.y + (bounds.height - size.height) / 2),
       width: adjustedWidth,
       height: size.height,
     });

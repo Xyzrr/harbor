@@ -1,4 +1,4 @@
-const activeWin = require('xyzrr/active-win');
+import activeWin from '@xyzrr/active-win';
 
 setInterval(() => {
   try {
