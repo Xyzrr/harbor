@@ -33,17 +33,21 @@ const SpaceToolbar: React.FC<SpaceToolbarProps> = React.memo(
       }
 
       return `${hours}h ${minutes}m`;
-    }, []);
+    }, [busyUntil]);
 
     const [timeLeftString, setTimeLeftString] = React.useState(
       getTimeLeftString()
     );
 
     React.useEffect(() => {
-      window.setTimeout(() => {
+      const interval = window.setInterval(() => {
         setTimeLeftString(getTimeLeftString());
       }, 1000);
-    }, []);
+
+      return () => {
+        window.clearInterval(interval);
+      };
+    }, [getTimeLeftString]);
 
     if (busySince) {
       return (
