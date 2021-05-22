@@ -97,6 +97,7 @@ const Popup: React.FC<PopupProps> = ({
         throw new Error('Invalid transform origin');
     }
 
+    console.log('sending show popup');
     ipcRenderer.send('showPopup', {
       x: Math.round(adjustedX + newWindow.screenX),
       y: Math.round(adjustedY + newWindow.screenY),
@@ -105,26 +106,8 @@ const Popup: React.FC<PopupProps> = ({
     });
   }, [width, height, origin, newWindow, x, y]);
 
-  React.useEffect(() => {
-    const onParentFocus = () => {
-      onClose?.();
-    };
-
-    const onParentHide = () => {
-      onClose?.();
-    };
-
-    newWindow.addEventListener('focus', onParentFocus);
-    newWindow.document.addEventListener('visibilitychange', onParentHide);
-    return () => {
-      newWindow.removeEventListener('focus', onParentFocus);
-      newWindow.document.removeEventListener('visibilitychange', onParentHide);
-    };
-  }, [newWindow, onClose]);
-
   return (
     <>
-      {ReactDOM.createPortal(<S.Shield onMouseDown={onClose} />, document.body)}
       <NewWindow name="popup">
         <S.Wrapper ref={ref}>{children}</S.Wrapper>
       </NewWindow>

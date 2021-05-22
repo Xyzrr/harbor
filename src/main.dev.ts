@@ -291,12 +291,11 @@ const createWindow = async () => {
             height: 400,
             minWidth: undefined,
             minHeight: undefined,
-            alwaysOnTop: true,
             resizable: false,
             maximizable: false,
             minimizable: false,
-            focusable: true,
-            backgroundColor: '#00000000',
+            focusable: false,
+            alwaysOnTop: true,
             show: false,
             titleBarStyle: 'hidden',
             vibrancy: undefined,
@@ -586,7 +585,7 @@ const createWindow = async () => {
       if (windowType === 'popup') {
         popupWindow = win;
         win.setWindowButtonVisibility?.(false);
-        popupWindow.on('close', () => {
+        win.on('close', () => {
           popupWindow = null;
         });
       }
