@@ -48,13 +48,21 @@ export const TypeIcon = styled(Icon)`
 
 export const WrapperRight = styled.div`
   display: flex;
-  gap: 4px;
+  gap: 2px;
   align-items: center;
 `;
 
 export const StyledTimeLeft = styled(TimeLeft)`
   color: #888;
   font-size: 12px;
+`;
+
+export const TimeLeftWrapper = styled.div`
+  padding: 4px;
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+  }
 `;
 
 export const StyledSwitch = styled(Switch)`

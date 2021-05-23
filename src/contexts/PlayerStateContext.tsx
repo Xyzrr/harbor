@@ -2,7 +2,7 @@ import React from 'react';
 import { AppInfo, useAppTracker } from '../hooks/useAppTracker';
 import * as _ from 'lodash';
 
-export type BusyType = 'meeting' | 'food' | 'focus' | 'exercise';
+export type BusyType = 'default' | 'meeting' | 'food' | 'focus' | 'exercise';
 
 interface PlayerStateContextValue {
   localWhisperingTo?: string;

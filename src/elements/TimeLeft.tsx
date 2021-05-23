@@ -31,6 +31,8 @@ const TimeLeft: React.FC<TimeLeftProps> = React.memo(function TimeLeft({
   );
 
   React.useEffect(() => {
+    setTimeLeftString(getTimeLeftString());
+
     const interval = newWindow.setInterval(() => {
       setTimeLeftString(getTimeLeftString());
     }, 1000);
