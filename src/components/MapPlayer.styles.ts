@@ -21,6 +21,7 @@ export const Wrapper = styled.div<{
   border: 2px solid ${(props) => props.color};
   background: ${(props) => props.color};
   border-radius: 50%;
+  user-select: none;
   ${(props) =>
     !props.self &&
     css`

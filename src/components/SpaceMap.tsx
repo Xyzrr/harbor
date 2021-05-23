@@ -88,6 +88,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
         draft[identity].y = player.y;
         draft[identity].dir = player.dir;
         draft[identity].speed = player.speed;
+        draft[identity].busyType = player.busyType;
         draft[identity].audioInputOn = player.audioInputOn;
         draft[identity].audioOutputOn = player.audioOutputOn;
         draft[identity].videoInputOn = player.videoInputOn;
