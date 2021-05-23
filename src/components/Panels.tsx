@@ -27,7 +27,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
   } = React.useContext(ColyseusContext);
 
   const { localIdentity } = React.useContext(UserSettingsContext);
-  const { localWhisperingTo } = React.useContext(PlayerStateContext);
+  const { localWhisperingTo, busyType } = React.useContext(PlayerStateContext);
 
   React.useEffect(() => {
     const onMousePosition = (
@@ -140,6 +140,10 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
 
   console.debug('Nearby players', nearbyPlayers);
   console.debug('Participants', participants);
+
+  if (busyType) {
+    return null;
+  }
 
   return (
     <S.Wrapper className={className}>
