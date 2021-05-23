@@ -9,7 +9,7 @@ interface LocalMediaContextValue {
   localVideoTrack?: MediaStreamTrack;
   localAudioInputOn: boolean;
   setLocalAudioInputOn(on: boolean): void;
-  localAudioInputDeviceId?: string;
+  localAudioInputDeviceId: string;
   setLocalAudioInputDeviceId(id: string): void;
   localAudioTrack?: MediaStreamTrack;
   localAudioOutputOn: boolean;
@@ -37,9 +37,41 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
     !process.env.NO_AUDIO
   );
   const [localAudioInputDeviceId, setLocalAudioInputDeviceId] =
-    React.useState<string | undefined>();
+    React.useState('default');
   const [localAudioTrack, setLocalAudioTrack] =
     React.useState<MediaStreamTrack | undefined>();
+
+  const [
+    localAudioInputDeviceIdToGroupId,
+    setLocalAudioInputDeviceIdToGroupId,
+  ] = React.useState<Map<string, string> | undefined>();
+  React.useEffect(() => {
+    const updateGroupIdMapping = async () => {
+      const audioInputDevices = (
+        await navigator.mediaDevices.enumerateDevices()
+      ).filter((d) => d.kind === 'audioinput');
+      setLocalAudioInputDeviceIdToGroupId(
+        new Map(audioInputDevices.map((d) => [d.deviceId, d.groupId]))
+      );
+    };
+
+    navigator.mediaDevices.addEventListener(
+      'devicechange',
+      updateGroupIdMapping
+    );
+    updateGroupIdMapping();
+
+    return () => {
+      navigator.mediaDevices.removeEventListener(
+        'devicechange',
+        updateGroupIdMapping
+      );
+    };
+  }, []);
+
+  const localAudioInputGroupId = localAudioInputDeviceIdToGroupId?.get(
+    localAudioInputDeviceId
+  );
 
   const [localAudioOutputOn, setLocalAudioOutputOn] = React.useState(
     !process.env.NO_AUDIO
@@ -100,20 +132,26 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       localAudioTrack.stop();
     }
 
-    const audioTrackPromise = window.navigator.mediaDevices.getUserMedia({
-      audio: { deviceId: localAudioInputDeviceId },
-      video: false,
-    });
-    audioTrackPromiseRef.current = audioTrackPromise;
-    audioTrackPromise.then((mediaStream) => {
+    (async () => {
+      if (localAudioInputGroupId == null) {
+        return;
+      }
+
+      const audioTrackPromise = window.navigator.mediaDevices.getUserMedia({
+        audio: { groupId: localAudioInputGroupId },
+        video: false,
+      });
+      audioTrackPromiseRef.current = audioTrackPromise;
+      const mediaStream = await audioTrackPromise;
+
       const audioTrack = mediaStream.getAudioTracks()[0];
       if (audioTrackPromise === audioTrackPromiseRef.current) {
         setLocalAudioTrack(audioTrack);
       } else {
         audioTrack.stop();
       }
-    });
-  }, [localAudioInputOn, localAudioInputDeviceId]);
+    })();
+  }, [localAudioInputOn, localAudioInputGroupId]);
 
   React.useEffect(() => {
     ipcRenderer.send('media-settings', {
