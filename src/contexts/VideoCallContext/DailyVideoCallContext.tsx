@@ -194,11 +194,13 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     }, [callObject]);
 
     React.useEffect(() => {
+      console.log('busytype', busyType, meetingState);
       // TODO: enable multiple call rooms per space
       if (
         busyType == null &&
-        ['new', 'leftMeeting', 'error'].includes(meetingState)
+        ['new', 'left-meeting', 'error'].includes(meetingState)
       ) {
+        console.log('fuck you joing');
         join(spaceId);
       }
 
