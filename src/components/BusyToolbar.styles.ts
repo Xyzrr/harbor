@@ -1,8 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Switch } from '@material-ui/core';
 import Icon from '../elements/Icon';
 
+const shake = keyframes`
+  0%  {
+      transform: translateX(0px);
+  }
+  30% {
+    transform: translateX(8px);
+  }
+  70% {
+    transform: translateX(-8px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+`;
+
 export const Wrapper = styled.div`
+  &.shaking {
+    animation: 0.2s ease-out 0s ${shake};
+  }
   position: absolute;
   bottom: 12px;
   left: 12px;

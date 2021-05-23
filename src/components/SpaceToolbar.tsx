@@ -14,9 +14,9 @@ export interface SpaceToolbarProps {
 
 const SpaceToolbar: React.FC<SpaceToolbarProps> = React.memo(
   function SpaceToolbar({ className }) {
-    const { busySince } = React.useContext(PlayerStateContext);
+    const { busyType } = React.useContext(PlayerStateContext);
 
-    if (busySince) {
+    if (busyType) {
       return <BusyToolbar />;
     }
 

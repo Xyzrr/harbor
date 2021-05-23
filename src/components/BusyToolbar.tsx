@@ -24,7 +24,7 @@ const BusyToolbar: React.FC<BusyToolbarProps> = React.memo(
       const diff = busyUntil - Date.now();
 
       const hours = Math.floor(diff / (60 * 60 * 1000));
-      const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+      const minutes = Math.ceil((diff % (60 * 60 * 1000)) / (60 * 1000));
 
       if (hours === 0) {
         return `${minutes}m`;
@@ -54,7 +54,7 @@ const BusyToolbar: React.FC<BusyToolbarProps> = React.memo(
     }, [getTimeLeftString, busyUntil, setBusySince, setBusyUntil, setBusyType]);
 
     return (
-      <S.Wrapper>
+      <S.Wrapper className="busy-toolbar">
         <S.WrapperLeft>
           <S.TypeIcon name="event_busy" />
           Busy

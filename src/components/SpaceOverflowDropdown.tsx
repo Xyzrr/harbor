@@ -12,7 +12,8 @@ export interface SpaceOverflowDropdownProps {
 const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
   className,
 }) => {
-  const { setBusySince, setBusyUntil } = React.useContext(PlayerStateContext);
+  const { setBusySince, setBusyUntil, setBusyType } =
+    React.useContext(PlayerStateContext);
 
   return (
     <>
@@ -38,6 +39,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                             onClick={() => {
                               setBusySince(Date.now());
                               setBusyUntil(Date.now() + 1000 * 60 * 10);
+                              setBusyType('default');
                               onClose();
                             }}
                           >
@@ -47,6 +49,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                             onClick={() => {
                               setBusySince(Date.now());
                               setBusyUntil(Date.now() + 1000 * 60 * 30);
+                              setBusyType('default');
                               onClose();
                             }}
                           >
@@ -56,6 +59,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                             onClick={() => {
                               setBusySince(Date.now());
                               setBusyUntil(Date.now() + 1000 * 60 * 60);
+                              setBusyType('default');
                               onClose();
                             }}
                           >
@@ -64,6 +68,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                           <MenuItem
                             onClick={() => {
                               setBusySince(Date.now());
+                              setBusyType('default');
                               onClose();
                             }}
                           >
