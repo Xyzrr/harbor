@@ -98,23 +98,25 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       localVideoTrack.stop();
     }
 
-    const videoTrackPromise = window.navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        width: 1920,
-        height: 1080,
-        deviceId: localVideoInputDeviceId,
-      },
-    });
-    videoTrackPromiseRef.current = videoTrackPromise;
-    videoTrackPromise.then((mediaStream) => {
+    (async () => {
+      const videoTrackPromise = window.navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          width: 1920,
+          height: 1080,
+          deviceId: localVideoInputDeviceId,
+        },
+      });
+      videoTrackPromiseRef.current = videoTrackPromise;
+      const mediaStream = await videoTrackPromise;
+
       const videoTrack = mediaStream.getVideoTracks()[0];
       if (videoTrackPromise === videoTrackPromiseRef.current) {
         setLocalVideoTrack(videoTrack);
       } else {
         videoTrack.stop();
       }
-    });
+    })();
   }, [localVideoInputOn, localVideoInputDeviceId]);
 
   const audioTrackPromiseRef = React.useRef<Promise<MediaStream> | null>(null);
