@@ -51,16 +51,11 @@ export const Wrapper = styled.div<{
     `}
 `;
 
-export const StatusIcons = styled.div`
-  display: flex;
-  padding-left: 4px;
-`;
-
 export const StatusIcon = styled(Icon)`
-  padding: 4px;
-  padding-left: 0;
   color: red;
-  margin-left: -3px;
+  :first-child {
+    margin-left: -2px;
+  }
 `;
 
 export const Name = styled.span`
@@ -78,6 +73,8 @@ export const InfoBarLeft = styled.div`
   mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 12px);
   width: 100%;
   height: 100%;
+  padding-left: 4px;
+  gap: 4px;
 `;
 
 export const InfoBarRight = styled.div`

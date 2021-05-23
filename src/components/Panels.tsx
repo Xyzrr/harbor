@@ -152,24 +152,20 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
         {Object.entries(nearbyPlayers).map(([identity, player]) => {
           const participant = participants[identity];
 
-          if (!participant) {
-            return null;
-          }
-
           return (
             <React.Fragment key={identity}>
               <RemoteUserPanel
                 identity={identity}
                 player={player}
-                videoTrack={participant.videoTrack}
-                audioTrack={participant.audioTrack}
+                videoTrack={participant?.videoTrack}
+                audioTrack={participant?.audioTrack}
                 whisperTarget={localWhisperingTo === identity}
               />
               {player.screenShareOn && (
                 <RemoteScreenPanel
                   screenOwnerIdentity={identity}
                   player={player}
-                  videoTrack={participant.screenVideoTrack}
+                  videoTrack={participant?.screenVideoTrack}
                 />
               )}
             </React.Fragment>

@@ -72,7 +72,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
     const width = expanded ? '100%' : Math.floor(240 * scale);
     const height = expanded
       ? '100%'
-      : player.videoInputOn
+      : player.videoInputOn && !player.busyType
       ? Math.floor(135 * scale)
       : 40;
 
@@ -162,7 +162,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
         style={{ width, height }}
         {...windowsDragProps}
       >
-        {player.videoInputOn && videoTrack && (
+        {player.videoInputOn && !player.busyType && videoTrack && (
           <video
             ref={videoRef}
             onCanPlay={() => {
@@ -174,14 +174,18 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
             autoPlay
           />
         )}
-        {player.videoInputOn && !videoStreaming && <Loader />}
+        {player.videoInputOn && !player.busyType && !videoStreaming && (
+          <Loader />
+        )}
         <audio ref={audioRef} autoPlay />
         <S.InfoBar>
           <S.InfoBarLeft>
-            <S.StatusIcons>
-              {!player.audioInputOn && <S.StatusIcon name="mic_off" />}
-              {!player.audioOutputOn && <S.StatusIcon name="volume_off" />}
-            </S.StatusIcons>
+            {!player.busyType && (
+              <>
+                {!player.audioInputOn && <S.StatusIcon name="mic_off" />}
+                {!player.audioOutputOn && <S.StatusIcon name="volume_off" />}
+              </>
+            )}
             <S.Name>{player.name}</S.Name>
           </S.InfoBarLeft>
           <S.InfoBarRight>
