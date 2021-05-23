@@ -3,7 +3,7 @@ import React from 'react';
 import * as Colyseus from 'colyseus.js';
 import { LocalMediaContext } from './LocalMediaContext';
 import { UserSettingsContext } from './UserSettingsContext';
-import { COLYSEUS_CLIENT, HOST } from '../constants';
+import { COLYSEUS_CLIENT } from '../constants';
 import { PlayerStateContext } from './PlayerStateContext';
 
 interface PlayerAddedEvent {
@@ -123,46 +123,63 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       };
     }, []);
 
-    const join = React.useCallback(
-      async (roomName: string) => {
-        const r: Colyseus.Room<any> = await COLYSEUS_CLIENT.joinOrCreate(
-          roomName,
-          {
-            identity: localIdentity,
-            name: localName,
-            color: localColor,
-            audioInputOn: localAudioInputOn,
-            audioOutputOn: localAudioOutputOn,
-            videoInputOn: localVideoInputOn,
-            photoUrl: localPhotoUrl,
-            spaceId,
-          }
-        );
-        setSessionId(r.sessionId);
-
-        console.debug('Joined or created Colyseus room:', r);
-
-        setRoom(r);
-
-        console.debug(
-          'INTIIAL ROOM STATE:',
-          JSON.parse(JSON.stringify(r.state))
-        );
-
-        bindListenersToRoom(r);
-      },
-      [
-        bindListenersToRoom,
-        localAudioInputOn,
-        localAudioOutputOn,
-        localVideoInputOn,
-        localColor,
-        localIdentity,
-        localName,
-        localPhotoUrl,
+    const join = React.useCallback(async () => {
+      const r: Colyseus.Room<any> = await COLYSEUS_CLIENT.joinOrCreate('main', {
+        identity: localIdentity,
+        name: localName,
+        color: localColor,
+        audioInputOn: localAudioInputOn,
+        audioOutputOn: localAudioOutputOn,
+        videoInputOn: localVideoInputOn,
+        photoUrl: localPhotoUrl,
         spaceId,
-      ]
-    );
+      });
+      setError(null);
+      setSessionId(r.sessionId);
+
+      console.debug('Joined or created Colyseus room:', r);
+
+      setRoom(r);
+
+      console.debug('INTIIAL ROOM STATE:', JSON.parse(JSON.stringify(r.state)));
+
+      bindListenersToRoom(r);
+    }, [
+      bindListenersToRoom,
+      localAudioInputOn,
+      localAudioOutputOn,
+      localVideoInputOn,
+      localColor,
+      localIdentity,
+      localName,
+      localPhotoUrl,
+      spaceId,
+    ]);
+
+    const abortJoinRef = React.useRef(false);
+    React.useEffect(() => {
+      const onUnmount = () => {
+        abortJoinRef.current = true;
+      };
+      return onUnmount;
+    }, []);
+    const joinWithInfiniteRetries = React.useCallback(async () => {
+      while (true) {
+        if (abortJoinRef.current) {
+          return;
+        }
+        try {
+          // eslint-disable-next-line
+          await join();
+          return;
+        } catch (e) {
+          console.error(`join error: ${e}`);
+          setError(`Connection issues`);
+          // eslint-disable-next-line
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+        }
+      }
+    }, [join]);
 
     const roomRef = React.useRef<Colyseus.Room>();
     roomRef.current = room;
@@ -184,9 +201,9 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
 
     React.useEffect(() => {
       if (!room) {
-        join('main');
+        joinWithInfiniteRetries();
       }
-    }, [join, room]);
+    }, [joinWithInfiniteRetries, room]);
 
     React.useEffect(() => {
       window.addEventListener('beforeunload', leave);
@@ -205,24 +222,21 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       const onLeave = async (code: number) => {
         console.debug('LEFT WITH CODE:', code, room.id, room.sessionId, room);
         setError(`Disconnected with code ${code}. Reconnecting...`);
-        let newRoom: Colyseus.Room | undefined;
         try {
-          newRoom = await COLYSEUS_CLIENT.reconnect(room.id, sessionId);
+          const newRoom = await COLYSEUS_CLIENT.reconnect(room.id, sessionId);
           if (newRoom) {
             console.debug(
               'STATE RIGHT AFTER RECONNECTING:',
               JSON.parse(JSON.stringify(newRoom.state))
             );
+            bindListenersToRoom(newRoom);
+            setRoom(newRoom);
+            setError(null);
           }
           console.debug('SUCCESSFULLY RECONNECTED:', newRoom);
         } catch (e) {
           console.log('FAILED TO RECONNECT:', e);
-          setError('Failed to reconnect. Please try again later.');
-        }
-        if (newRoom) {
-          bindListenersToRoom(newRoom);
-          setRoom(newRoom);
-          setError(null);
+          await joinWithInfiniteRetries();
         }
       };
 
@@ -231,7 +245,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       return () => {
         room.onLeave.remove(onLeave);
       };
-    }, [bindListenersToRoom, room, sessionId]);
+    }, [bindListenersToRoom, room, sessionId, joinWithInfiniteRetries]);
 
     const addListener = React.useCallback<ColyseusContextValue['addListener']>(
       (type, listener) => {
