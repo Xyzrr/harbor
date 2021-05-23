@@ -1,6 +1,7 @@
 import * as S from './MapPlayer.styles';
 import React from 'react';
 import Color from 'color';
+import { BusyType } from '../contexts/PlayerStateContext';
 
 export interface PlayerSummary {
   sid?: string;
@@ -15,6 +16,7 @@ export interface PlayerSummary {
   audioOutputOn?: boolean;
   videoInputOn?: boolean;
   screenShareOn?: boolean;
+  busyType?: BusyType;
 }
 
 export interface MapPlayerProps {
@@ -31,6 +33,7 @@ const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
   return (
     <S.Wrapper
       className={className}
+      busy={!!playerSummary.busyType}
       self={self}
       color={Color(playerSummary.color).string()}
       style={{
@@ -41,6 +44,7 @@ const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
         userName={playerSummary.name}
         photoUrl={playerSummary.photoUrl}
       />
+      {playerSummary.busyType && <S.BusyIcon name="event_busy" />}
     </S.Wrapper>
   );
 });

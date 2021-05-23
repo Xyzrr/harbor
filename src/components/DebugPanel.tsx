@@ -16,10 +16,10 @@ export const useDebugPanel = () => {
       }
     };
 
-    newWindow?.addEventListener('keydown', onKeyDown);
+    newWindow.addEventListener('keydown', onKeyDown);
 
     return () => {
-      newWindow?.removeEventListener('keydown', onKeyDown);
+      newWindow.removeEventListener('keydown', onKeyDown);
     };
   }, [newWindow]);
 

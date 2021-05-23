@@ -2,7 +2,7 @@ import * as S from './Popup.styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import useResizeObserver from 'use-resize-observer';
-import NewWindow from './NewWindow';
+import NewWindow, { NewWindowContext } from './NewWindow';
 import { ipcRenderer } from 'electron';
 
 export type Origin =
@@ -26,6 +26,8 @@ export interface PopupProps {
   y: number;
   origin?: Origin;
   onClose?(): void;
+  onMouseEnter?(e: React.MouseEvent): void;
+  onMouseLeave?(e: React.MouseEvent): void;
 }
 
 const Popup: React.FC<PopupProps> = ({
@@ -35,12 +37,15 @@ const Popup: React.FC<PopupProps> = ({
   origin = 'top center',
   children,
   onClose,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   // TODO: figure out why the ResizeObserver approach doesn't work
   // const { ref, width, height } = useResizeObserver<HTMLDivElement>();
 
   const ref = React.useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = React.useState<Dimensions | null>(null);
+  const newWindow = React.useContext(NewWindowContext);
   const width = dimensions?.width;
   const height = dimensions?.height;
   React.useEffect(() => {
@@ -96,30 +101,25 @@ const Popup: React.FC<PopupProps> = ({
         throw new Error('Invalid transform origin');
     }
 
+    console.log('sending show popup');
     ipcRenderer.send('showPopup', {
-      x: Math.round(adjustedX),
-      y: Math.round(adjustedY),
+      x: Math.round(adjustedX + newWindow.screenX),
+      y: Math.round(adjustedY + newWindow.screenY),
       width: Math.round(width),
       height: Math.round(height),
     });
-  }, [width, height, origin]);
-
-  React.useEffect(() => {
-    const onFocus = () => {
-      onClose?.();
-    };
-
-    window.addEventListener('focus', onFocus);
-    return () => {
-      window.removeEventListener('focus', onFocus);
-    };
-  });
+  }, [width, height, origin, newWindow, x, y]);
 
   return (
     <>
-      {ReactDOM.createPortal(<S.Shield onMouseDown={onClose} />, document.body)}
       <NewWindow name="popup">
-        <S.Wrapper ref={ref}>{children}</S.Wrapper>
+        <S.Wrapper
+          ref={ref}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {children}
+        </S.Wrapper>
       </NewWindow>
     </>
   );

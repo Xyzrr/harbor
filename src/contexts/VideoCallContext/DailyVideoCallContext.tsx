@@ -17,6 +17,8 @@ import {
   VideoCallContext,
   VideoCallDebugContext,
 } from './VideoCallContext';
+import { NewWindowContext } from '../../elements/NewWindow';
+import { PlayerStateContext } from '../PlayerStateContext';
 
 interface DailyVideoCallDebugContextProviderProps {
   callObject: any;
@@ -26,6 +28,8 @@ export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugCon
   ({ children, callObject }) => {
     const [networkStats, setNetworkStats] =
       React.useState<VideoCallDebugContextValue>();
+
+    const newWindow = React.useContext(NewWindowContext);
 
     React.useEffect(() => {
       if (callObject == null) {
@@ -47,13 +51,13 @@ export const DailyVideoCallDebugContextProvider: React.FC<DailyVideoCallDebugCon
       };
 
       callObject.on('network-quality-change', updateNetworkStats);
-      const interval = window.setInterval(updateNetworkStats, 2000);
+      const interval = newWindow.setInterval(updateNetworkStats, 2000);
 
       return () => {
         callObject.off('network-quality-change', updateNetworkStats);
-        window.clearInterval(interval);
+        newWindow.clearInterval(interval);
       };
-    }, [callObject]);
+    }, [callObject, newWindow]);
 
     const {
       localVideoInputOn,
@@ -132,6 +136,8 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     const [localScreenShareTrulyOn, setLocalScreenShareTrulyOn] =
       React.useState(false);
 
+    const newWindow = React.useContext(NewWindowContext);
+
     const {
       localVideoInputOn,
       localVideoInputDeviceId,
@@ -142,6 +148,8 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     } = React.useContext(LocalMediaContext);
 
     const { localIdentity, localName } = React.useContext(UserSettingsContext);
+
+    const { busyType } = React.useContext(PlayerStateContext);
 
     const [participants, setParticipants] = useImmer<{
       [identity: string]: VideoCallParticipant;
@@ -187,11 +195,20 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     }, [callObject]);
 
     React.useEffect(() => {
+      console.log('busytype', busyType, meetingState);
       // TODO: enable multiple call rooms per space
-      if (['new', 'leftMeeting', 'error'].includes(meetingState)) {
+      if (
+        busyType == null &&
+        ['new', 'left-meeting', 'error'].includes(meetingState)
+      ) {
+        console.log('fuck you joing');
         join(spaceId);
       }
-    }, [join, spaceId, meetingState]);
+
+      if (busyType) {
+        leave();
+      }
+    }, [join, leave, spaceId, meetingState, busyType]);
 
     React.useEffect(() => {
       const events: DailyEvent[] = [
@@ -422,13 +439,13 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     ]);
 
     React.useEffect(() => {
-      window.addEventListener('beforeunload', leave);
+      newWindow.addEventListener('beforeunload', leave);
 
       return () => {
-        window.removeEventListener('beforeunload', leave);
+        newWindow.removeEventListener('beforeunload', leave);
         leave();
       };
-    }, [leave]);
+    }, [leave, newWindow]);
 
     React.useEffect(() => {
       if (colyseusRoom == null) {

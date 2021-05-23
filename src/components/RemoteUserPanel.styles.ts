@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import Icon from '../elements/Icon';
-import { DARK_BACKGROUND } from '../constants';
+import { DARK_BACKGROUND, DANGER } from '../constants';
+import TimeLeft from '../elements/TimeLeft';
 
 const baseBoxShadow =
   '0px 0px 1px rgba(255, 255, 255, 0.4), 0px 2px 6px rgba(0, 0, 0, 0.4)';
@@ -50,16 +51,11 @@ export const Wrapper = styled.div<{
     `}
 `;
 
-export const StatusIcons = styled.div`
-  display: flex;
-  padding-left: 4px;
-`;
-
 export const StatusIcon = styled(Icon)`
-  padding: 4px;
-  padding-left: 0;
   color: red;
-  margin-left: -3px;
+  :first-child {
+    margin-left: -2px;
+  }
 `;
 
 export const Name = styled.span`
@@ -77,6 +73,14 @@ export const InfoBarLeft = styled.div`
   mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 12px);
   width: 100%;
   height: 100%;
+  padding-left: 4px;
+  gap: 4px;
+`;
+
+export const InfoBarRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 export const InfoBar = styled.div`
@@ -90,4 +94,14 @@ export const InfoBar = styled.div`
   justify-content: space-between;
   overflow: hidden;
   height: 40px;
+`;
+
+export const BusyIcon = styled(Icon)`
+  color: ${DANGER.string()};
+  font-size: 20px;
+`;
+
+export const BusyTimeLeft = styled(TimeLeft)`
+  color: #999;
+  font-size: 12px;
 `;

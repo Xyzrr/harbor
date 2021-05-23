@@ -8,6 +8,7 @@ import { useKeyboardMovement } from '../hooks/useKeyboardMovement';
 import MapWorldObjects from './MapWorldObjects';
 import Loader from '../elements/Loader';
 import { usePushing } from '../hooks/usePushing';
+import { PlayerStateContext } from '../contexts/PlayerStateContext';
 
 export interface SpaceMapProps {
   className?: string;
@@ -21,15 +22,24 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   const { localIdentity, localColor, localName, localPhotoUrl } =
     React.useContext(UserSettingsContext);
 
+  const { busyType } = React.useContext(PlayerStateContext);
+
   const [localPlayer, setLocalPlayer] = useImmer<PlayerSummary>({
     name: localName,
     photoUrl: localPhotoUrl,
     color: localColor,
+    busyType,
     x: 0,
     y: 0,
     dir: 0,
     speed: 0,
   });
+
+  React.useEffect(() => {
+    setLocalPlayer((draft) => {
+      draft.busyType = busyType;
+    });
+  }, [busyType]);
 
   const {
     room: colyseusRoom,
@@ -58,6 +68,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
           y: player.y,
           dir: player.dir,
           speed: player.speed,
+          busyType: player.busyType,
           audioInputOn: player.audioInputOn,
           audioOutputOn: player.audioOutputOn,
           videoInputOn: player.videoInputOn,
@@ -77,6 +88,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
         draft[identity].y = player.y;
         draft[identity].dir = player.dir;
         draft[identity].speed = player.speed;
+        draft[identity].busyType = player.busyType;
         draft[identity].audioInputOn = player.audioInputOn;
         draft[identity].audioOutputOn = player.audioOutputOn;
         draft[identity].videoInputOn = player.videoInputOn;

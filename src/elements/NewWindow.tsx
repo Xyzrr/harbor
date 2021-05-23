@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import { StyleSheetManager } from 'styled-components';
 import { jssPreset, StylesProvider } from '@material-ui/styles';
 import { create, Jss } from 'jss';
+import { uniqueId } from 'lodash';
 
-export const NewWindowContext = React.createContext<Window | null>(null);
+export const NewWindowContext = React.createContext<Window>(window);
 
 function copyStyles(sourceDoc: Document, targetDoc: Document) {
   Array.from(sourceDoc.styleSheets).forEach((styleSheet) => {
@@ -52,7 +53,7 @@ const NewWindow: React.FC<NewWindowProps> = ({
 
   React.useEffect(() => {
     const el = document.createElement('div');
-    const win = window.open('', name, features);
+    const win = window.open('', uniqueId(`${name}:`), features);
 
     if (win == null) {
       throw new Error('Could not open new window.');

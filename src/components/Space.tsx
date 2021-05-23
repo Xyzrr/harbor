@@ -5,21 +5,16 @@ import Panels from './Panels';
 import SpaceMap from './SpaceMap';
 import { UserSettingsContext } from '../contexts/UserSettingsContext';
 import { LocalMediaContextProvider } from '../contexts/LocalMediaContext';
-import {
-  ColyseusContextProvider,
-  ColyseusContext,
-} from '../contexts/ColyseusContext';
+import { ColyseusContextProvider } from '../contexts/ColyseusContext';
 import { DailyVideoCallContextProvider } from '../contexts/VideoCallContext/DailyVideoCallContext';
 import Icon from '../elements/Icon';
-import AudioInputControl from './media-controls/AudioInputControl';
-import VideoInputControl from './media-controls/VideoInputControl';
-import AudioOutputControl from './media-controls/AudioOutputControl';
-import ScreenShareControl from './media-controls/ScreenShareControl';
+
 import { FirebaseContext } from '../contexts/FirebaseContext';
 import GetReady from './GetReady';
 import { PlayerStateContextProvider } from '../contexts/PlayerStateContext';
 import os from 'os';
 import DebugPanel, { useDebugPanel } from './DebugPanel';
+import SpaceToolbar from './SpaceToolbar';
 
 export interface SpaceProps {
   spaceId: string;
@@ -75,12 +70,7 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
                       <Icon name="logout" />
                     </S.ExitButton>
                   </S.TopButtons>
-                  <S.BottomButtons>
-                    <AudioInputControl />
-                    <VideoInputControl showPreviewOnHover />
-                    <AudioOutputControl />
-                    <ScreenShareControl />
-                  </S.BottomButtons>
+                  <SpaceToolbar />
                   <NewWindow name="panels">
                     <Panels />
                   </NewWindow>

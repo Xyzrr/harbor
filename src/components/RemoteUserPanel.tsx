@@ -11,7 +11,7 @@ import { AppInfo } from '../hooks/useAppTracker';
 import AppIndicator from './AppIndicator';
 import Loader from '../elements/Loader';
 import { UserSettingsContext } from '../contexts/UserSettingsContext';
-import { PlayerStateContext } from '../contexts/PlayerStateContext';
+import { PlayerStateContext, BusyType } from '../contexts/PlayerStateContext';
 import NewWindow from '../elements/NewWindow';
 import { useWindowsDrag } from '../hooks/useWindowsDrag';
 
@@ -25,6 +25,8 @@ export interface NearbyPlayer {
   screenShareOn?: boolean;
   sharedApp?: AppInfo;
   whisperingTo?: string;
+  busyType?: BusyType;
+  busyUntil?: number;
 }
 
 export interface RemoteUserPanelInnerProps {
@@ -70,7 +72,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
     const width = expanded ? '100%' : Math.floor(240 * scale);
     const height = expanded
       ? '100%'
-      : player.videoInputOn
+      : player.videoInputOn && !player.busyType
       ? Math.floor(135 * scale)
       : 40;
 
@@ -160,7 +162,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
         style={{ width, height }}
         {...windowsDragProps}
       >
-        {player.videoInputOn && videoTrack && (
+        {player.videoInputOn && !player.busyType && videoTrack && (
           <video
             ref={videoRef}
             onCanPlay={() => {
@@ -172,19 +174,27 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
             autoPlay
           />
         )}
-        {player.videoInputOn && !videoStreaming && <Loader />}
+        {player.videoInputOn && !player.busyType && !videoStreaming && (
+          <Loader />
+        )}
         <audio ref={audioRef} autoPlay />
         <S.InfoBar>
           <S.InfoBarLeft>
-            <S.StatusIcons>
-              {!player.audioInputOn && <S.StatusIcon name="mic_off" />}
-              {!player.audioOutputOn && <S.StatusIcon name="volume_off" />}
-            </S.StatusIcons>
+            {!player.busyType && (
+              <>
+                {!player.audioInputOn && <S.StatusIcon name="mic_off" />}
+                {!player.audioOutputOn && <S.StatusIcon name="volume_off" />}
+              </>
+            )}
             <S.Name>{player.name}</S.Name>
           </S.InfoBarLeft>
-          {player.sharedApp != null && (
-            <AppIndicator appInfo={player.sharedApp} />
-          )}
+          <S.InfoBarRight>
+            {player.busyUntil && <S.BusyTimeLeft until={player.busyUntil} />}
+            {player.busyType && <S.BusyIcon name="event_busy" />}
+            {!player.busyType && player.sharedApp != null && (
+              <AppIndicator appInfo={player.sharedApp} />
+            )}
+          </S.InfoBarRight>
         </S.InfoBar>
         <HoverMenu hidden={mouseIsIdle}>
           <HoverMenuStyles.MenuItem

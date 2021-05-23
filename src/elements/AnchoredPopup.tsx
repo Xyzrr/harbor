@@ -7,6 +7,8 @@ export interface AnchoredPopupProps {
   transformOrigin?: Origin;
   anchorOrigin?: Origin;
   onClose?(): void;
+  onMouseEnter?(e: React.MouseEvent): void;
+  onMouseLeave?(e: React.MouseEvent): void;
 }
 
 const AnchoredPopup: React.FC<AnchoredPopupProps> = ({
@@ -15,6 +17,8 @@ const AnchoredPopup: React.FC<AnchoredPopupProps> = ({
   transformOrigin,
   anchorOrigin = 'bottom center',
   onClose,
+  onMouseEnter,
+  onMouseLeave,
   children,
 }) => {
   const anchorRect = React.useMemo(
@@ -61,6 +65,8 @@ const AnchoredPopup: React.FC<AnchoredPopupProps> = ({
       x={x}
       y={y}
       onClose={onClose}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {children}
     </Popup>

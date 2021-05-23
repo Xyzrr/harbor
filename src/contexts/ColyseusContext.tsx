@@ -72,7 +72,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       appSharingOn,
     } = React.useContext(UserSettingsContext);
 
-    const { localWhisperingTo, localApp } =
+    const { localWhisperingTo, localApp, busySince, busyUntil, busyType } =
       React.useContext(PlayerStateContext);
 
     const {
@@ -144,7 +144,10 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
 
         setRoom(r);
 
-        console.debug('INTIIAL ROOM STATE:', JSON.parse(JSON.stringify(r.state)));
+        console.debug(
+          'INTIIAL ROOM STATE:',
+          JSON.parse(JSON.stringify(r.state))
+        );
 
         bindListenersToRoom(r);
       },
@@ -259,41 +262,53 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
 
     React.useEffect(() => {
       room?.send('updatePlayer', { audioInputOn: localAudioInputOn });
-    }, [room, localAudioInputOn]);
+    }, [localAudioInputOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { audioOutputOn: localAudioOutputOn });
-    }, [room, localAudioOutputOn]);
+    }, [localAudioOutputOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { videoInputOn: localVideoInputOn });
-    }, [room, localVideoInputOn]);
+    }, [localVideoInputOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { screenShareOn: localScreenShareOn });
-    }, [room, localScreenShareOn]);
+    }, [localScreenShareOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { color: localColor });
-    }, [room, localColor]);
+    }, [localColor]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { name: localName });
-    }, [room, localName]);
+    }, [localName]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { photoUrl: localPhotoUrl });
-    }, [room, localPhotoUrl]);
+    }, [localPhotoUrl]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { whisperingTo: localWhisperingTo });
-    }, [room, localWhisperingTo]);
+    }, [localWhisperingTo]);
 
     React.useEffect(() => {
       if (appSharingOn) {
         room?.send('appInfo', { ...localApp });
       }
     }, [localApp, appSharingOn]);
+
+    React.useEffect(() => {
+      room?.send('updatePlayer', { busySince });
+    }, [busySince]);
+
+    React.useEffect(() => {
+      room?.send('updatePlayer', { busyUntil });
+    }, [busyUntil]);
+
+    React.useEffect(() => {
+      room?.send('updatePlayer', { busyType });
+    }, [busyType]);
 
     return (
       <ColyseusContext.Provider

@@ -3,6 +3,7 @@ import { PlayerSummary } from '../components/MapPlayer';
 import { ColyseusContext } from '../contexts/ColyseusContext';
 import { PLAYER_RADIUS } from '../constants';
 import { NewWindowContext } from '../elements/NewWindow';
+import { PlayerStateContext } from '../contexts/PlayerStateContext';
 
 export const useKeyboardMovement = (
   setPlayer: (f: PlayerSummary | ((draft: PlayerSummary) => void)) => void,
@@ -13,6 +14,8 @@ export const useKeyboardMovement = (
   const newWindow = React.useContext(NewWindowContext);
 
   const { room: colyseusRoom } = React.useContext(ColyseusContext);
+
+  const { busyType } = React.useContext(PlayerStateContext);
 
   const heldCommands = React.useRef<{ [key: string]: boolean }>({});
 
@@ -91,6 +94,17 @@ export const useKeyboardMovement = (
         return;
       }
 
+      if (busyType) {
+        const toolbar = newWindow.document.querySelector('.busy-toolbar');
+
+        toolbar?.classList.add('shaking');
+
+        newWindow.setTimeout(() => {
+          toolbar?.classList.remove('shaking');
+        }, 500);
+        return;
+      }
+
       heldCommands.current[command] = true;
 
       if (
@@ -115,7 +129,7 @@ export const useKeyboardMovement = (
         });
       }
     },
-    [colyseusRoom]
+    [colyseusRoom, busyType]
   );
 
   const onKeyUp = React.useCallback(

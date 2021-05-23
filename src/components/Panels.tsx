@@ -34,7 +34,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
       e: Electron.IpcRendererEvent,
       d: [number, number]
     ) => {
-      const doc = newWindow?.document;
+      const doc = newWindow.document;
 
       if (!doc) {
         return;
@@ -103,6 +103,8 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
             draft[identity].screenShareOn = player.screenShareOn;
             draft[identity].sharedApp = player.sharedApp;
             draft[identity].whisperingTo = player.whisperingTo;
+            draft[identity].busyType = player.busyType;
+            draft[identity].busyUntil = player.busyUntil;
           }
         }
 
@@ -150,24 +152,20 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
         {Object.entries(nearbyPlayers).map(([identity, player]) => {
           const participant = participants[identity];
 
-          if (!participant) {
-            return null;
-          }
-
           return (
             <React.Fragment key={identity}>
               <RemoteUserPanel
                 identity={identity}
                 player={player}
-                videoTrack={participant.videoTrack}
-                audioTrack={participant.audioTrack}
+                videoTrack={participant?.videoTrack}
+                audioTrack={participant?.audioTrack}
                 whisperTarget={localWhisperingTo === identity}
               />
               {player.screenShareOn && (
                 <RemoteScreenPanel
                   screenOwnerIdentity={identity}
                   player={player}
-                  videoTrack={participant.screenVideoTrack}
+                  videoTrack={participant?.screenVideoTrack}
                 />
               )}
             </React.Fragment>
