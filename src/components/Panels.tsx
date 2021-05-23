@@ -103,6 +103,8 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
             draft[identity].screenShareOn = player.screenShareOn;
             draft[identity].sharedApp = player.sharedApp;
             draft[identity].whisperingTo = player.whisperingTo;
+            draft[identity].busyType = player.busyType;
+            draft[identity].busyUntil = player.busyUntil;
           }
         }
 

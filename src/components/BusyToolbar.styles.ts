@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { Switch } from '@material-ui/core';
 import Icon from '../elements/Icon';
+import TimeLeft from '../elements/TimeLeft';
 
 const shake = keyframes`
   0%  {
@@ -51,7 +52,7 @@ export const WrapperRight = styled.div`
   align-items: center;
 `;
 
-export const TimeLeft = styled.div`
+export const StyledTimeLeft = styled(TimeLeft)`
   color: #888;
   font-size: 12px;
 `;

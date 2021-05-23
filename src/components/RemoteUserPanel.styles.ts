@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import Icon from '../elements/Icon';
-import { DARK_BACKGROUND } from '../constants';
+import { DARK_BACKGROUND, DANGER } from '../constants';
+import TimeLeft from '../elements/TimeLeft';
 
 const baseBoxShadow =
   '0px 0px 1px rgba(255, 255, 255, 0.4), 0px 2px 6px rgba(0, 0, 0, 0.4)';
@@ -79,6 +80,12 @@ export const InfoBarLeft = styled.div`
   height: 100%;
 `;
 
+export const InfoBarRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 export const InfoBar = styled.div`
   position: absolute;
   bottom: 0;
@@ -90,4 +97,14 @@ export const InfoBar = styled.div`
   justify-content: space-between;
   overflow: hidden;
   height: 40px;
+`;
+
+export const BusyIcon = styled(Icon)`
+  color: ${DANGER.string()};
+  font-size: 20px;
+`;
+
+export const BusyTimeLeft = styled(TimeLeft)`
+  color: #999;
+  font-size: 12px;
 `;

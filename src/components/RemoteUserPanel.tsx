@@ -11,7 +11,7 @@ import { AppInfo } from '../hooks/useAppTracker';
 import AppIndicator from './AppIndicator';
 import Loader from '../elements/Loader';
 import { UserSettingsContext } from '../contexts/UserSettingsContext';
-import { PlayerStateContext } from '../contexts/PlayerStateContext';
+import { PlayerStateContext, BusyType } from '../contexts/PlayerStateContext';
 import NewWindow from '../elements/NewWindow';
 import { useWindowsDrag } from '../hooks/useWindowsDrag';
 
@@ -25,6 +25,8 @@ export interface NearbyPlayer {
   screenShareOn?: boolean;
   sharedApp?: AppInfo;
   whisperingTo?: string;
+  busyType?: BusyType;
+  busyUntil?: number;
 }
 
 export interface RemoteUserPanelInnerProps {
@@ -182,9 +184,13 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
             </S.StatusIcons>
             <S.Name>{player.name}</S.Name>
           </S.InfoBarLeft>
-          {player.sharedApp != null && (
-            <AppIndicator appInfo={player.sharedApp} />
-          )}
+          <S.InfoBarRight>
+            {player.busyUntil && <S.BusyTimeLeft until={player.busyUntil} />}
+            {player.busyType && <S.BusyIcon name="event_busy" />}
+            {!player.busyType && player.sharedApp != null && (
+              <AppIndicator appInfo={player.sharedApp} />
+            )}
+          </S.InfoBarRight>
         </S.InfoBar>
         <HoverMenu hidden={mouseIsIdle}>
           <HoverMenuStyles.MenuItem
