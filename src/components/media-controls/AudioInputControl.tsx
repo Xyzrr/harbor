@@ -87,9 +87,7 @@ const AudioInputControl: React.FC<AudioInputControlProps> = ({
               const { value } = e.target;
               setLocalAudioInputDeviceId(value);
             }}
-            value={
-              localAudioInputDeviceId || localAudioTrack?.getSettings().deviceId
-            }
+            value={localAudioInputDeviceId}
           >
             {mediaDevices.map((device) => {
               return (
