@@ -4,6 +4,7 @@ import DailyIframe, {
   DailyEventObjectParticipant,
   DailyCallOptions,
   DailyMeetingState,
+  DailyEventObjectTrack,
 } from '@daily-co/daily-js';
 import { LocalMediaContext } from '../LocalMediaContext';
 import { UserSettingsContext } from '../UserSettingsContext';
@@ -135,7 +136,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       localVideoInputOn,
       localVideoInputDeviceId,
       localAudioInputOn,
-      localAudioInputDeviceId,
+      localAudioTrack,
       localScreenShareOn,
       localScreenShareSourceId,
     } = React.useContext(LocalMediaContext);
@@ -257,10 +258,38 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     }, [callObject, localAudioInputOn]);
 
     React.useEffect(() => {
+      if (localAudioTrack == null) {
+        return;
+      }
       callObject.setInputDevicesAsync({
-        audioDeviceId: localAudioInputDeviceId,
+        audioSource: localAudioTrack,
       });
-    }, [callObject, localAudioInputDeviceId]);
+    }, [callObject, localAudioTrack]);
+
+    // Daily likes to spawn its own tracks even though we want it to always use ours.
+    // Put them in their place by setting the track back to ours every time it desyncs.
+    const localAudioTrackRef = React.useRef(localAudioTrack);
+    localAudioTrackRef.current = localAudioTrack;
+    React.useEffect(() => {
+      function handleTrackStarted(event?: DailyEventObjectTrack) {
+        if (event?.track.kind !== 'audio') {
+          return;
+        }
+        const currentLocalAudioTrack = localAudioTrackRef.current;
+        if (
+          currentLocalAudioTrack != null &&
+          event.track.id !== currentLocalAudioTrack.id
+        ) {
+          callObject.setInputDevicesAsync({
+            audioSource: currentLocalAudioTrack,
+          });
+        }
+      }
+      callObject.on('track-started', handleTrackStarted);
+      return () => {
+        callObject.off('track-started', handleTrackStarted);
+      };
+    }, [callObject]);
 
     React.useEffect(() => {
       if (localScreenShareOn) {
