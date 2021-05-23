@@ -70,4 +70,9 @@ export const StyledSwitch = styled(Switch)`
   .MuiSwitch-thumb {
     transform: scale(0.8);
   }
+  &:hover {
+    .MuiButtonBase-root {
+      color: #ddd;
+    }
+  }
 `;
