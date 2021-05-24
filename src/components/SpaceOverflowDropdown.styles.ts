@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import Icon from '../elements/Icon';
+import { MenuItem } from '@material-ui/core';
 
 export const Wrapper = styled.div<{ open?: boolean }>`
   user-select: none;
@@ -49,4 +50,8 @@ export const MenuIcon = styled(Icon)`
   width: 20px;
   overflow: hidden;
   margin-right: 8px;
+`;
+
+export const MenuTitle = styled(MenuItem).attrs({ disabled: true })`
+  font-size: 12px !important;
 `;

@@ -33,9 +33,9 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                     return (
                       <Paper>
                         <MenuList dense variant="menu">
-                          <MenuItem disabled>
+                          <S.MenuTitle disabled style={{ fontSize: 14 }}>
                             Disable communication for...
-                          </MenuItem>
+                          </S.MenuTitle>
                           <MenuItem
                             onClick={() => {
                               setBusySince(Date.now());
