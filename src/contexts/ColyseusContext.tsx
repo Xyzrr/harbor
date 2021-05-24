@@ -276,53 +276,53 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
 
     React.useEffect(() => {
       room?.send('updatePlayer', { audioInputOn: localAudioInputOn });
-    }, [localAudioInputOn]);
+    }, [room, localAudioInputOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { audioOutputOn: localAudioOutputOn });
-    }, [localAudioOutputOn]);
+    }, [room, localAudioOutputOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { videoInputOn: localVideoInputOn });
-    }, [localVideoInputOn]);
+    }, [room, localVideoInputOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { screenShareOn: localScreenShareOn });
-    }, [localScreenShareOn]);
+    }, [room, localScreenShareOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { color: localColor });
-    }, [localColor]);
+    }, [room, localColor]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { name: localName });
-    }, [localName]);
+    }, [room, localName]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { photoUrl: localPhotoUrl });
-    }, [localPhotoUrl]);
+    }, [room, localPhotoUrl]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { whisperingTo: localWhisperingTo });
-    }, [localWhisperingTo]);
+    }, [room, localWhisperingTo]);
 
     React.useEffect(() => {
       if (appSharingOn) {
         room?.send('appInfo', { ...localApp });
       }
-    }, [localApp, appSharingOn]);
+    }, [localApp, room, appSharingOn]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { busySince });
-    }, [busySince]);
+    }, [room, busySince]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { busyUntil });
-    }, [busyUntil]);
+    }, [room, busyUntil]);
 
     React.useEffect(() => {
       room?.send('updatePlayer', { busyType });
-    }, [busyType]);
+    }, [room, busyType]);
 
     return (
       <ColyseusContext.Provider

@@ -130,11 +130,10 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       []
     );
 
+    (window as any).callObject = callObject;
+
     const [meetingState, setMeetingState] =
       React.useState<DailyMeetingState>('new');
-
-    const [localScreenShareTrulyOn, setLocalScreenShareTrulyOn] =
-      React.useState(false);
 
     const newWindow = React.useContext(NewWindowContext);
 
@@ -154,6 +153,8 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
     const [participants, setParticipants] = useImmer<{
       [identity: string]: VideoCallParticipant;
     }>({});
+
+    (window as any).participants = participants;
 
     const join = React.useCallback(
       async (roomName: string) => {
@@ -194,14 +195,15 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       callObject.leave();
     }, [callObject]);
 
+    /**
+     * Join call on mount and when not busy, leave when busy
+     */
     React.useEffect(() => {
-      console.log('busytype', busyType, meetingState);
       // TODO: enable multiple call rooms per space
       if (
         busyType == null &&
         ['new', 'left-meeting', 'error'].includes(meetingState)
       ) {
-        console.log('fuck you joing');
         join(spaceId);
       }
 
@@ -210,6 +212,9 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       }
     }, [join, leave, spaceId, meetingState, busyType]);
 
+    /**
+     * Track changes in meeting state
+     */
     React.useEffect(() => {
       const events: DailyEvent[] = [
         'loading',
@@ -235,28 +240,6 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
         for (const event of events) {
           callObject.off(event, handleNewMeetingState);
         }
-      };
-    }, [callObject]);
-
-    React.useEffect(() => {
-      function handleNewParticipantsState(event?: DailyEventObjectParticipant) {
-        const localParticipant = callObject.participants().local;
-
-        if (localParticipant == null) {
-          return;
-        }
-
-        setLocalScreenShareTrulyOn(localParticipant.screen);
-      }
-
-      handleNewParticipantsState();
-
-      // Listen for changes in state
-      callObject.on('participant-updated', handleNewParticipantsState);
-
-      // Stop listening for changes in state
-      return function cleanup() {
-        callObject.off('participant-updated', handleNewParticipantsState);
       };
     }, [callObject]);
 
@@ -329,6 +312,12 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       ];
 
       function handleNewParticipantsState(event: DailyEvent) {
+        if (callObject.meetingState() === 'joining-meeting') {
+          // Daily sends weird stale cached data while joining a room.
+          // Ignore this data.
+          return;
+        }
+
         setParticipants((draft) => {
           const newParts = callObject.participants();
 
