@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
 
 export const ColyseusError = styled.div`
   background: ${DANGER.string()};
+  width: 100%;
   color: white;
   display: flex;
   position: absolute;

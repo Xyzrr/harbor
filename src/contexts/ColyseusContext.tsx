@@ -174,7 +174,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
           return;
         } catch (e) {
           console.error(`join error: ${e}`);
-          setError(`Connection issues`);
+          setError('Failed to rejoin. Trying again...');
           // eslint-disable-next-line
           await new Promise((resolve) => setTimeout(resolve, 5000));
         }
@@ -236,6 +236,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
           console.debug('SUCCESSFULLY RECONNECTED:', newRoom);
         } catch (e) {
           console.log('FAILED TO RECONNECT:', e);
+          setError('Failed to reconnect. Re-joining...');
           await joinWithInfiniteRetries();
         }
       };
