@@ -16,6 +16,8 @@ export type TriggerGenerator = (props: {
 
 export interface PopupTriggerProps {
   on?: 'click' | 'hover';
+  xOffset?: number;
+  yOffset?: number;
   transformOrigin?: Origin;
   anchorOrigin?: Origin;
   children: TriggerGenerator;
@@ -24,6 +26,8 @@ export interface PopupTriggerProps {
 
 const PopupTrigger: React.FC<PopupTriggerProps> = ({
   on = 'click',
+  xOffset,
+  yOffset,
   transformOrigin,
   anchorOrigin,
   children,
@@ -78,6 +82,8 @@ const PopupTrigger: React.FC<PopupTriggerProps> = ({
           transformOrigin={transformOrigin}
           anchorOrigin={anchorOrigin}
           anchorEl={anchorEl}
+          xOffset={xOffset}
+          yOffset={yOffset}
           onClose={onClose}
           onMouseEnter={() => {
             popupHoveredRef.current = true;

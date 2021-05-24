@@ -28,6 +28,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                   on="hover"
                   anchorOrigin="top right"
                   transformOrigin="top left"
+                  yOffset={-8}
                   popupContent={() => {
                     return (
                       <Paper>
@@ -95,7 +96,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
       >
         {({ anchorAttributes, open }) => {
           return (
-            <S.Wrapper className={className} {...anchorAttributes}>
+            <S.Wrapper className={className} {...anchorAttributes} open={open}>
               <Icon name="more_vert" />
             </S.Wrapper>
           );

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Icon from '../elements/Icon';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ open?: boolean }>`
   user-select: none;
   color: white;
   background: rgba(100, 100, 100, 0.4);
@@ -26,6 +26,15 @@ export const Wrapper = styled.div`
       opacity: 1;
     }
   }
+
+  ${(props) =>
+    props.open &&
+    css`
+      filter: brightness(1.5);
+      .material-icons-outlined {
+        opacity: 1;
+      }
+    `}
 `;
 
 export const Arrow = styled(Icon).attrs({ name: 'arrow_right' })`
