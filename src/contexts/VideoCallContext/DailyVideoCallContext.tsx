@@ -160,6 +160,8 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       async (roomName: string) => {
         const options: DailyCallOptions = {
           url: `http://harb.daily.co/${roomName}`,
+          audioSource: !!localAudioInputOn as any,
+          videoSource: !!localVideoInputOn as any,
         };
 
         // missing userName property in type definition
@@ -168,9 +170,6 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
         const participantObject = await callObject.join(options);
 
         console.debug('Joined Daily room', participantObject);
-
-        callObject.setLocalAudio(localAudioInputOn);
-        callObject.setLocalVideo(localVideoInputOn);
 
         if (process.env.LOW_POWER) {
           callObject.setBandwidth({
@@ -226,8 +225,13 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
       ];
 
       function handleNewMeetingState(event?: DailyEvent) {
-        console.debug('Meeting state:', callObject.meetingState());
-        setMeetingState(callObject.meetingState());
+        const newMeetingState = callObject.meetingState();
+        console.debug('Meeting state:', newMeetingState);
+        setMeetingState(newMeetingState);
+        if (newMeetingState === 'joined-meeting') {
+          callObject.setLocalAudio(localAudioInputOn);
+          callObject.setLocalVideo(localVideoInputOn);
+        }
       }
 
       handleNewMeetingState();
@@ -241,7 +245,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
           callObject.off(event, handleNewMeetingState);
         }
       };
-    }, [callObject]);
+    }, [callObject, localAudioInputOn, localVideoInputOn]);
 
     React.useEffect(() => {
       callObject.setLocalVideo(localVideoInputOn);

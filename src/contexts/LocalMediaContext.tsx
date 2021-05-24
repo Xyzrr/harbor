@@ -94,10 +94,6 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       return;
     }
 
-    if (localVideoTrack) {
-      localVideoTrack.stop();
-    }
-
     (async () => {
       const videoTrackPromise = window.navigator.mediaDevices.getUserMedia({
         audio: false,
@@ -130,10 +126,6 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       return;
     }
 
-    if (localAudioTrack) {
-      localAudioTrack.stop();
-    }
-
     (async () => {
       if (localAudioInputGroupId == null) {
         return;
@@ -161,6 +153,22 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       localVideoInputOn,
     });
   }, [localAudioInputOn, localVideoInputOn]);
+
+  /**
+   * Cleanup after unmount
+   */
+
+  React.useEffect(() => {
+    return () => {
+      localVideoTrack?.stop();
+    };
+  }, [localVideoTrack]);
+
+  React.useEffect(() => {
+    return () => {
+      localAudioTrack?.stop();
+    };
+  }, [localAudioTrack]);
 
   return (
     <LocalMediaContext.Provider
