@@ -158,10 +158,9 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
 
     const abortJoinRef = React.useRef(false);
     React.useEffect(() => {
-      const onUnmount = () => {
+      return () => {
         abortJoinRef.current = true;
       };
-      return onUnmount;
     }, []);
     const joinWithInfiniteRetries = React.useCallback(async () => {
       while (true) {
