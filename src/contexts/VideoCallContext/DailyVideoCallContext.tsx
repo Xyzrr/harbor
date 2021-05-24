@@ -229,6 +229,7 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
         console.debug('Meeting state:', newMeetingState);
         setMeetingState(newMeetingState);
         if (newMeetingState === 'joined-meeting') {
+          // In case mute was toggled while joining the meeting:
           callObject.setLocalAudio(localAudioInputOn);
           callObject.setLocalVideo(localVideoInputOn);
         }
