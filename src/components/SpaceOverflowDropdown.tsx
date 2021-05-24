@@ -82,6 +82,7 @@ const SpaceOverflowDropdown: React.FC<SpaceOverflowDropdownProps> = ({
                   {({ anchorAttributes, open }) => {
                     return (
                       <MenuItem {...anchorAttributes}>
+                        <S.MenuIcon name="event_busy" />
                         Busy mode <S.Arrow />
                       </MenuItem>
                     );

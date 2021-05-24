@@ -34,3 +34,10 @@ export const Arrow = styled(Icon).attrs({ name: 'arrow_right' })`
   width: 16px;
   overflow: hidden;
 `;
+
+export const MenuIcon = styled(Icon)`
+  font-size: 20px;
+  width: 20px;
+  overflow: hidden;
+  margin-right: 8px;
+`;
