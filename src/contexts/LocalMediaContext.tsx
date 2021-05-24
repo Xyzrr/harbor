@@ -83,19 +83,14 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
   const [localScreenShareSourceId, setLocalScreenShareSourceId] =
     React.useState<string | undefined>();
 
-  const videoTrackPromiseRef = React.useRef<Promise<MediaStream> | null>(null);
   React.useEffect(() => {
-    if (!localVideoInputOn) {
-      videoTrackPromiseRef.current = null;
-      if (localVideoTrack) {
-        localVideoTrack.stop();
-        setLocalVideoTrack(undefined);
-      }
-      return;
-    }
-
     (async () => {
-      const videoTrackPromise = window.navigator.mediaDevices.getUserMedia({
+      if (!localVideoInputOn) {
+        setLocalVideoTrack(undefined);
+        return;
+      }
+
+      const mediaStream = await window.navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
           width: 1920,
@@ -103,47 +98,30 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
           deviceId: localVideoInputDeviceId,
         },
       });
-      videoTrackPromiseRef.current = videoTrackPromise;
-      const mediaStream = await videoTrackPromise;
 
       const videoTrack = mediaStream.getVideoTracks()[0];
-      if (videoTrackPromise === videoTrackPromiseRef.current) {
-        setLocalVideoTrack(videoTrack);
-      } else {
-        videoTrack.stop();
-      }
+      setLocalVideoTrack(videoTrack);
     })();
   }, [localVideoInputOn, localVideoInputDeviceId]);
 
-  const audioTrackPromiseRef = React.useRef<Promise<MediaStream> | null>(null);
   React.useEffect(() => {
-    if (!localAudioInputOn) {
-      audioTrackPromiseRef.current = null;
-      if (localAudioTrack) {
-        localAudioTrack.stop();
-        setLocalAudioTrack(undefined);
-      }
-      return;
-    }
-
     (async () => {
+      if (!localAudioInputOn) {
+        setLocalAudioTrack(undefined);
+        return;
+      }
+
       if (localAudioInputGroupId == null) {
         return;
       }
 
-      const audioTrackPromise = window.navigator.mediaDevices.getUserMedia({
+      const mediaStream = await window.navigator.mediaDevices.getUserMedia({
         audio: { groupId: localAudioInputGroupId },
         video: false,
       });
-      audioTrackPromiseRef.current = audioTrackPromise;
-      const mediaStream = await audioTrackPromise;
 
       const audioTrack = mediaStream.getAudioTracks()[0];
-      if (audioTrackPromise === audioTrackPromiseRef.current) {
-        setLocalAudioTrack(audioTrack);
-      } else {
-        audioTrack.stop();
-      }
+      setLocalAudioTrack(audioTrack);
     })();
   }, [localAudioInputOn, localAudioInputGroupId]);
 
