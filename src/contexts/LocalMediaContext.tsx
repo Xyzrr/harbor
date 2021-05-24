@@ -1,5 +1,6 @@
 import React from 'react';
 import { ipcRenderer } from 'electron';
+import { PlayerStateContext } from './PlayerStateContext';
 
 interface LocalMediaContextValue {
   localVideoInputOn: boolean;
@@ -32,6 +33,8 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
     React.useState<string | undefined>();
   const [localVideoTrack, setLocalVideoTrack] =
     React.useState<MediaStreamTrack | undefined>();
+
+  const { busyType } = React.useContext(PlayerStateContext);
 
   const [localAudioInputOn, setLocalAudioInputOn] = React.useState(
     !process.env.NO_AUDIO
@@ -85,7 +88,7 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
 
   React.useEffect(() => {
     (async () => {
-      if (!localVideoInputOn) {
+      if (!localVideoInputOn || busyType) {
         setLocalVideoTrack(undefined);
         return;
       }
@@ -102,11 +105,11 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       const videoTrack = mediaStream.getVideoTracks()[0];
       setLocalVideoTrack(videoTrack);
     })();
-  }, [localVideoInputOn, localVideoInputDeviceId]);
+  }, [localVideoInputOn, localVideoInputDeviceId, busyType]);
 
   React.useEffect(() => {
     (async () => {
-      if (!localAudioInputOn) {
+      if (!localAudioInputOn || busyType) {
         setLocalAudioTrack(undefined);
         return;
       }
@@ -123,7 +126,7 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       const audioTrack = mediaStream.getAudioTracks()[0];
       setLocalAudioTrack(audioTrack);
     })();
-  }, [localAudioInputOn, localAudioInputGroupId]);
+  }, [localAudioInputOn, localAudioInputGroupId, busyType]);
 
   React.useEffect(() => {
     ipcRenderer.send('media-settings', {

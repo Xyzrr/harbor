@@ -58,10 +58,10 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
 
   return (
     <>
-      <LocalMediaContextProvider>
-        <S.TrayPopoutWrapper W={W} H={H} O={O} R={R}>
-          {ready ? (
-            <PlayerStateContextProvider>
+      <PlayerStateContextProvider>
+        <LocalMediaContextProvider>
+          <S.TrayPopoutWrapper W={W} H={H} O={O} R={R}>
+            {ready ? (
               <ColyseusContextProvider spaceId={spaceId}>
                 <DailyVideoCallContextProvider spaceId={spaceId}>
                   <SpaceMap />
@@ -84,20 +84,20 @@ const Space: React.FC<SpaceProps> = ({ spaceId, metadata, onExit }) => {
                   )}
                 </DailyVideoCallContextProvider>
               </ColyseusContextProvider>
-            </PlayerStateContextProvider>
-          ) : (
-            <GetReady
-              spaceMetadata={metadata}
-              onExit={onExit}
-              onReady={() => {
-                setReady(true);
-              }}
-            />
-          )}
-        </S.TrayPopoutWrapper>
-        <S.Overlay W={W} H={H} O={O} R={R} />
-        <S.CaretOverlay W={W} O={O} />
-      </LocalMediaContextProvider>
+            ) : (
+              <GetReady
+                spaceMetadata={metadata}
+                onExit={onExit}
+                onReady={() => {
+                  setReady(true);
+                }}
+              />
+            )}
+          </S.TrayPopoutWrapper>
+          <S.Overlay W={W} H={H} O={O} R={R} />
+          <S.CaretOverlay W={W} O={O} />
+        </LocalMediaContextProvider>
+      </PlayerStateContextProvider>
     </>
   );
 };
