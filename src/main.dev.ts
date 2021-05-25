@@ -189,9 +189,12 @@ app.on('before-quit', () => {
  */
 
 let noCloseOnBlur = false;
-ipcMain.on('no-close-on-blur', (e: Electron.IpcMainEvent, value: boolean) => {
-  noCloseOnBlur = value;
-});
+ipcMain.handle(
+  'noCloseOnBlur',
+  (e: Electron.IpcMainInvokeEvent, value: boolean) => {
+    noCloseOnBlur = value;
+  }
+);
 
 /**
  * All the window stuff
