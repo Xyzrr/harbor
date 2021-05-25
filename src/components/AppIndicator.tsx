@@ -10,7 +10,7 @@ export interface AppIndicatorProps {
 const AppIndicator: React.FC<AppIndicatorProps> = ({ className, appInfo }) => {
   const src = APPS.find((app) => app.name === appInfo.name)?.icon;
 
-  return <S.Wrapper className={className} src={src} />;
+  return <S.Wrapper className={className} src={src} active={appInfo.active} />;
 };
 
 export default AppIndicator;

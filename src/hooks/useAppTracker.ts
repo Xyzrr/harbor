@@ -111,6 +111,7 @@ export interface AppInfo {
   name: string;
   title: string;
   url?: string;
+  active?: boolean;
 }
 
 export const useAppTracker = () => {
@@ -129,19 +130,32 @@ export const useAppTracker = () => {
         return;
       }
 
+      let found = false;
       for (const app of APPS) {
         if (
           result.owner.name.includes(app.name) ||
           (app.nameMatch && result.owner.name.includes(app.nameMatch)) ||
           ((result as any).url != null && (result as any).url.includes(app.url))
         ) {
+          found = true;
           const appInfo = {
             title: result.title,
             name: app.name,
             url: (result as any).url,
+            active: true,
           };
           setLocalApp(appInfo);
         }
+      }
+
+      if (!found) {
+        setLocalApp((a) => {
+          if (!a?.active) {
+            return a;
+          }
+
+          return { ...a, active: false };
+        });
       }
     };
 
