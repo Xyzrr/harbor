@@ -23,6 +23,7 @@ import {
   Menu,
   Dock,
   dialog,
+  nativeTheme,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -31,6 +32,8 @@ import { openSystemPreferences } from 'electron-util';
 import activeWin from '@xyzrr/active-win';
 import * as _ from 'lodash';
 import { fork } from 'child_process';
+
+nativeTheme.themeSource = 'dark';
 
 let menu: Menu | null = null;
 
