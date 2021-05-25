@@ -258,6 +258,9 @@ const createWindow = async () => {
             minHeight: 252,
             titleBarStyle: 'hidden',
             vibrancy: undefined,
+            webPreferences: {
+              devTools: true,
+            },
           },
         };
       }
