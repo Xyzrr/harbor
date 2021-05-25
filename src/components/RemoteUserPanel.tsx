@@ -198,16 +198,17 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
           </S.InfoBarLeft>
           <S.InfoBarRight>
             {player.busyUntil && <S.BusyTimeLeft until={player.busyUntil} />}
-            {player.busyType && (
-              <S.BusyIcon
-                name="event_busy"
-                style={{ opacity: 5 / (5 + player.idleTime) }}
+            {player.busyType && <S.BusyIcon name="event_busy" />}
+            {!player.busyType && (
+              <S.IdleTimeIndicator
+                style={{ opacity: 5 / (2 + player.idleTime) }}
               />
             )}
-            {!player.busyType && <S.IdleTimeIndicator />}
-            {!player.busyType && player.sharedApp != null && (
-              <AppIndicator appInfo={player.sharedApp} />
-            )}
+            {!player.busyType &&
+              player.sharedApp != null &&
+              player.sharedApp.title != null && (
+                <AppIndicator appInfo={player.sharedApp} />
+              )}
           </S.InfoBarRight>
         </S.InfoBar>
         <HoverMenu hidden={mouseIsIdle}>

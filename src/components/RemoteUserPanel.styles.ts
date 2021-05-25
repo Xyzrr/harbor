@@ -93,7 +93,8 @@ export const InfoBarLeft = styled.div`
 export const InfoBarRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  padding-left: 4px;
 `;
 
 export const InfoBar = styled.div`
@@ -117,6 +118,7 @@ export const BusyIcon = styled(Icon)`
 export const BusyTimeLeft = styled(TimeLeft)`
   color: #999;
   font-size: 12px;
+  margin-right: 4px;
 `;
 
 export const IdleTimeIndicator = styled.div`

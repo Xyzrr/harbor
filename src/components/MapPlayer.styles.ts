@@ -64,6 +64,7 @@ export const Wrapper = styled.div<{
 
 export const BusyIcon = styled(Icon)`
   position: absolute;
+  z-index: 1;
   color: white;
   top: 50%;
   left: 50%;
