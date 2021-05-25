@@ -10,6 +10,7 @@ export const Wrapper = styled.div<{
   recentlyLoud: boolean;
   noVideo?: boolean;
   whisperTarget?: boolean;
+  whisperSource?: boolean;
   backgrounded?: boolean;
 }>`
   position: relative;
@@ -40,7 +41,19 @@ export const Wrapper = styled.div<{
     ${(props) =>
     props.whisperTarget &&
     css`
-      box-shadow: ${baseBoxShadow}, 0 0 0 2px rgba(255, 255, 0, 1);
+      box-shadow: 0 0 0 2px rgba(255, 255, 0, 1), ${baseBoxShadow};
+    `}
+    ${(props) =>
+    props.whisperSource &&
+    css`
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: 2px dashed rgba(255, 255, 0, 1);
+      }
     `}
     ${(props) =>
     props.backgrounded &&
