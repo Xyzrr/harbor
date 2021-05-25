@@ -518,9 +518,9 @@ const createWindow = async () => {
       if (windowType === 'space') {
         spaceWindow = win;
 
+        const tray = new Tray(getAssetPath('harbor_tray@2x.png'));
         const camTray = new Tray(getAssetPath('camera_off@2x.png'));
         const micTray = new Tray(getAssetPath('mic_on@2x.png'));
-        const tray = new Tray(getAssetPath('harbor_tray@2x.png'));
 
         const revealSpace = () => {
           const trayBounds = tray.getBounds();
