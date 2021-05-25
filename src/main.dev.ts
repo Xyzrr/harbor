@@ -620,6 +620,13 @@ const createWindow = async () => {
 
       if (windowType === 'panels') {
         panelsWindow = win;
+        win.on('moved', () => {
+          const workareaBounds = screen.getPrimaryDisplay().workArea;
+          const position = win.getPosition();
+          win.setBounds({
+            height: workareaBounds.height - (position[1] - workareaBounds.y),
+          });
+        });
         win.setWindowButtonVisibility?.(false);
         win.on('ready-to-show', () => {
           win.show();
