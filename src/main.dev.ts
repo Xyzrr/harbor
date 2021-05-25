@@ -22,6 +22,7 @@ import {
   MenuItem,
   Menu,
   Dock,
+  dialog,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -858,9 +859,36 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle('askForMediaAccess', (e, mediaType: 'microphone' | 'camera') => {
-  return systemPreferences.askForMediaAccess(mediaType);
-});
+ipcMain.handle(
+  'askForMediaAccess',
+  async (e, mediaType: 'microphone' | 'camera') => {
+    noCloseOnBlur = true;
+    const consented = await systemPreferences.askForMediaAccess(mediaType);
+    noCloseOnBlur = false;
+
+    if (!consented) {
+      const { response } = await dialog.showMessageBox(spaceWindow!, {
+        message:
+          mediaType === 'microphone'
+            ? 'In order to talk, you need to provide Harbor with access to your microphone.'
+            : 'To stream your video feed, you need to provide Harbor with access to your camera.',
+        detail:
+          'You may need to restart the app for the change to take effect.',
+        buttons: ['Open System Preferences', 'Cancel'],
+        defaultId: 0,
+        cancelId: 1,
+      });
+      if (response === 0) {
+        openSystemPreferences(
+          'security',
+          mediaType === 'microphone' ? 'Privacy_Microphone' : 'Privacy_Camera'
+        );
+      }
+    }
+
+    return consented;
+  }
+);
 
 ipcMain.on(
   'openSystemPreferences',

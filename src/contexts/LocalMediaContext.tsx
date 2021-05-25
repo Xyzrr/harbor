@@ -1,6 +1,7 @@
 import React from 'react';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, dialog } from 'electron';
 import { PlayerStateContext } from './PlayerStateContext';
+import { NewWindowContext } from '../elements/NewWindow';
 
 interface LocalMediaContextValue {
   localVideoInputOn: boolean;
@@ -86,6 +87,8 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
   const [localScreenShareSourceId, setLocalScreenShareSourceId] =
     React.useState<string | undefined>();
 
+  const newWindow = React.useContext(NewWindowContext);
+
   React.useEffect(() => {
     (async () => {
       if (!localVideoInputOn || busyType) {
@@ -93,7 +96,11 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await ipcRenderer.invoke('noCloseOnBlur', true);
+      const consented = await ipcRenderer.invoke('askForMediaAccess', 'camera');
+      if (!consented) {
+        setLocalVideoInputOn(false);
+      }
+
       const mediaStream = await window.navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
@@ -102,7 +109,6 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
           deviceId: localVideoInputDeviceId,
         },
       });
-      await ipcRenderer.invoke('noCloseOnBlur', false);
 
       const videoTrack = mediaStream.getVideoTracks()[0];
       setLocalVideoTrack(videoTrack);
@@ -120,12 +126,19 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
         return;
       }
 
-      await ipcRenderer.invoke('noCloseOnBlur', true);
+      const consented = await ipcRenderer.invoke(
+        'askForMediaAccess',
+        'microphone'
+      );
+      if (!consented) {
+        setLocalAudioInputOn(false);
+        return;
+      }
+
       const mediaStream = await window.navigator.mediaDevices.getUserMedia({
         audio: { groupId: localAudioInputGroupId },
         video: false,
       });
-      await ipcRenderer.invoke('noCloseOnBlur', false);
 
       const audioTrack = mediaStream.getAudioTracks()[0];
       setLocalAudioTrack(audioTrack);
