@@ -1,11 +1,24 @@
 import styled, { css } from 'styled-components';
 import UserAvatar from '../elements/UserAvatar';
 import Icon from '../elements/Icon';
+import Color from 'color';
 
 export const LiquidUserAvatar = styled(UserAvatar)`
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   font-size: 14px;
+`;
+
+export const Pointer = styled.div`
+  width: 8px;
+  height: 8px;
+  background: green;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transition: transform 0.15s;
 `;
 
 export const Wrapper = styled.div<{
@@ -42,6 +55,9 @@ export const Wrapper = styled.div<{
     `}
 
   ${LiquidUserAvatar} {
+    background: ${(props) => Color(props.color).darken(0.2).string()};
+  }
+  ${Pointer} {
     background: ${(props) => props.color};
   }
 `;

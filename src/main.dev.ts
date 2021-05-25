@@ -24,6 +24,7 @@ import {
   Dock,
   dialog,
   nativeTheme,
+  powerMonitor,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
