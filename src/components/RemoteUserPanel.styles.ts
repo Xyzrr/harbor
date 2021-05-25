@@ -126,6 +126,7 @@ export const IdleTimeIndicator = styled.div`
   width: 4px;
   height: 4px;
   border-radius: 50%;
+  transition: opacity 1s;
   &:last-child {
     margin-right: 4px;
   }
