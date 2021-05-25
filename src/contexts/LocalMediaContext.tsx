@@ -147,11 +147,12 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
   }, [localAudioInputOn, localAudioInputGroupId, busyType]);
 
   React.useEffect(() => {
-    ipcRenderer.send('media-settings', {
+    ipcRenderer.send('updatedMediaSettings', {
       localAudioInputOn,
       localVideoInputOn,
+      busyType,
     });
-  }, [localAudioInputOn, localVideoInputOn]);
+  }, [localAudioInputOn, localVideoInputOn, busyType]);
 
   /**
    * Cleanup after unmount

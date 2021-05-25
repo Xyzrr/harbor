@@ -575,13 +575,20 @@ const createWindow = async () => {
           revealSpace();
         });
 
-        const onMediaSettingsChange = (
+        const onUpdatedMediaSettings = (
           e: Electron.IpcMainEvent,
           settings: {
             localAudioInputOn: boolean;
             localVideoInputOn: boolean;
+            busyType?: string;
           }
         ) => {
+          if (settings.busyType) {
+            micTray.setImage(getAssetPath('tray_dot@2x.png'));
+            camTray.setImage(getAssetPath('tray_dot@2x.png'));
+            return;
+          }
+
           if (settings.localAudioInputOn) {
             micTray.setImage(getAssetPath('mic_on@2x.png'));
           } else {
@@ -595,11 +602,11 @@ const createWindow = async () => {
           }
         };
 
-        ipcMain.on('media-settings', onMediaSettingsChange);
+        ipcMain.on('updatedMediaSettings', onUpdatedMediaSettings);
 
         win.on('close', () => {
           spaceWindow = null;
-          ipcMain.off('media-settings', onMediaSettingsChange);
+          ipcMain.off('updatedMediaSettings', onUpdatedMediaSettings);
           tray.destroy();
           micTray.destroy();
           camTray.destroy();
