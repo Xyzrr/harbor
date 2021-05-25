@@ -99,6 +99,7 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
       const consented = await ipcRenderer.invoke('askForMediaAccess', 'camera');
       if (!consented) {
         setLocalVideoInputOn(false);
+        return;
       }
 
       const mediaStream = await window.navigator.mediaDevices.getUserMedia({
