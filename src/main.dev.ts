@@ -956,3 +956,10 @@ ipcMain.on('dragWindow', (e, { mouseX, mouseY }) => {
  */
 
 app.commandLine.appendSwitch('disable-features', 'IOSurfaceCapturer');
+
+setInterval(() => {
+  mainWindow?.webContents.send(
+    'systemIdleTime',
+    powerMonitor.getSystemIdleTime()
+  );
+}, 1000);

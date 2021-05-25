@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppInfo, useAppTracker } from '../hooks/useAppTracker';
 import * as _ from 'lodash';
+import { ipcRenderer } from 'electron';
 
 export type BusyType = 'default' | 'meeting' | 'food' | 'focus' | 'exercise';
 
@@ -16,6 +17,7 @@ interface PlayerStateContextValue {
   setBusyType(type: BusyType | undefined): void;
   spaceFocused?: boolean;
   setSpaceFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  idleTime: number;
 }
 
 export const PlayerStateContext = React.createContext<PlayerStateContextValue>(
@@ -31,6 +33,20 @@ export const PlayerStateContextProvider: React.FC = ({ children }) => {
   const [busyType, setBusyType] = React.useState<BusyType>();
   const [spaceFocused, setSpaceFocused] = React.useState(false);
 
+  const [idleTime, setIdleTime] = React.useState(0);
+
+  React.useEffect(() => {
+    const onSystemIdleTime = (e: Electron.IpcRendererEvent, time: number) => {
+      setIdleTime(time);
+    };
+
+    ipcRenderer.on('systemIdleTime', onSystemIdleTime);
+
+    return () => {
+      ipcRenderer.off('systemIdleTime', onSystemIdleTime);
+    };
+  }, []);
+
   return (
     <PlayerStateContext.Provider
       value={{
@@ -45,6 +61,7 @@ export const PlayerStateContextProvider: React.FC = ({ children }) => {
         setBusyType,
         spaceFocused,
         setSpaceFocused,
+        idleTime,
       }}
     >
       {children}

@@ -27,6 +27,7 @@ export interface NearbyPlayer {
   whisperingTo?: string;
   busyType?: BusyType;
   busyUntil?: number;
+  idleTime: number;
 }
 
 export interface RemoteUserPanelInnerProps {
@@ -197,7 +198,13 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
           </S.InfoBarLeft>
           <S.InfoBarRight>
             {player.busyUntil && <S.BusyTimeLeft until={player.busyUntil} />}
-            {player.busyType && <S.BusyIcon name="event_busy" />}
+            {player.busyType && (
+              <S.BusyIcon
+                name="event_busy"
+                style={{ opacity: 5 / (5 + player.idleTime) }}
+              />
+            )}
+            {!player.busyType && <S.IdleTimeIndicator />}
             {!player.busyType && player.sharedApp != null && (
               <AppIndicator appInfo={player.sharedApp} />
             )}

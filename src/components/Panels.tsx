@@ -92,6 +92,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
               draft[identity] = {
                 name: player.name,
                 distance: dist,
+                idleTime: player.idleTime,
               };
             }
 
@@ -105,6 +106,7 @@ const Panels: React.FC<PanelsProps> = ({ className }) => {
             draft[identity].whisperingTo = player.whisperingTo;
             draft[identity].busyType = player.busyType;
             draft[identity].busyUntil = player.busyUntil;
+            draft[identity].idleTime = player.idleTime;
           }
         }
 

@@ -79,6 +79,7 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       busyUntil,
       busyType,
       spaceFocused,
+      idleTime,
     } = React.useContext(PlayerStateContext);
 
     const {
@@ -333,6 +334,10 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     React.useEffect(() => {
       room?.send('updatePlayer', { spaceFocused });
     }, [room, spaceFocused]);
+
+    React.useEffect(() => {
+      room?.send('updatePlayer', { idleTime });
+    }, [room, idleTime]);
 
     return (
       <ColyseusContext.Provider

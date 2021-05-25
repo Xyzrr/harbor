@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import Icon from '../elements/Icon';
-import { DARK_BACKGROUND, DANGER } from '../constants';
+import { DARK_BACKGROUND, DANGER, HIGHLIGHT } from '../constants';
 import TimeLeft from '../elements/TimeLeft';
 
 const baseBoxShadow =
@@ -117,4 +117,11 @@ export const BusyIcon = styled(Icon)`
 export const BusyTimeLeft = styled(TimeLeft)`
   color: #999;
   font-size: 12px;
+`;
+
+export const IdleTimeIndicator = styled.div`
+  background: ${HIGHLIGHT.string()};
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
 `;
