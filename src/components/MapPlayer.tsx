@@ -17,6 +17,7 @@ export interface PlayerSummary {
   videoInputOn?: boolean;
   screenShareOn?: boolean;
   busyType?: BusyType;
+  connected: boolean;
 }
 
 export interface MapPlayerProps {
@@ -33,6 +34,7 @@ const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
   return (
     <S.Wrapper
       className={className}
+      connected={playerSummary.connected}
       busy={!!playerSummary.busyType}
       self={self}
       color={Color(playerSummary.color).string()}

@@ -12,6 +12,7 @@ export const Wrapper = styled.div<{
   color: string;
   self?: boolean;
   busy?: boolean;
+  connected: boolean;
 }>`
   position: absolute;
   width: 30px;
@@ -33,6 +34,11 @@ export const Wrapper = styled.div<{
       ${LiquidUserAvatar} {
         filter: brightness(0.5);
       }
+    `}
+  ${(props) =>
+    !props.connected &&
+    css`
+      opacity: 0.5;
     `}
 
   ${LiquidUserAvatar} {

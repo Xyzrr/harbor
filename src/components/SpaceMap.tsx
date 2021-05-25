@@ -33,6 +33,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
     y: 0,
     dir: 0,
     speed: 0,
+    connected: true,
   });
 
   React.useEffect(() => {
@@ -73,6 +74,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
           audioOutputOn: player.audioOutputOn,
           videoInputOn: player.videoInputOn,
           screenShareOn: player.screenShareOn,
+          connected: player.connected,
         };
       });
     };
@@ -93,6 +95,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
         draft[identity].audioOutputOn = player.audioOutputOn;
         draft[identity].videoInputOn = player.videoInputOn;
         draft[identity].screenShareOn = player.screenShareOn;
+        draft[identity].connected = player.connected;
       });
     };
 
