@@ -2,7 +2,10 @@
   font-family: 'Material Icons Outlined';
   font-style: normal;
   font-weight: 400;
-  src: url('materialiconsoutlined.woff2') format('woff2');
+  src: url('https://fonts.gstatic.com/s/materialiconsoutlined/v59/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUcel5euIg.woff2')
+    format('woff2');
+  /* TODO: figure out why local font doesn't work for child windows in production build */
+  /* src: url('materialiconsoutlined.woff2') format('woff2'); */
 }
 
 .material-icons-outlined {
