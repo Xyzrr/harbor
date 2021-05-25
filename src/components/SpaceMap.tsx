@@ -78,6 +78,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
           videoInputOn: player.videoInputOn,
           screenShareOn: player.screenShareOn,
           connected: player.connected,
+          spaceFocused: player.spaceFocused,
         };
       });
     };
@@ -99,6 +100,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
         draft[identity].videoInputOn = player.videoInputOn;
         draft[identity].screenShareOn = player.screenShareOn;
         draft[identity].connected = player.connected;
+        draft[identity].spaceFocused = player.spaceFocused;
       });
     };
 
