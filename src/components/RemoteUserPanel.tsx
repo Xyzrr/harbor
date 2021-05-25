@@ -54,7 +54,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
     setExpanded,
   }) {
     const wrapperRef = React.useRef<HTMLDivElement>(null);
-    const videoRef = React.useRef<HTMLVideoElement>(null);
+    const [videoEl, setVideoEl] = React.useState<HTMLVideoElement | null>();
     const audioRef = React.useRef<HTMLAudioElement>(null);
     const [recentlyLoud, setRecentlyLoud] = React.useState(false);
     const recentlyLoudTimerRef = React.useRef<number | null>(null);
@@ -62,6 +62,10 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
 
     const { localAudioOutputDeviceId, localAudioOutputOn } =
       useContext(LocalMediaContext);
+
+    const { localIdentity } = React.useContext(UserSettingsContext);
+    const whisperingToSomeoneElse =
+      player.whisperingTo && player.whisperingTo !== localIdentity;
 
     const scale = Math.min(
       1,
@@ -72,15 +76,15 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
     const width = expanded ? '100%' : Math.floor(240 * scale);
     const height = expanded
       ? '100%'
-      : player.videoInputOn && !player.busyType
+      : player.videoInputOn && !player.busyType && !whisperingToSomeoneElse
       ? Math.floor(135 * scale)
       : 40;
 
     React.useEffect(() => {
-      if (videoRef.current && videoTrack) {
-        videoRef.current.srcObject = new MediaStream([videoTrack]);
+      if (videoEl && videoTrack) {
+        videoEl.srcObject = new MediaStream([videoTrack]);
       }
-    }, [videoTrack]);
+    }, [videoEl, videoTrack]);
 
     React.useEffect(() => {
       const audioEl = audioRef.current;
@@ -121,8 +125,6 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
       }
     });
 
-    const { localIdentity } = React.useContext(UserSettingsContext);
-
     const { localWhisperingTo, setLocalWhisperingTo } =
       React.useContext(PlayerStateContext);
 
@@ -149,12 +151,15 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
 
     const windowsDragProps = useWindowsDrag();
 
+    const shouldHaveVideo =
+      player.videoInputOn && !player.busyType && !whisperingToSomeoneElse;
+
     return (
       <S.Wrapper
         className={className}
         ref={wrapperRef}
         recentlyLoud={recentlyLoud}
-        noVideo={!player.videoInputOn}
+        noVideo={!shouldHaveVideo}
         whisperTarget={localWhisperingTo === identity}
         whisperSource={player.whisperingTo === localIdentity}
         backgrounded={
@@ -163,9 +168,9 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
         style={{ width, height }}
         {...windowsDragProps}
       >
-        {player.videoInputOn && !player.busyType && videoTrack && (
+        {shouldHaveVideo && videoTrack && (
           <video
-            ref={videoRef}
+            ref={(node) => setVideoEl(node)}
             onCanPlay={() => {
               setVideoStreaming(true);
             }}
@@ -183,6 +188,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
           <S.InfoBarLeft>
             {!player.busyType && (
               <>
+                {whisperingToSomeoneElse && <S.StatusIcon name="hearing" />}
                 {!player.audioInputOn && <S.StatusIcon name="mic_off" />}
                 {!player.audioOutputOn && <S.StatusIcon name="volume_off" />}
               </>

@@ -16,7 +16,7 @@ export const Wrapper = styled.div<{
   position: relative;
   border-radius: 4px;
   overflow: hidden;
-  transition: box-shadow 0.15s, width 0.15s, height 0.15s;
+  transition: background 0.15s, box-shadow 0.15s, width 0.15s, height 0.15s;
   box-shadow: ${baseBoxShadow}, 0 0 0 2px rgba(0, 255, 0, 0);
   width: 100%;
   height: 100%;
