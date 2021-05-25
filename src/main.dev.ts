@@ -180,6 +180,7 @@ activeWinLoop.on('message', (aw: any) => {
 
 let quitting = false;
 app.on('before-quit', () => {
+  activeWinLoop.kill();
   quitting = true;
 });
 
@@ -501,7 +502,7 @@ const createWindow = async () => {
 
         const revealSpace = () => {
           const trayBounds = tray.getBounds();
-          console.log("TRAY BOUNDS", trayBounds);
+          console.log('TRAY BOUNDS', trayBounds);
           const windowSize = win.getSize();
 
           win.setPosition(
