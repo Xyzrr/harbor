@@ -66,7 +66,7 @@ const AudioInputControl: React.FC<AudioInputControlProps> = ({
 
   React.useEffect(() => {
     const onToggle = () => {
-      setLocalAudioInputOn(!localAudioInputOn);
+      setLocalAudioInputOn((o) => !o);
     };
 
     ipcRenderer.on('toggleLocalAudioInput', onToggle);
@@ -74,7 +74,7 @@ const AudioInputControl: React.FC<AudioInputControlProps> = ({
     return () => {
       ipcRenderer.off('toggleLocalAudioInput', onToggle);
     };
-  }, [setLocalAudioInputOn, localAudioInputOn]);
+  }, [setLocalAudioInputOn]);
 
   return (
     <S.Wrapper

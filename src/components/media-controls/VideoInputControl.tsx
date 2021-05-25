@@ -48,7 +48,7 @@ const VideoInputControl: React.FC<VideoInputControlProps> = ({
 
   React.useEffect(() => {
     const onToggle = () => {
-      setLocalVideoInputOn(!localVideoInputOn);
+      setLocalVideoInputOn((o) => !o);
     };
 
     ipcRenderer.on('toggleLocalVideoInput', onToggle);
@@ -56,7 +56,7 @@ const VideoInputControl: React.FC<VideoInputControlProps> = ({
     return () => {
       ipcRenderer.off('toggleLocalVideoInput', onToggle);
     };
-  }, [setLocalVideoInputOn, localVideoInputOn]);
+  }, [setLocalVideoInputOn]);
 
   return (
     <>

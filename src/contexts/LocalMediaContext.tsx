@@ -5,21 +5,21 @@ import { NewWindowContext } from '../elements/NewWindow';
 
 interface LocalMediaContextValue {
   localVideoInputOn: boolean;
-  setLocalVideoInputOn(on: boolean): void;
+  setLocalVideoInputOn: React.Dispatch<React.SetStateAction<boolean>>;
   localVideoInputDeviceId?: string;
   setLocalVideoInputDeviceId(id: string): void;
   localVideoTrack?: MediaStreamTrack;
   localAudioInputOn: boolean;
-  setLocalAudioInputOn(on: boolean): void;
+  setLocalAudioInputOn: React.Dispatch<React.SetStateAction<boolean>>;
   localAudioInputDeviceId: string;
   setLocalAudioInputDeviceId(id: string): void;
   localAudioTrack?: MediaStreamTrack;
   localAudioOutputOn: boolean;
-  setLocalAudioOutputOn(on: boolean): void;
+  setLocalAudioOutputOn: React.Dispatch<React.SetStateAction<boolean>>;
   localAudioOutputDeviceId: string;
   setLocalAudioOutputDeviceId(id: string): void;
   localScreenShareOn: boolean;
-  setLocalScreenShareOn(on: boolean): void;
+  setLocalScreenShareOn: React.Dispatch<React.SetStateAction<boolean>>;
   localScreenShareSourceId?: string;
   setLocalScreenShareSourceId(id: string): void;
 }
