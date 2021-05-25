@@ -50,6 +50,7 @@ const GetReady: React.FC<GetReadyProps> = ({
         <S.Input
           autoFocus
           value={nameValue}
+          placeholder="Your name"
           onChange={(e) => {
             setNameValue(e.target.value);
           }}

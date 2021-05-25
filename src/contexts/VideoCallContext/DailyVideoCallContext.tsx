@@ -176,9 +176,9 @@ export const DailyVideoCallContextProvider: React.FC<DailyVideoCallContextProvid
             trackConstraints: { width: 32, height: 18 },
           });
         } else {
-          callObject.setBandwidth({
-            trackConstraints: { width: 240, height: 135 },
-          });
+          // callObject.setBandwidth({
+          //   trackConstraints: { width: 240, height: 135 },
+          // });
         }
       },
       [
