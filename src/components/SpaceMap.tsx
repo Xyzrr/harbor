@@ -9,6 +9,7 @@ import MapWorldObjects from './MapWorldObjects';
 import Loader from '../elements/Loader';
 import { usePushing } from '../hooks/usePushing';
 import { PlayerStateContext } from '../contexts/PlayerStateContext';
+import { NewWindowContext } from '../elements/NewWindow';
 
 export interface SpaceMapProps {
   className?: string;
@@ -22,7 +23,8 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   const { localIdentity, localColor, localName, localPhotoUrl } =
     React.useContext(UserSettingsContext);
 
-  const { busyType } = React.useContext(PlayerStateContext);
+  const { busyType, spaceFocused, setSpaceFocused } =
+    React.useContext(PlayerStateContext);
 
   const [localPlayer, setLocalPlayer] = useImmer<PlayerSummary>({
     name: localName,
@@ -39,8 +41,9 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   React.useEffect(() => {
     setLocalPlayer((draft) => {
       draft.busyType = busyType;
+      draft.spaceFocused = spaceFocused;
     });
-  }, [busyType]);
+  }, [busyType, spaceFocused, setLocalPlayer]);
 
   const {
     room: colyseusRoom,
@@ -124,6 +127,24 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   ]);
 
   useKeyboardMovement(setLocalPlayer, playerSummaries);
+
+  const newWindow = React.useContext(NewWindowContext);
+  React.useEffect(() => {
+    const onFocus = () => {
+      setSpaceFocused(true);
+    };
+    const onBlur = () => {
+      setSpaceFocused(false);
+    };
+
+    newWindow.addEventListener('focus', onFocus);
+    newWindow.addEventListener('blur', onBlur);
+
+    return () => {
+      newWindow.removeEventListener('focus', onFocus);
+      newWindow.removeEventListener('blur', onBlur);
+    };
+  }, [newWindow, setSpaceFocused]);
 
   if (!colyseusRoom) {
     return (

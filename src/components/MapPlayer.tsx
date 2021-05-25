@@ -18,6 +18,7 @@ export interface PlayerSummary {
   screenShareOn?: boolean;
   busyType?: BusyType;
   connected: boolean;
+  spaceFocused?: boolean;
 }
 
 export interface MapPlayerProps {
@@ -50,11 +51,14 @@ const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
         transform: `translate(${playerSummary.x}px, ${playerSummary.y}px)`,
       }}
     >
-      <S.Pointer
-        style={{
-          transform: `translate(-50%, -50%) rotate(${interpolableDir}deg) translateX(14px) rotate(45deg)`,
-        }}
-      />
+      {playerSummary.spaceFocused && (
+        <S.Pointer
+          style={{
+            transform: `translate(-50%, -50%) rotate(${interpolableDir}deg) translateX(14px) rotate(45deg)`,
+          }}
+        />
+      )}
+
       <S.LiquidUserAvatar
         userName={playerSummary.name}
         photoUrl={playerSummary.photoUrl}

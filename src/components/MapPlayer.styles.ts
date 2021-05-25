@@ -55,7 +55,7 @@ export const Wrapper = styled.div<{
     `}
 
   ${LiquidUserAvatar} {
-    background: ${(props) => Color(props.color).darken(0.2).string()};
+    background: ${(props) => Color(props.color).darken(0.1).string()};
   }
   ${Pointer} {
     background: ${(props) => props.color};

@@ -14,6 +14,8 @@ interface PlayerStateContextValue {
   setBusyUntil(time: number | undefined): void;
   busyType?: BusyType;
   setBusyType(type: BusyType | undefined): void;
+  spaceFocused?: boolean;
+  setSpaceFocused: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const PlayerStateContext = React.createContext<PlayerStateContextValue>(
@@ -27,6 +29,7 @@ export const PlayerStateContextProvider: React.FC = ({ children }) => {
   const [busySince, setBusySince] = React.useState<number>();
   const [busyUntil, setBusyUntil] = React.useState<number>();
   const [busyType, setBusyType] = React.useState<BusyType>();
+  const [spaceFocused, setSpaceFocused] = React.useState(false);
 
   return (
     <PlayerStateContext.Provider
@@ -40,6 +43,8 @@ export const PlayerStateContextProvider: React.FC = ({ children }) => {
         setBusyUntil,
         busyType,
         setBusyType,
+        spaceFocused,
+        setSpaceFocused,
       }}
     >
       {children}

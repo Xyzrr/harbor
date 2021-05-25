@@ -72,8 +72,14 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
       appSharingOn,
     } = React.useContext(UserSettingsContext);
 
-    const { localWhisperingTo, localApp, busySince, busyUntil, busyType } =
-      React.useContext(PlayerStateContext);
+    const {
+      localWhisperingTo,
+      localApp,
+      busySince,
+      busyUntil,
+      busyType,
+      spaceFocused,
+    } = React.useContext(PlayerStateContext);
 
     const {
       localAudioInputOn,
@@ -323,6 +329,10 @@ export const ColyseusContextProvider: React.FC<ColyseusContextProviderProps> =
     React.useEffect(() => {
       room?.send('updatePlayer', { busyType });
     }, [room, busyType]);
+
+    React.useEffect(() => {
+      room?.send('updatePlayer', { spaceFocused });
+    }, [room, spaceFocused]);
 
     return (
       <ColyseusContext.Provider
