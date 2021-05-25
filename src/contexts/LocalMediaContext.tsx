@@ -93,6 +93,7 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
         return;
       }
 
+      ipcRenderer.send('no-close-on-blur', true);
       const mediaStream = await window.navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
@@ -101,6 +102,7 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
           deviceId: localVideoInputDeviceId,
         },
       });
+      ipcRenderer.send('no-close-on-blur', false);
 
       const videoTrack = mediaStream.getVideoTracks()[0];
       setLocalVideoTrack(videoTrack);
@@ -118,10 +120,12 @@ export const LocalMediaContextProvider: React.FC = ({ children }) => {
         return;
       }
 
+      ipcRenderer.send('no-close-on-blur', true);
       const mediaStream = await window.navigator.mediaDevices.getUserMedia({
         audio: { groupId: localAudioInputGroupId },
         video: false,
       });
+      ipcRenderer.send('no-close-on-blur', false);
 
       const audioTrack = mediaStream.getAudioTracks()[0];
       setLocalAudioTrack(audioTrack);

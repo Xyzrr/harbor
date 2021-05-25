@@ -184,6 +184,19 @@ app.on('before-quit', () => {
   quitting = true;
 });
 
+/**
+ * Hack to avoid closing space when getting mic/camera permission
+ */
+
+let noCloseOnBlur = false;
+ipcMain.on('no-close-on-blur', (e: Electron.IpcMainEvent, value: boolean) => {
+  noCloseOnBlur = value;
+});
+
+/**
+ * All the window stuff
+ */
+
 const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -535,6 +548,10 @@ const createWindow = async () => {
           }, 100);
         });
         win.on('blur', () => {
+          if (noCloseOnBlur) {
+            return;
+          }
+
           const focusedWindow = BrowserWindow.getFocusedWindow();
           if (focusedWindow == null) {
             win.hide();
@@ -799,7 +816,7 @@ ipcMain.on('clearUrl', () => {
 
 ipcMain.on('setWindowSize', (e, size: { width: number; height: number }) => {
   if (mainWindow) {
-    // Weird windows bug where winow becomes 16px narrower.
+    // Weird windows bug where window becomes 16px narrower.
     const adjustedWidth = size.width + (process.platform === 'win32' ? 16 : 0);
     mainWindow.setMinimumSize(adjustedWidth, size.height);
     const bounds = mainWindow.getBounds();
