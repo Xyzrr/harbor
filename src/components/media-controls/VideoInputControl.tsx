@@ -6,6 +6,7 @@ import { LocalMediaContext } from '../../contexts/LocalMediaContext';
 import Icon from '../../elements/Icon';
 import NewWindow from '../../elements/NewWindow';
 import LocalVideoPreview from '../LocalVideoPreview';
+import { ipcRenderer } from 'electron';
 
 export interface VideoInputControlProps {
   className?: string;
@@ -44,6 +45,18 @@ const VideoInputControl: React.FC<VideoInputControlProps> = ({
   }, []);
 
   const [hovering, setHovering] = React.useState(false);
+
+  React.useEffect(() => {
+    const onToggle = () => {
+      setLocalVideoInputOn(!localVideoInputOn);
+    };
+
+    ipcRenderer.on('toggleLocalVideoInput', onToggle);
+
+    return () => {
+      ipcRenderer.off('toggleLocalVideoInput', onToggle);
+    };
+  }, [setLocalVideoInputOn, localVideoInputOn]);
 
   return (
     <>

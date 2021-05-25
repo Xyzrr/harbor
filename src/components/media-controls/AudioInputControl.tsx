@@ -6,6 +6,7 @@ import VolumeIndicator from './VolumeIndicator';
 import HiddenSelect from '../../elements/HiddenSelect';
 import { useVolume } from '../../hooks/useVolume';
 import Icon from '../../elements/Icon';
+import { ipcRenderer } from 'electron';
 
 export interface AudioInputControlProps {
   className?: string;
@@ -62,6 +63,18 @@ const AudioInputControl: React.FC<AudioInputControlProps> = ({
       }, 500);
     }
   });
+
+  React.useEffect(() => {
+    const onToggle = () => {
+      setLocalAudioInputOn(!localAudioInputOn);
+    };
+
+    ipcRenderer.on('toggleLocalAudioInput', onToggle);
+
+    return () => {
+      ipcRenderer.off('toggleLocalAudioInput', onToggle);
+    };
+  }, [setLocalAudioInputOn, localAudioInputOn]);
 
   return (
     <S.Wrapper

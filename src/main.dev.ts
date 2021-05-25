@@ -518,7 +518,9 @@ const createWindow = async () => {
       if (windowType === 'space') {
         spaceWindow = win;
 
-        const tray = new Tray(getAssetPath('mic_on_camera_off@2x.png'));
+        const camTray = new Tray(getAssetPath('camera_off@2x.png'));
+        const micTray = new Tray(getAssetPath('mic_on@2x.png'));
+        const tray = new Tray(getAssetPath('harbor_tray@2x.png'));
 
         const revealSpace = () => {
           const trayBounds = tray.getBounds();
@@ -541,6 +543,14 @@ const createWindow = async () => {
           } else {
             revealSpace();
           }
+        });
+
+        micTray.on('click', () => {
+          mainWindow?.webContents.send('toggleLocalAudioInput');
+        });
+
+        camTray.on('click', () => {
+          mainWindow?.webContents.send('toggleLocalVideoInput');
         });
 
         win.setWindowButtonVisibility?.(false);
@@ -572,20 +582,16 @@ const createWindow = async () => {
             localVideoInputOn: boolean;
           }
         ) => {
-          if (settings.localAudioInputOn && settings.localVideoInputOn) {
-            tray.setImage(getAssetPath('mic_on_camera_on@2x.png'));
-          } else if (
-            !settings.localAudioInputOn &&
-            settings.localVideoInputOn
-          ) {
-            tray.setImage(getAssetPath('mic_off_camera_on@2x.png'));
-          } else if (
-            settings.localAudioInputOn &&
-            !settings.localVideoInputOn
-          ) {
-            tray.setImage(getAssetPath('mic_on_camera_off@2x.png'));
+          if (settings.localAudioInputOn) {
+            micTray.setImage(getAssetPath('mic_on@2x.png'));
           } else {
-            tray.setImage(getAssetPath('mic_off_camera_off@2x.png'));
+            micTray.setImage(getAssetPath('mic_off@2x.png'));
+          }
+
+          if (settings.localVideoInputOn) {
+            camTray.setImage(getAssetPath('camera_on@2x.png'));
+          } else {
+            camTray.setImage(getAssetPath('camera_off@2x.png'));
           }
         };
 
@@ -595,6 +601,8 @@ const createWindow = async () => {
           spaceWindow = null;
           ipcMain.off('media-settings', onMediaSettingsChange);
           tray.destroy();
+          micTray.destroy();
+          camTray.destroy();
           mainWindow?.show();
         });
         mainWindow?.hide();
