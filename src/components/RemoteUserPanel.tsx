@@ -158,7 +158,7 @@ const RemoteUserPanelInner: React.FC<RemoteUserPanelInnerProps> = React.memo(
       <S.Wrapper
         className={className}
         ref={wrapperRef}
-        recentlyLoud={recentlyLoud}
+        recentlyLoud={recentlyLoud && !whisperingToSomeoneElse}
         noVideo={!shouldHaveVideo}
         whisperTarget={localWhisperingTo === identity}
         whisperSource={player.whisperingTo === localIdentity}
