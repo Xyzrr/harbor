@@ -957,6 +957,10 @@ ipcMain.on('dragWindow', (e, { mouseX, mouseY }) => {
 
 app.commandLine.appendSwitch('disable-features', 'IOSurfaceCapturer');
 
+/**
+ * Track idle time
+ */
+
 setInterval(() => {
   mainWindow?.webContents.send(
     'systemIdleTime',
