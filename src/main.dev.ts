@@ -521,6 +521,8 @@ const createWindow = async () => {
 
       if (windowType === 'space') {
         spaceWindow = win;
+        win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+        win.setAlwaysOnTop(true, 'floating');
 
         const tray = new Tray(getAssetPath('harbor_tray@2x.png'));
         const camTray = new Tray(getAssetPath('camera_off@2x.png'));
@@ -621,6 +623,7 @@ const createWindow = async () => {
 
       if (windowType === 'panels') {
         panelsWindow = win;
+        win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
         win.on('moved', () => {
           const workareaBounds = screen.getPrimaryDisplay().workArea;
           const position = win.getPosition();
