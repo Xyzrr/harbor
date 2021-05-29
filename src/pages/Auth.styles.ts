@@ -6,7 +6,7 @@ import os from 'os';
 export const Wrapper = styled.div`
   height: 100vh;
   padding: 32px;
-  padding-bottom: 84px;
+  padding-bottom: 48px;
   color: white;
   -webkit-app-region: drag;
   display: flex;
@@ -19,12 +19,10 @@ export const Wrapper = styled.div`
   `}
 `;
 
-export const Logo = styled.h1`
-  text-align: center;
+export const Logo = styled.img`
   margin-bottom: 32px;
-  font-weight: 100;
-  letter-spacing: 1px;
   user-select: none;
+  width: 148px;
 `;
 
 export const Buttons = styled.div`

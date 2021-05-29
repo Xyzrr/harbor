@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import Loader from '../elements/Loader';
 import Button from '../elements/Button';
 import { FirebaseContext } from '../contexts/FirebaseContext';
+import logo from '../logo_light_colored.svg';
 
 export interface AuthProps {
   className?: string;
@@ -131,7 +132,7 @@ const Auth: React.FC<AuthProps> = ({ className }) => {
   return (
     <>
       <S.Wrapper className={className}>
-        <S.Logo>Harbor</S.Logo>
+        <S.Logo src={logo} alt="Harbor logo" />
         {url == null && !guest ? (
           <S.Buttons>
             <S.LoginButton
