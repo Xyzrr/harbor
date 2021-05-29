@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   padding: 12px;
   gap: 8px;
   justify-content: space-between;
+  pointer-events: none;
 `;
 
 export const BottomButtonsLeft = styled.div`

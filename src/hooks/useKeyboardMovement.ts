@@ -71,6 +71,16 @@ export const useKeyboardMovement = (
     S: 'down',
   };
 
+  const shakeBusyToolbar = () => {
+    const toolbar = newWindow.document.querySelector('.busy-toolbar');
+
+    toolbar?.classList.add('shaking');
+
+    newWindow.setTimeout(() => {
+      toolbar?.classList.remove('shaking');
+    }, 500);
+  };
+
   const onKeyDown = React.useCallback(
     (e: KeyboardEvent) => {
       if (!colyseusRoom) {
@@ -95,13 +105,7 @@ export const useKeyboardMovement = (
       }
 
       if (busyType) {
-        const toolbar = newWindow.document.querySelector('.busy-toolbar');
-
-        toolbar?.classList.add('shaking');
-
-        newWindow.setTimeout(() => {
-          toolbar?.classList.remove('shaking');
-        }, 500);
+        shakeBusyToolbar();
         return;
       }
 
@@ -204,10 +208,17 @@ export const useKeyboardMovement = (
       });
     };
 
-    const onMouseDown = () => {
-      setPlayer((draft) => {
-        draft.speed = 128;
-      });
+    const onMouseDown = (e: MouseEvent) => {
+      if ((e.target as Element).closest('.space-map') != null) {
+        if (busyType) {
+          shakeBusyToolbar();
+          return;
+        }
+
+        setPlayer((draft) => {
+          draft.speed = 128;
+        });
+      }
     };
 
     const onMouseUp = () => {
@@ -224,7 +235,7 @@ export const useKeyboardMovement = (
       newWindow.removeEventListener('mousedown', onMouseDown);
       newWindow.removeEventListener('mouseup', onMouseUp);
     };
-  }, [newWindow]);
+  }, [newWindow, busyType, setPlayer]);
 
   React.useEffect(() => {
     if (!colyseusRoom || !newWindow) {

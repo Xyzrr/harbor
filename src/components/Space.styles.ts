@@ -97,9 +97,11 @@ export const TopButtons = styled.div<{ O: number }>`
   padding: 12px;
   gap: 8px;
   justify-content: space-between;
+  pointer-events: none;
 `;
 
 export const ExitButton = styled.div`
+  pointer-events: auto;
   user-select: none;
   color: white;
   background: rgba(100, 100, 100, 0.4);

@@ -10,6 +10,7 @@ import Loader from '../elements/Loader';
 import { usePushing } from '../hooks/usePushing';
 import { PlayerStateContext } from '../contexts/PlayerStateContext';
 import { NewWindowContext } from '../elements/NewWindow';
+import classNames from 'classnames';
 
 export interface SpaceMapProps {
   className?: string;
@@ -160,7 +161,7 @@ const SpaceMap: React.FC<SpaceMapProps> = ({ className }) => {
   const centerY = localPlayer.y;
 
   return (
-    <S.Wrapper className={className}>
+    <S.Wrapper className={classNames(className, 'space-map')}>
       <div
         style={{
           position: 'absolute',

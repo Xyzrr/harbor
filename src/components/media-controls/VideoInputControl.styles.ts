@@ -37,6 +37,7 @@ export const CaretButton = styled(Icon).attrs({ name: 'expand_more' })`
 `;
 
 export const Wrapper = styled.div<{ color?: string }>`
+  pointer-events: auto;
   user-select: none;
   color: white;
   background: rgba(100, 100, 100, 0.4);

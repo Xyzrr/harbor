@@ -3,6 +3,7 @@ import Icon from '../elements/Icon';
 import { MenuItem } from '@material-ui/core';
 
 export const Wrapper = styled.div<{ open?: boolean }>`
+  pointer-events: auto;
   user-select: none;
   color: white;
   background: rgba(100, 100, 100, 0.4);
