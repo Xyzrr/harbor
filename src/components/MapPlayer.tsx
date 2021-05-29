@@ -34,6 +34,7 @@ const MapPlayer: React.FC<MapPlayerProps> = React.memo(function MapPlayer({
 }) {
   const { dir } = playerSummary;
   const [interpolableDir, setInterpolableDir] = React.useState(dir);
+  console.log('dir', interpolableDir);
   React.useEffect(() => {
     setInterpolableDir(
       (d) => d + (((((dir / Math.PI) * 180 - d) % 360) + 540) % 360) - 180

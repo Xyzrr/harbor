@@ -185,6 +185,48 @@ export const useKeyboardMovement = (
   }, [onKeyUp, onKeyDown]);
 
   React.useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      if (Object.values(heldCommands.current).length > 0) {
+        return;
+      }
+
+      const playerX = newWindow.innerWidth / 2;
+      const playerY = newWindow.innerHeight / 2;
+
+      const atan = Math.atan((playerY - e.y) / (playerX - e.x));
+      if (Number.isNaN(atan)) {
+        return;
+      }
+
+      const newDir = e.x > playerX ? atan : atan + Math.PI;
+      setPlayer((draft) => {
+        draft.dir = newDir;
+      });
+    };
+
+    const onMouseDown = () => {
+      setPlayer((draft) => {
+        draft.speed = 128;
+      });
+    };
+
+    const onMouseUp = () => {
+      setPlayer((draft) => {
+        draft.speed = 0;
+      });
+    };
+
+    newWindow.addEventListener('mousemove', onMouseMove);
+    newWindow.addEventListener('mousedown', onMouseDown);
+    newWindow.addEventListener('mouseup', onMouseUp);
+    return () => {
+      newWindow.removeEventListener('mousemove', onMouseMove);
+      newWindow.removeEventListener('mousedown', onMouseDown);
+      newWindow.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [newWindow]);
+
+  React.useEffect(() => {
     if (!colyseusRoom || !newWindow) {
       return;
     }
