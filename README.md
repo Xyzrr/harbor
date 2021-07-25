@@ -2,6 +2,8 @@
 
 This is the Electron client for Harbor. It's built off [Electron React Boilerplate](https://electron-react-boilerplate.js.org/) and uses [styled-components](https://styled-components.com/) for styling.
 
+![harbor-preview](https://user-images.githubusercontent.com/7032597/126885237-e864a568-49e0-402b-8251-ebf2f37c29e2.png)
+
 ## Setting up
 
 Make sure you have [XCode](https://www.freecodecamp.org/news/how-to-download-and-install-xcode/) installed.
