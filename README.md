@@ -2,7 +2,7 @@
 
 This is the Electron client for Harbor. It's built off [Electron React Boilerplate](https://electron-react-boilerplate.js.org/) and uses [styled-components](https://styled-components.com/) for styling. The server code is [here](https://github.com/Xyzrr/virtual-office-server).
 
-![harbor-preview](https://user-images.githubusercontent.com/7032597/126885237-e864a568-49e0-402b-8251-ebf2f37c29e2.png)
+![preview-macbook](https://user-images.githubusercontent.com/7032597/127399420-56dd71bb-3008-49af-b0cc-76bee1fb04c0.png)
 
 ## Setting up
 
